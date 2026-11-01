@@ -126,8 +126,23 @@ try {
   const mask = call('maskHTML("pay attention to")');
   ok('mask-shows-first', mask.includes('>p<') && mask.includes('>a<') && mask.includes('>t<'));
 
-  call('db.set.goal=5');
-  call('startSession({})');
+  // 预习阶段（新词先学一遍）
+  call('db.set.goal=4; db.set.learnFirst=true; startSession({})');
+  ok('preview-phase', call('S.session.phase') === 'learn', call('S.session.phase'));
+  ok('preview-list', call('S.session.learnIds.length') === 4, call('S.session.learnIds.length'));
+  ok('preview-renders', getEl('app').innerHTML.includes('预习') && getEl('app').innerHTML.includes('开始测试') === false);
+  const li0 = call('S.session.li');
+  call('learnStep(1)');
+  ok('preview-advances', call('S.session.li') === li0 + 1);
+  call('learnStep(-1)');
+  ok('preview-back', call('S.session.li') === li0);
+  let guard2 = 0;
+  while (call('S.session.phase') === 'learn' && guard2++ < 20) call('learnStep(1)');
+  ok('preview-to-test', call('S.session.phase') === 'test' && call('S.q !== null'));
+  ok('test-renders', getEl('app').innerHTML.includes('提交答案'));
+  call('S.view="home"; S.session=null; render()');
+
+  call('db.set.goal=5; db.set.learnFirst=false; startSession({})');
   ok('session-view', call('S.view') === 'study');
   ok('session-size', call('S.session.ids.length') === 5, call('S.session.ids.length'));
   ok('session-renders', getEl('app').innerHTML.includes('提交答案'));

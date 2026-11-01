@@ -91,6 +91,8 @@ h1,h2,h3,p{margin:0}
   background:radial-gradient(circle,rgba(124,108,255,.16),transparent 65%);pointer-events:none}
 .qpos{font-size:12px;color:var(--acc2);letter-spacing:.4px}
 .qzh{font-size:27px;font-weight:700;line-height:1.35;margin:8px 0 2px;letter-spacing:.5px}
+.qw{font-size:33px;font-weight:800;line-height:1.2;margin:10px 0 2px;letter-spacing:.4px;
+  color:var(--acc2);word-break:break-word}
 .qsub{font-size:13px;color:var(--dim);margin-top:6px;word-break:break-word}
 .mask{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:18px 0 6px;cursor:text;touch-action:manipulation}
 .wd{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:100%}
@@ -197,7 +199,7 @@ const BY_ID = {};
 ITEMS.forEach(it => { BY_ID[it.id] = it; });
 
 /* ---------------- store ---------------- */
-const blank = () => ({ v: 1, items: {}, log: {}, set: { goal: 20, autoSpeak: true, mode: 'zh', theme: 'auto' } });
+const blank = () => ({ v: 1, items: {}, log: {}, set: { goal: 20, autoSpeak: true, mode: 'zh', theme: 'auto', learnFirst: true } });
 let db = load();
 function load() {
   try {
@@ -333,8 +335,35 @@ function startSession(opts) {
   const limit = opts.limit || db.set.goal || 20;
   const ids = buildQueue(limit, !!opts.onlyWrong);
   if (!ids.length) { S.view = opts.onlyWrong ? 'wrong' : 'home'; toast(opts.onlyWrong ? '没有需要重刷的错词' : '今天的量已完成，明天再来'); render(); return; }
-  S.session = { ids, i: 0, ok: 0, ng: 0, rep: {}, onlyWrong: !!opts.onlyWrong, started: ids.length };
+  const fresh = ids.filter(isNew);
+  const preview = !opts.onlyWrong && db.set.learnFirst !== false && fresh.length > 0;
+  S.session = {
+    ids, i: 0, ok: 0, ng: 0, rep: {}, onlyWrong: !!opts.onlyWrong, started: ids.length,
+    phase: preview ? 'learn' : 'test', learnIds: preview ? fresh : [], li: 0
+  };
   S.view = 'study';
+  if (preview) { S.phase = 'learn'; render(); learnSpeak(); }
+  else nextQ();
+}
+function learnSpeak() {
+  const ss = S.session;
+  if (!ss || ss.phase !== 'learn') return;
+  const it = BY_ID[ss.learnIds[ss.li]];
+  if (it) speakWord(it);
+}
+function learnStep(delta) {
+  const ss = S.session;
+  if (!ss || ss.phase !== 'learn') return;
+  ss.li += delta;
+  if (ss.li < 0) ss.li = 0;
+  if (ss.li >= ss.learnIds.length) { startTestPhase(); return; }
+  render();
+  if (db.set.autoSpeak) learnSpeak();
+}
+function startTestPhase() {
+  const ss = S.session;
+  if (!ss) return;
+  ss.phase = 'test'; ss.li = 0;
   nextQ();
 }
 function nextQ() {
@@ -434,12 +463,52 @@ function viewHome() {
   <div class="card" style="padding:14px 16px;margin-top:12px">
     <div style="font-size:14px;font-weight:700">怎么练</div>
     <div class="muted" style="margin-top:6px;line-height:1.8;font-size:13px">
-      1. 看中文（或开「听发音拼写」），照着字母格敲出英文<br>
-      2. 提交后选「认识 / 模糊 / 不认识」，系统自动排下次复习<br>
+      1. 先预习今天的新词：一张张看英文、音标、释义和词组（可跳过）<br>
+      2. 预习完进入拼写测试，看中文敲英文，提交后选「认识 / 模糊 / 不认识」<br>
       3. 答错自动进错词本，连续掌握后自动移出
     </div>
   </div>
   <div class="mini" style="text-align:center;margin-top:14px">${esc(VERSION)}</div>`;
+}
+function viewLearn() {
+  const ss = S.session;
+  if (!ss || !ss.learnIds.length) return '';
+  const id = ss.learnIds[Math.min(ss.li, ss.learnIds.length - 1)];
+  const it = BY_ID[id];
+  const total = ss.learnIds.length;
+  const prog = Math.round((ss.li) / total * 100);
+  const last = ss.li === total - 1;
+  const kindTag = it.kind === 'w' ? '单词' : (it.kind === 's' ? '同义替换' : '词组');
+  const tag = kindTag + (it.day ? ' · ' + it.day : '') + (it.pos ? ' · ' + it.pos : '');
+  const detail = it.kind === 's'
+    ? `<div class="qsub">基础词：<b style="color:var(--acc2)">${esc(it.label)}</b></div>
+       <div class="qsub" style="margin-top:4px">同义：${esc(it.ans.join(' = '))}</div>`
+    : (it.kind === 'p'
+      ? `<div class="qsub">${esc(it.ans.join(' = '))}</div>`
+      : (it.phr ? `<div class="qsub">${esc(it.phr)}${it.phrZh ? ' · ' + esc(it.phrZh) : ''}</div>` : ''));
+  return `
+    <div class="topbar">
+      <button class="btn ghost" style="padding:6px 10px;font-size:13px" data-act="learn-skip">跳过</button>
+      <div class="bar"><i style="width:${prog}%"></i></div>
+      <span class="mini">预习 ${ss.li + 1}/${total}</span>
+    </div>
+    <div class="stage">
+    <div class="card qcard">
+      <div class="qpos">${esc(tag)}</div>
+      <div class="qw">${esc(it.label)}</div>
+      ${it.phon ? `<div class="pho">/${esc(it.phon)}/</div>` : ''}
+      <div class="qzh" style="margin-top:14px">${esc(it.zh)}</div>
+      ${detail}
+      <div class="row" style="justify-content:center;margin-top:16px">
+        <button class="speak" data-act="speak" aria-label="播放发音">${ICON_SPEAK}</button>
+      </div>
+      <div class="row" style="margin-top:16px;gap:10px">
+        <button class="btn" style="flex:1;font-size:14px" data-act="learn-prev" ${ss.li === 0 ? 'disabled' : ''}>上一个</button>
+        <button class="btn primary" style="flex:1.4;font-size:15px" data-act="learn-next">${last ? '开始测试' : '下一个'}</button>
+      </div>
+      ${last ? '' : '<div class="mini" style="text-align:center;margin-top:10px">过完就会进入拼写测试</div>'}
+    </div>
+    </div>`;
 }
 function viewStudy() {
   const ss = S.session, it = S.q;
@@ -590,6 +659,9 @@ function viewSettings() {
     <div class="srow"><span class="grow">每日目标</span>
       <select id="setGoal">${[10, 20, 30, 50, 100].map(g => `<option value="${g}" ${db.set.goal === g ? 'selected' : ''}>${g} 题</option>`).join('')}</select>
     </div>
+    <div class="srow"><span class="grow">新词先预习再测</span>
+      <div class="seg"><button data-learnfirst="1" class="${db.set.learnFirst !== false ? 'on' : ''}">开</button><button data-learnfirst="0" class="${db.set.learnFirst === false ? 'on' : ''}">关</button></div>
+    </div>
     <div class="srow"><span class="grow">揭晓答案时自动朗读</span>
       <div class="seg"><button data-autospeak="1" class="${db.set.autoSpeak ? 'on' : ''}">开</button><button data-autospeak="0" class="${!db.set.autoSpeak ? 'on' : ''}">关</button></div>
     </div>
@@ -620,16 +692,22 @@ const ICON_SPEAK = '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><
 function render() {
   const app = document.getElementById('app');
   const v = S.view;
+  const learning = v === 'study' && S.session && S.session.phase === 'learn';
   let html = '';
   if (v === 'home') html = viewHome();
-  else if (v === 'study') html = viewStudy();
+  else if (v === 'study') html = learning ? viewLearn() : viewStudy();
   else if (v === 'wrong') html = viewWrong();
   else if (v === 'lib') html = viewLib();
   else if (v === 'settings') html = viewSettings();
   else if (v === 'done') html = viewDone();
   app.innerHTML = html;
   renderTabs();
-  if (v === 'study' && S.revealed) {
+  if (learning) {
+    window.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); learnStep(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); learnStep(-1); }
+    };
+  } else if (v === 'study' && S.revealed) {
     window.onkeydown = e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); rate(suggestKey()); }
       else if (e.key === 'ArrowLeft') rate('unknown');
@@ -673,7 +751,7 @@ function toast(msg) {
 
 /* ---------------- events ---------------- */
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-act],[data-tab],[data-mode],[data-goal],[data-rate],[data-src],[data-theme],[data-autospeak]');
+  const t = e.target.closest('[data-act],[data-tab],[data-mode],[data-goal],[data-rate],[data-src],[data-theme],[data-autospeak],[data-learnfirst]');
   if (!t) return;
   if (t.dataset.tab) {
     S.view = t.dataset.tab;
@@ -691,12 +769,16 @@ document.addEventListener('click', e => {
   if (t.dataset.src) { S.libFilter = t.dataset.src; render(); return; }
   if (t.dataset.theme) { db.set.theme = t.dataset.theme; save(); applyTheme(); render(); return; }
   if (t.dataset.autospeak) { db.set.autoSpeak = t.dataset.autospeak === '1'; save(); render(); return; }
+  if (t.dataset.learnfirst) { db.set.learnFirst = t.dataset.learnfirst === '1'; save(); render(); return; }
   const act = t.dataset.act;
   if (act === 'start') startSession({});
   else if (act === 'start-wrong') startSession({ onlyWrong: true, limit: 999 });
+  else if (act === 'learn-next') learnStep(1);
+  else if (act === 'learn-prev') learnStep(-1);
+  else if (act === 'learn-skip') startTestPhase();
   else if (act === 'submit') { const el = document.getElementById('answer'); S.typed = el ? el.value : S.typed; submitAnswer(); }
   else if (act === 'skip') { S.typed = ''; S.judgeRes = { level: 'wrong', best: S.q.label }; S.revealed = true; render(); if (db.set.autoSpeak) speakWord(S.q); }
-  else if (act === 'speak') { if (S.q) speakWord(S.q); }
+  else if (act === 'speak') { if (S.session && S.session.phase === 'learn') learnSpeak(); else if (S.q) speakWord(S.q); }
   else if (act === 'focus-input') {
     const el = document.getElementById('answer');
     if (el) { el.focus(); try { el.setSelectionRange(el.value.length, el.value.length); } catch (e) {} }
