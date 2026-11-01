@@ -17,11 +17,13 @@
 
 ## 在线使用
 
-部署到 GitHub Pages 后地址形如：
+部署到 GitHub Pages 后地址：
 
 ```
-https://<你的用户名>.github.io/<仓库名>/
+https://mouseking77.github.io/cet6-vocab/
 ```
+
+手机打开这个地址即可；Chrome / 夸克 / Safari 菜单里的「添加到主屏幕」可以装成图标。
 
 ## 本地使用
 
@@ -67,29 +69,41 @@ node src/test_app.js            # 41 项逻辑自测，最后一行 FAIL=0 即�
 
 ## 部署到 GitHub Pages
 
-### 方式 A：网页上传（最简单，不用装 git）
+仓库：<https://github.com/mouseking77/cet6-vocab>
 
-1. GitHub 新建仓库，例如 `cet6-vocab`，选 Public。
-2. 仓库页 → `Add file` → `Upload files`，把本项目**目录里的所有文件和文件夹**（`index.html`、`manifest.webmanifest`、`icon-*.png`、`.nojekyll`、`src/`、`README.md`）拖进去，`Commit changes`。
-3. `Settings` → 左侧 `Pages` → `Source` 选 `Deploy from a branch`，分支 `main`、目录 `/ (root)`，`Save`。
-4. 等 1–2 分钟，回到 `Pages` 页面顶部会显示站点地址，形如 `https://<用户名>.github.io/cet6-vocab/`。
+### 方式 A：网页上传（不用装 git，推荐）
 
-### 方式 B：命令行
+1. 打开仓库页 <https://github.com/mouseking77/cet6-vocab>。
+2. 点中间的 **uploading an existing file**（或 `Add file → Upload files`）。
+3. 从本机 `cet6-vocab` 目录里拖进这些（**`index.html` 必须在仓库根目录**，不能放进子文件夹）：
+   - `index.html`
+   - `manifest.webmanifest`
+   - `icon-192.png`、`icon-512.png`
+   - `README.md`
+   - `src/` 整个文件夹（想保留构建脚本再传；只上线的话可以不传）
+4. 页面下方 `Commit changes`。
+5. `Settings` → 左侧 `Pages` → `Source` 选 `Deploy from a branch`，分支 `main`、目录 `/ (root)`，`Save`。
+6. 等 1–2 分钟，站点地址：<https://mouseking77.github.io/cet6-vocab/>
 
-```bash
-cd cet6-vocab
-git init -b main
-git add .
-git commit -m "feat: 四六级词汇拼写记忆"
-git remote add origin https://github.com/<你的用户名>/cet6-vocab.git
+> `.nojekyll`、`.gitignore` 是隐藏文件，网页上传时不容易选中；不传也不影响访问（本项目没有以下划线开头的文件，Jekyll 不会出错）。
+
+### 方式 B：命令行（本机仓库已初始化好）
+
+本机 `cet6-vocab` 目录已经 `git init`、提交完成、remote 指向本仓库，只差认证后推送：
+
+```powershell
+cd D:\English_learning\cet6-vocab
 git push -u origin main
 ```
 
-推送后按方式 A 的第 3、4 步开启 Pages（只需一次）。
+GitHub 不接受账号密码，密码处要填 **Personal Access Token**：
+`GitHub → 头像 → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token`，勾选 `repo`，生成后复制（只显示一次），在 git 提示 `Password` 时粘贴。
+
+如果装了 GitHub Desktop 或 VS Code，登录账号后直接「Push」更省事。推送后同样去 `Settings → Pages` 开一次。
 
 ### 手机打开
 
-在手机浏览器输入站点地址即可（夸克/Chrome/Safari 都行，是正常网页，输入框可正常输入）。想更像 App：浏览器菜单里「添加到主屏幕」。
+浏览器输入 <https://mouseking77.github.io/cet6-vocab/>（夸克/Chrome/Safari 都行，是正常网页，输入框可正常输入）。想更像 App：浏览器菜单里「添加到主屏幕」。
 
 ## 说明
 
