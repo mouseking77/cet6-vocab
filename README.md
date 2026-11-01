@@ -71,7 +71,17 @@ node src/test_app.js            # 41 项逻辑自测，最后一行 FAIL=0 即�
 
 仓库：<https://github.com/mouseking77/cet6-vocab>
 
-### 方式 A：网页上传（不用装 git，推荐）
+站点：<https://mouseking77.github.io/cet6-vocab/>
+
+### 方式 A：Actions 工作流（推荐，本仓库已内置）
+
+`.github/workflows/pages.yml` 会在每次 push 到 `main` 时自动打包并部署。只需在仓库里设置一次：
+
+`Settings` → `Pages` → `Source` 选 **GitHub Actions**。
+
+之后 `git push` 即自动上线，部署日志在 `Actions` → `Deploy to GitHub Pages`。
+
+### 方式 B：网页上传（不用装 git）
 
 1. 打开仓库页 <https://github.com/mouseking77/cet6-vocab>。
 2. 点中间的 **uploading an existing file**（或 `Add file → Upload files`）。
