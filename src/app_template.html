@@ -91,7 +91,7 @@ h1,h2,h3,p{margin:0}
 .qpos{font-size:12px;color:var(--acc2);letter-spacing:.4px}
 .qzh{font-size:27px;font-weight:700;line-height:1.35;margin:8px 0 2px;letter-spacing:.5px}
 .qsub{font-size:13px;color:var(--dim);margin-top:6px;word-break:break-word}
-.mask{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:18px 0 6px}
+.mask{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:18px 0 6px;cursor:text;touch-action:manipulation}
 .wd{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:100%}
 .sc{width:20px;height:28px;border-radius:7px;background:var(--card2);border:1px solid var(--line);
   display:grid;place-items:center;font-size:15px;font-weight:700;color:var(--txt)}
@@ -263,7 +263,7 @@ function judge(input, answers) {
 function maskHTML(str) {
   const words = String(str).split(/\s+/).filter(Boolean);
   const dense = Math.max.apply(null, words.map(w => w.length)) > 10;
-  return '<div class="mask' + (dense ? ' dense' : '') + '">' + words.map(w => {
+  return '<div class="mask' + (dense ? ' dense' : '') + '" data-act="focus-input" title="点这里也能输入">' + words.map(w => {
     const cells = [...w].map((ch, i) => {
       if (/[A-Za-z]/.test(ch)) return '<i class="sc' + (i === 0 ? ' f' : '') + '">' + (i === 0 ? esc(ch) : '') + '</i>';
       return '<i class="punct">' + esc(ch) + '</i>';
@@ -503,8 +503,8 @@ function viewStudy() {
       <div class="qpos">${kindTag}${it.day ? ' · ' + esc(it.day) : ''}</div>
       ${prompt}
       ${maskHTML(it.hint)}
-      <div style="margin-top:16px">
-        <input id="answer" type="text" value="${esc(S.typed)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" placeholder="在此输入英文">
+      <div style="margin-top:16px" data-act="focus-input">
+        <input id="answer" type="text" value="${esc(S.typed)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" placeholder="点这里输入英文">
       </div>
       <div class="mini" style="margin-top:9px">首字母和字母数已给出 · 回车提交</div>
       <button class="btn primary block" style="margin-top:10px" data-act="submit">提交答案</button>
@@ -693,6 +693,10 @@ document.addEventListener('click', e => {
   else if (act === 'submit') { const el = document.getElementById('answer'); S.typed = el ? el.value : S.typed; submitAnswer(); }
   else if (act === 'skip') { S.typed = ''; S.judgeRes = { level: 'wrong', best: S.q.label }; S.revealed = true; render(); if (db.set.autoSpeak) speakWord(S.q); }
   else if (act === 'speak') { if (S.q) speakWord(S.q); }
+  else if (act === 'focus-input') {
+    const el = document.getElementById('answer');
+    if (el) { el.focus(); try { el.setSelectionRange(el.value.length, el.value.length); } catch (e) {} }
+  }
   else if (act === 'speak-item') { const it = BY_ID[t.dataset.id]; if (it) speakWord(it); }
   else if (act === 'quit') { S.view = 'home'; S.session = null; S.q = null; render(); }
   else if (act === 'again') { startSession({}); }
