@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1017">
+<meta name="description" content="四六级词汇拼写记忆：600 冲刺词 + 280 组同义替换 + 198 条翻译词组，三档间隔复习，进度存在本机。">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="词汇练习">
+<title>六级词汇 · 拼写记忆</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0d1017; --bg2:#141926; --card:#181e2c; --card2:#1f2637;
+  --line:#2a3346; --txt:#e8ecf5; --dim:#8b96ad; --dim2:#5f6a80;
+  --acc:#7c6cff; --acc2:#38bdf8; --ok:#34d399; --warn:#fbbf24; --bad:#fb7185;
+  --r:18px; --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+html[data-theme="light"]{
+  --bg:#f6f7fb; --bg2:#eef1f8; --card:#ffffff; --card2:#f4f6fc;
+  --line:#e2e7f2; --txt:#151a26; --dim:#5d6780; --dim2:#8b96ad;
+  --shadow:0 8px 24px rgba(20,30,60,.10);
+}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;overscroll-behavior-y:none;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(700px 380px at 85% -8%,rgba(124,108,255,.20),transparent 70%),
+    radial-gradient(600px 320px at 5% 0%,rgba(56,189,248,.12),transparent 70%);
+}
+#app{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:14px 16px calc(86px + env(safe-area-inset-bottom));min-height:100vh}
+nav#tabs{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  display:flex;justify-content:center;gap:6px;
+}
+nav#tabs button{
+  flex:1;max-width:130px;background:none;border:0;color:var(--dim);
+  font:inherit;font-size:11px;line-height:1.2;padding:6px 2px;border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+}
+nav#tabs button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav#tabs button.on{color:var(--acc)}
+nav#tabs button.on svg{stroke:var(--acc)}
+h1,h2,h3,p{margin:0}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.muted{color:var(--dim);font-size:13px}
+.mini{color:var(--dim2);font-size:12px}
+.pagehead{display:flex;align-items:baseline;gap:8px;margin:6px 0 14px}
+.pagehead h2{font-size:19px;letter-spacing:.3px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:var(--card2);border:1px solid var(--line);font-size:12px;color:var(--dim)}
+.btn{
+  appearance:none;border:1px solid var(--line);background:var(--card2);color:var(--txt);
+  font:inherit;font-size:15px;font-weight:600;padding:13px 16px;border-radius:14px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .06s ease,filter .15s;
+}
+.btn:active{transform:scale(.985)}
+.btn.primary{background:linear-gradient(135deg,var(--acc),#5b8cff);border-color:transparent;color:#fff;box-shadow:0 8px 20px rgba(110,100,255,.30)}
+.btn.ghost{background:transparent}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.ring{--p:0;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:conic-gradient(var(--acc) calc(var(--p)*1%),var(--card2) 0);position:relative}
+.ring::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--card)}
+.ring b{position:relative;z-index:1;font-size:15px;font-variant-numeric:tabular-nums}
+.ring b i{font-style:normal;font-size:10px;color:var(--dim)}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kpi div{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:11px 12px}
+.kpi b{display:block;font-size:19px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:11px;color:var(--dim)}
+/* study */
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;min-height:34px}
+.bar{height:6px;border-radius:99px;background:var(--card2);overflow:hidden;flex:1}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .25s}
+.qcard{padding:22px 18px 18px;text-align:center;position:relative;overflow:hidden}
+.qcard::after{content:"";position:absolute;inset:-40% -10% auto auto;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,108,255,.16),transparent 65%);pointer-events:none}
+.qpos{font-size:12px;color:var(--acc2);letter-spacing:.4px}
+.qzh{font-size:27px;font-weight:700;line-height:1.35;margin:8px 0 2px;letter-spacing:.5px}
+.qsub{font-size:13px;color:var(--dim);margin-top:6px;word-break:break-word}
+.mask{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:18px 0 6px}
+.wd{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:100%}
+.sc{width:20px;height:28px;border-radius:7px;background:var(--card2);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:15px;font-weight:700;color:var(--txt)}
+.sc.f{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.55);color:var(--acc2)}
+.mask.dense .sc{width:15px;height:26px;font-size:13px;border-radius:6px}
+.mask.dense .wd{gap:3px}
+.punct{color:var(--dim2);font-size:15px;display:grid;place-items:center;height:28px}
+.stage{display:grid;place-items:center;min-height:calc(100vh - 190px);min-height:calc(100dvh - 190px)}
+.stage>.card{width:100%}
+input[type=text]{
+  width:100%;background:var(--bg2);border:1.5px solid var(--line);color:var(--txt);
+  font:inherit;font-size:19px;letter-spacing:.5px;padding:14px 14px;border-radius:14px;outline:none;text-align:center;
+}
+input[type=text]:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(124,108,255,.18)}
+.ans{font-size:31px;font-weight:800;letter-spacing:.5px;line-height:1.25;word-break:break-word;color:var(--ok)}
+.ans.bad{color:var(--bad)}
+.ans.warn{color:var(--warn)}
+.pho{color:var(--dim);font-size:14px;margin-top:6px}
+.selfrate{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}
+.selfrate button{
+  border:1.5px solid var(--line);background:var(--card2);color:var(--txt);border-radius:14px;
+  padding:12px 6px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;position:relative;
+}
+.selfrate button small{display:block;font-weight:500;font-size:10.5px;color:var(--dim);margin-top:3px}
+.selfrate button.sug{outline:2px solid var(--acc);outline-offset:1px}
+.selfrate .k{border-color:rgba(52,211,153,.45)}
+.selfrate .k small{color:var(--ok)}
+.selfrate .f{border-color:rgba(251,191,36,.4)}
+.selfrate .f small{color:var(--warn)}
+.selfrate .u{border-color:rgba(251,113,133,.4)}
+.selfrate .u small{color:var(--bad)}
+.wrongline{font-size:14px;color:var(--dim);margin-top:10px}
+.wrongline s{color:var(--bad);text-decoration-thickness:1px}
+.speak{border:1px solid var(--line);background:var(--card2);border-radius:999px;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;color:var(--txt);flex:none}
+.speak svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.listenbig{display:grid;place-items:center;gap:10px;padding:8px 0 4px}
+.listenbig .speak{width:82px;height:82px;background:linear-gradient(135deg,var(--acc),#4f7dff)}
+.listenbig .speak svg{width:34px;height:34px;stroke:#fff}
+/* list */
+.list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px;display:flex;gap:10px;align-items:center}
+.item .w{font-weight:700;font-size:16px}
+.item .z{font-size:12.5px;color:var(--dim);margin-top:2px}
+.badge{font-size:10px;padding:2px 7px;border-radius:99px;border:1px solid var(--line);color:var(--dim);flex:none}
+.badge.w{color:var(--warn);border-color:rgba(251,191,36,.4)}
+.badge.u{color:var(--bad);border-color:rgba(251,113,133,.4)}
+.badge.k{color:var(--ok);border-color:rgba(52,211,153,.4)}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font:inherit;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--dim);cursor:pointer}
+.chip.on{background:var(--acc);border-color:transparent;color:#fff}
+.empty{text-align:center;color:var(--dim);padding:46px 10px;font-size:14px}
+.srow{display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid var(--line)}
+.srow:last-child{border-bottom:0}
+.srow select,.srow input[type=number]{background:var(--bg2);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:8px 10px;font:inherit;font-size:14px}
+.seg{display:inline-flex;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;color:var(--dim);font:inherit;font-size:13px;padding:7px 12px;border-radius:9px;cursor:pointer}
+.seg button.on{background:var(--acc);color:#fff}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  background:var(--card2);border:1px solid var(--line);color:var(--txt);padding:10px 16px;border-radius:12px;font-size:13px;
+  box-shadow:var(--shadow);z-index:40;opacity:0;transition:opacity .2s}
+.toast.on{opacity:1}
+.done-wrap{text-align:center;padding:16px 6px}
+.done-wrap .big{font-size:54px;line-height:1;margin-bottom:12px}
+.done-wrap h2{font-size:22px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav id="tabs"></nav>
+<script id="seed" type="application/json">__DATA__</script>
+<script>
+"use strict";
+/* ---------------- data ---------------- */
+const RAW = JSON.parse(document.getElementById('seed').textContent);
+const DAY = 86400000;
+const IV = [0, 1, 2, 4, 7, 15, 30];        // days by box index
+const KEY = 'cet6-vocab-v1';
+
+const ITEMS = [];
+RAW.words.forEach((w, i) => ITEMS.push({
+  id: 'w' + i, kind: 'w', src: '600词',
+  word: w.w, zh: w.zh, pos: w.pos, phon: w.p, phr: w.phr, phrZh: w.phrZh,
+  day: w.day, ans: [w.w], label: w.w, hint: w.w
+}));
+RAW.syn.forEach((s, i) => ITEMS.push({
+  id: 's' + i, kind: 's', src: '同义替换',
+  word: s.variants[0], alt: s.variants.slice(1), zh: s.zh, pos: s.pos,
+  phon: '', phr: s.variants.join(' = '), phrZh: s.zh, day: s.group,
+  ans: s.variants, label: s.variants[0], hint: (s.variants[1] || s.variants[0])
+}));
+RAW.phr.forEach((p, i) => {
+  const alts = p.en.split(' = ').map(x => x.trim()).filter(Boolean);
+  ITEMS.push({
+    id: 'p' + i, kind: 'p', src: '翻译词组',
+    word: alts[0], zh: p.zh.split('→')[0].trim(), zhFull: p.zh, pos: '', phon: '',
+    phr: p.en, phrZh: p.zh, day: p.cat, ans: alts, label: alts[0], hint: alts[0]
+  });
+});
+const BY_ID = {};
+ITEMS.forEach(it => { BY_ID[it.id] = it; });
+
+/* ---------------- store ---------------- */
+const blank = () => ({ v: 1, items: {}, log: {}, set: { goal: 20, autoSpeak: true, mode: 'zh', theme: 'auto' } });
+let db = load();
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return blank();
+    const d = JSON.parse(raw);
+    const b = blank();
+    return { v: 1, items: d.items || {}, log: d.log || {}, set: Object.assign(b.set, d.set || {}) };
+  } catch (e) { return blank(); }
+}
+let saveT = 0;
+function save() {
+  clearTimeout(saveT);
+  saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }, 120);
+}
+const todayKey = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+function logToday() {
+  const k = todayKey();
+  if (!db.log[k]) db.log[k] = { done: 0, ok: 0, ng: 0 };
+  return db.log[k];
+}
+const st = id => db.items[id] || null;
+const isNew = id => !db.items[id];
+const isDue = id => { const s = db.items[id]; return !!s && s.d <= Date.now(); };
+const isWrong = id => { const s = db.items[id]; return !!s && s.ng > 0 && s.box < 3; };
+const isMastered = id => { const s = db.items[id]; return !!s && s.box >= 3; };
+
+/* ---------------- helpers ---------------- */
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const norm = s => String(s || '').toLowerCase().replace(/[’‘]/g, "'").replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
+const compact = s => norm(s).replace(/[^a-z0-9]/g, '');
+function lev(a, b) {
+  if (a === b) return 0;
+  const m = a.length, n = b.length;
+  if (!m) return n; if (!n) return m;
+  let prev = new Array(n + 1), cur = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
+  for (let i = 1; i <= m; i++) {
+    cur[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+    }
+    [prev, cur] = [cur, prev];
+  }
+  return prev[n];
+}
+/* 判分：完全正确 / 小错(近似) / 错误 */
+function judge(input, answers) {
+  const inp = compact(input);
+  if (!inp) return { level: 'wrong', best: answers[0] };
+  let best = answers[0], bestD = 1e9, exact = false;
+  for (const a of answers) {
+    const ac = compact(a);
+    if (!ac) continue;
+    if (inp === ac) { exact = true; best = a; bestD = 0; break; }
+    const d = lev(inp, ac);
+    if (d < bestD) { bestD = d; best = a; }
+  }
+  if (exact) return { level: 'correct', best };
+  const limit = bestD <= 1 || (bestD === 2 && best.length > 7) ? bestD : 99;
+  if (limit <= 2) return { level: 'near', best };
+  return { level: 'wrong', best };
+}
+function maskHTML(str) {
+  const words = String(str).split(/\s+/).filter(Boolean);
+  const dense = Math.max.apply(null, words.map(w => w.length)) > 10;
+  return '<div class="mask' + (dense ? ' dense' : '') + '">' + words.map(w => {
+    const cells = [...w].map((ch, i) => {
+      if (/[A-Za-z]/.test(ch)) return '<i class="sc' + (i === 0 ? ' f' : '') + '">' + (i === 0 ? esc(ch) : '') + '</i>';
+      return '<i class="punct">' + esc(ch) + '</i>';
+    }).join('');
+    return '<span class="wd">' + cells + '</span>';
+  }).join('') + '</div>';
+}
+
+/* ---------------- speech ---------------- */
+let voice = null;
+function pickVoice() {
+  if (!('speechSynthesis' in window)) return;
+  const vs = speechSynthesis.getVoices();
+  voice = vs.find(v => /en[-_]US/i.test(v.lang) && /Google|Samantha|Natural|Zira|Aria/i.test(v.name))
+    || vs.find(v => /en[-_]US/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null;
+}
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text, rate) {
+  if (!('speechSynthesis' in window)) { toast('这个浏览器不支持朗读，可以切回「看中文拼写」'); return; }
+  if (!text) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = rate || .9; u.pitch = 1;
+    if (voice) u.voice = voice;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+const speakWord = it => speak(it.label.replace(/[()]/g, ' '), .88);
+
+/* ---------------- srs ---------------- */
+function grade(id, g) {
+  const s = db.items[id] || { box: 0, d: 0, ok: 0, ng: 0, n: 0 };
+  s.n = (s.n || 0) + 1;
+  if (g === 'known') { s.ok = (s.ok || 0) + 1; s.box = Math.min((s.box || 0) + 1, 6); s.d = Date.now() + IV[s.box] * DAY; }
+  else if (g === 'fuzzy') { s.box = Math.min(s.box || 0, 2); s.d = Date.now() + Math.round(0.5 * DAY); }
+  else { s.ng = (s.ng || 0) + 1; s.box = 0; s.d = Date.now() + 60000; }
+  db.items[id] = s;
+  const lg = logToday();
+  lg.done++;
+  if (g === 'known') lg.ok++; else if (g === 'unknown') lg.ng++;
+  save();
+}
+
+/* ---------------- session ---------------- */
+const S = { view: 'home', q: null, revealed: false, session: null, typed: '', libFilter: 'all', libQuery: '', wrongLimit: 0 };
+
+function buildQueue(limit, onlyWrong) {
+  const now = Date.now();
+  let pool = ITEMS;
+  if (onlyWrong) pool = ITEMS.filter(it => isWrong(it.id));
+  const overdue = [], fresh = [];
+  for (const it of pool) {
+    const s = db.items[it.id];
+    if (!s) fresh.push(it.id);
+    else if (s.d <= now) overdue.push({ id: it.id, d: s.d, ng: s.ng || 0 });
+  }
+  overdue.sort((a, b) => (b.ng - a.ng) || (a.d - b.d));
+  const ids = [];
+  for (const o of overdue) { if (ids.length >= limit) break; ids.push(o.id); }
+  for (const id of fresh) { if (ids.length >= limit) break; ids.push(id); }
+  return ids;
+}
+function startSession(opts) {
+  const limit = opts.limit || db.set.goal || 20;
+  const ids = buildQueue(limit, !!opts.onlyWrong);
+  if (!ids.length) { S.view = opts.onlyWrong ? 'wrong' : 'home'; toast(opts.onlyWrong ? '没有需要重刷的错词' : '今天的量已完成，明天再来'); render(); return; }
+  S.session = { ids, i: 0, ok: 0, ng: 0, rep: {}, onlyWrong: !!opts.onlyWrong, started: ids.length };
+  S.view = 'study';
+  nextQ();
+}
+function nextQ() {
+  const ss = S.session;
+  if (!ss) { S.view = 'home'; render(); return; }
+  if (ss.i >= ss.ids.length) { S.view = 'done'; S.q = null; render(); return; }
+  const id = ss.ids[ss.i];
+  const it = BY_ID[id];
+  S.q = it; S.revealed = false; S.typed = ''; S.judgeRes = null;
+  render();
+  if (db.set.mode === 'listen') speakWord(it);
+  setTimeout(() => { const el = document.getElementById('answer'); if (el && !isTouch) el.focus(); }, 60);
+}
+const isTouch = matchMedia('(hover:none)').matches;
+function submitAnswer() {
+  const ss = S.session, it = S.q;
+  if (!ss || !it || S.revealed) return;
+  const res = judge(S.typed, it.ans);
+  S.judgeRes = res;
+  S.revealed = true;
+  ss.answered = true;
+  render();
+  if (db.set.autoSpeak) speakWord(it);
+}
+function rate(g) {
+  const ss = S.session, it = S.q;
+  if (!ss || !it) return;
+  grade(it.id, g);
+  if (g === 'known') ss.ok++; else if (g === 'unknown') { ss.ng++; ss.rep[it.id] = (ss.rep[it.id] || 0) + 1; }
+  const needRepeat = g === 'unknown' && (ss.rep[it.id] || 0) < 2;
+  if (needRepeat) {
+    const at = Math.min(ss.ids.length, ss.i + 4);
+    ss.ids.splice(at, 0, it.id);
+  }
+  ss.i++;
+  nextQ();
+}
+
+/* ---------------- views ---------------- */
+function ringHTML(done, goal) {
+  const p = Math.max(0, Math.min(100, goal ? done / goal * 100 : 0));
+  return '<div class="ring" style="--p:' + p.toFixed(0) + '"><b>' + done + '<i>/' + goal + '</i></b></div>';
+}
+function statNums() {
+  let learned = 0, mastered = 0, wrong = 0, due = 0;
+  const now = Date.now();
+  for (const it of ITEMS) {
+    const s = db.items[it.id];
+    if (s) { learned++; if (s.box >= 3) mastered++; if (s.ng > 0 && s.box < 3) wrong++; if (s.d <= now) due++; }
+  }
+  return { learned, mastered, wrong, due, total: ITEMS.length };
+}
+function streak() {
+  let n = 0;
+  const d = new Date();
+  for (let i = 0; i < 400; i++) {
+    const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const lg = db.log[k];
+    if (lg && lg.done > 0) n++;
+    else if (i > 0) break;
+    d.setDate(d.getDate() - 1);
+  }
+  return n;
+}
+function viewHome() {
+  const lg = logToday(), stn = statNums(), goal = db.set.goal;
+  const pct = Math.round(stn.learned / stn.total * 100);
+  return `
+  <div class="pagehead"><h2>今日学习</h2><span class="pill">第 ${streak()} 天</span></div>
+  <div class="card" style="padding:18px">
+    <div class="row" style="gap:16px">
+      ${ringHTML(lg.done, goal)}
+      <div class="grow">
+        <div style="font-size:16px;font-weight:700">今日已练 ${lg.done} 题</div>
+        <div class="muted" style="margin-top:4px">答对 ${lg.ok} · 待复习 ${stn.due} · 错词 ${stn.wrong}</div>
+        <div class="mini" style="margin-top:8px">库中 ${stn.total} 条 · 已学 ${stn.learned}（${pct}%）· 掌握 ${stn.mastered}</div>
+      </div>
+    </div>
+    <div class="seg" id="modeSeg" style="margin-top:16px;width:100%">
+      <button data-mode="zh" class="${db.set.mode === 'zh' ? 'on' : ''}" style="flex:1">看中文拼写</button>
+      <button data-mode="listen" class="${db.set.mode === 'listen' ? 'on' : ''}" style="flex:1">听发音拼写</button>
+    </div>
+    <button class="btn primary block" style="margin-top:12px" data-act="start">开始今日练习</button>
+  </div>
+  <div class="kpi" style="margin-top:12px">
+    <div><b>${stn.mastered}</b><span>已掌握</span></div>
+    <div><b>${stn.wrong}</b><span>错词本</span></div>
+    <div><b>${stn.due}</b><span>待复习</span></div>
+  </div>
+  <div class="card" style="padding:14px 16px;margin-top:12px">
+    <div class="row"><span class="grow" style="font-size:14px">今日目标</span>
+      <span class="muted">${goal} 题</span></div>
+    <div class="chips" style="margin-top:10px;padding-bottom:0">
+      ${[10, 20, 30, 50, 100].map(g => `<button class="chip ${goal === g ? 'on' : ''}" data-goal="${g}">${g}</button>`).join('')}
+    </div>
+  </div>
+  <div class="card" style="padding:14px 16px;margin-top:12px">
+    <div style="font-size:14px;font-weight:700">怎么练</div>
+    <div class="muted" style="margin-top:6px;line-height:1.8;font-size:13px">
+      1. 看中文（或开「听发音拼写」），照着字母格敲出英文<br>
+      2. 提交后选「认识 / 模糊 / 不认识」，系统自动排下次复习<br>
+      3. 答错自动进错词本，连续掌握后自动移出
+    </div>
+  </div>`;
+}
+function viewStudy() {
+  const ss = S.session, it = S.q;
+  if (!ss || !it) return '';
+  const listen = db.set.mode === 'listen' && it.kind === 'w';
+  const prog = Math.round(ss.i / ss.ids.length * 100);
+  const kindTag = it.kind === 'w' ? '单词' : (it.kind === 's' ? '同义替换' : '词组');
+  let prompt;
+  if (listen) {
+    prompt = `<div class="listenbig">
+        <button class="speak" data-act="speak" aria-label="播放发音">${ICON_SPEAK}</button>
+        <div class="mini">听发音，拼出单词</div>
+        <button class="btn ghost" style="padding:6px 12px;font-size:13px" data-act="showzh">显示中文提示</button>
+      </div>
+      <div class="qzh" id="zhHint" style="display:none">${esc(it.zh)}</div>`;
+  } else {
+    prompt = `<div class="qzh">${esc(it.zh)}</div>
+      ${it.kind === 's' ? `<div class="qsub">基础词：<b style="color:var(--acc2)">${esc(it.label)}</b> · 写出任意一个同义词</div>` : ''}
+      ${it.kind !== 'w' && it.ans.length > 1 ? `<div class="qsub">字母格是其中一种写法，写哪个都算对</div>` : ''}`;
+  }
+  if (S.revealed) {
+    const res = S.judgeRes || { level: 'wrong', best: it.label };
+    const cls = res.level === 'correct' ? '' : (res.level === 'near' ? ' warn' : ' bad');
+    const sug = res.level === 'correct' ? 'known' : (res.level === 'near' ? 'fuzzy' : 'unknown');
+    return `
+    <div class="topbar">
+      <button class="btn ghost" style="padding:6px 10px;font-size:13px" data-act="quit">退出</button>
+      <div class="bar"><i style="width:${prog}%"></i></div>
+      <span class="mini">${ss.i + 1}/${ss.ids.length}</span>
+    </div>
+    <div class="stage">
+    <div class="card qcard">
+      <div class="qpos">${kindTag}${it.day ? ' · ' + esc(it.day) : ''}</div>
+      <div class="qzh">${esc(it.zh)}</div>
+      <div style="margin-top:16px">
+        <div class="ans${cls}">${esc(res.best)}</div>
+        ${it.phon ? `<div class="pho">/${esc(it.phon)}/</div>` : ''}
+        ${it.kind === 's' ? `<div class="qsub">同义词组：${esc(it.ans.join(' = '))}</div>` : ''}
+        ${it.kind === 'w' && it.phr ? `<div class="qsub">${esc(it.phr)}${it.phrZh ? ' · ' + esc(it.phrZh) : ''}</div>` : ''}
+        ${it.kind === 'p' && it.zhFull && it.zhFull.includes('→') ? `<div class="qsub">${esc(it.zhFull.split('→')[1].trim())}</div>` : ''}
+        ${res.level !== 'correct' && S.typed ? `<div class="wrongline">你的答案：<s>${esc(S.typed)}</s></div>` : ''}
+        ${res.level === 'near' ? `<div class="wrongline" style="color:var(--warn)">差一点点，注意拼写</div>` : ''}
+      </div>
+      <div class="row" style="justify-content:center;margin-top:14px">
+        <button class="speak" data-act="speak" aria-label="播放发音">${ICON_SPEAK}</button>
+      </div>
+      <div class="selfrate">
+        <button class="k ${sug === 'known' ? 'sug' : ''}" data-rate="known">认识<small>明天以后再见</small></button>
+        <button class="f ${sug === 'fuzzy' ? 'sug' : ''}" data-rate="fuzzy">模糊<small>半天后再练</small></button>
+        <button class="u ${sug === 'unknown' ? 'sug' : ''}" data-rate="unknown">不认识<small>稍后重来</small></button>
+      </div>
+    </div>
+    </div>
+    <div class="mini" style="text-align:center;margin-top:10px">回车选建议项 · ← → 切换档位</div>`;
+  }
+  return `
+    <div class="topbar">
+      <button class="btn ghost" style="padding:6px 10px;font-size:13px" data-act="quit">退出</button>
+      <div class="bar"><i style="width:${prog}%"></i></div>
+      <span class="mini">${ss.i + 1}/${ss.ids.length}</span>
+    </div>
+    <div class="stage">
+    <div class="card qcard">
+      <div class="qpos">${kindTag}${it.day ? ' · ' + esc(it.day) : ''}</div>
+      ${prompt}
+      ${maskHTML(it.hint)}
+      <div style="margin-top:16px">
+        <input id="answer" type="text" value="${esc(S.typed)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" placeholder="在此输入英文">
+      </div>
+      <div class="mini" style="margin-top:9px">首字母和字母数已给出 · 回车提交</div>
+      <button class="btn primary block" style="margin-top:10px" data-act="submit">提交答案</button>
+      <div class="row" style="margin-top:12px;justify-content:center;gap:10px">
+        <button class="speak" data-act="speak" aria-label="播放发音">${ICON_SPEAK}</button>
+        <button class="btn ghost" style="padding:9px 14px;font-size:13px" data-act="skip">不会，看答案</button>
+      </div>
+    </div>
+    </div>`;
+}
+function viewDone() {
+  const ss = S.session || { ok: 0, ng: 0, started: 0 };
+  const total = ss.ok + ss.ng || 0;
+  const acc = total ? Math.round(ss.ok / total * 100) : 0;
+  return `<div class="done-wrap">
+    <div class="big">🎉</div>
+    <h2>这一组完成了</h2>
+    <div class="muted">共 ${ss.started || 0} 题 · 答对 ${ss.ok} · 未掌握 ${ss.ng} · 正确率 ${acc}%</div>
+    <div class="card" style="padding:16px;margin-top:18px">
+      <button class="btn primary block" data-act="again">再来一组</button>
+      <button class="btn block" style="margin-top:10px" data-act="goview" data-view="wrong">去错词本</button>
+      <button class="btn ghost block" style="margin-top:10px" data-act="goview" data-view="home">回到首页</button>
+    </div>
+  </div>`;
+}
+function viewWrong() {
+  const ids = ITEMS.filter(it => isWrong(it.id)).map(it => it.id);
+  if (!ids.length) return `<div class="pagehead"><h2>错词本</h2></div><div class="empty">还没有错词。答错的词会自动进来，连续掌握后自动移出。</div>`;
+  const shown = S.wrongLimit ? ids.slice(0, S.wrongLimit) : ids.concat([]);
+  const list = shown.map(id => {
+    const it = BY_ID[id], s = db.items[id];
+    return `<div class="item">
+      <div class="grow" style="min-width:0">
+        <div class="w">${esc(it.label)}</div>
+        <div class="z">${esc(it.pos)} ${esc(it.zh)}${it.phr && it.kind === 'w' ? ' · ' + esc(it.phr) : ''}</div>
+      </div>
+      <span class="badge u">错${s.ng || 1}</span>
+      <button class="speak" data-act="speak-item" data-id="${id}" style="width:36px;height:36px">${ICON_SPEAK}</button>
+      <button class="btn ghost" style="padding:6px 10px;font-size:12px" data-act="rm" data-id="${id}">移出</button>
+    </div>`;
+  }).join('');
+  return `<div class="pagehead"><h2>错词本</h2><span class="pill">${ids.length} 个</span></div>
+    <button class="btn primary block" data-act="start-wrong">开始重刷错词</button>
+    <div class="list">${list}</div>`;
+}
+function viewLib() {
+  const f = S.libFilter, q = S.libQuery.trim().toLowerCase();
+  const rows = ITEMS.filter(it => {
+    if (f !== 'all' && it.src !== f) return false;
+    if (!q) return true;
+    return it.label.toLowerCase().includes(q) || (it.zh || '').includes(q) || (it.phr || '').toLowerCase().includes(q);
+  });
+  const max = 300;
+  const cut = rows.slice(0, max).map(it => {
+    const s = db.items[it.id];
+    const badge = !s ? '' : s.box >= 3 ? '<span class="badge k">已掌握</span>' : (s.ng > 0 ? '<span class="badge u">错词</span>' : '<span class="badge">复习中</span>');
+    return `<div class="item">
+      <div class="grow" style="min-width:0">
+        <div class="w">${esc(it.label)}${it.phon ? `<span class="mini" style="font-weight:400;margin-left:8px">/${esc(it.phon)}/</span>` : ''}</div>
+        <div class="z">${esc(it.pos)} ${esc(it.zh)}</div>
+      </div>
+      ${badge}
+      <button class="speak" data-act="speak-item" data-id="${it.id}" style="width:34px;height:34px">${ICON_SPEAK}</button>
+    </div>`;
+  }).join('');
+  return `<div class="pagehead"><h2>词库</h2><span class="pill">${rows.length} 条</span></div>
+    <div class="chips">
+      ${[['all', '全部'], ['600词', '600 冲刺词'], ['同义替换', '同义替换'], ['翻译词组', '翻译词组']].map(([k, v]) =>
+        `<button class="chip ${f === k ? 'on' : ''}" data-src="${k}">${v}</button>`).join('')}
+    </div>
+    <input type="text" id="libq" value="${esc(S.libQuery)}" placeholder="搜英文或中文，如 crucial / 关键" style="margin:6px 0 4px;font-size:15px;text-align:left;padding:11px 13px">
+    <div class="list">${cut || '<div class="empty">没有匹配的条目</div>'}</div>
+    ${rows.length > max ? `<div class="mini" style="text-align:center;margin-top:12px">只显示前 ${max} 条，输入关键词缩小范围</div>` : ''}`;
+}
+function viewSettings() {
+  const stn = statNums();
+  const th = db.set.theme;
+  return `<div class="pagehead"><h2>设置</h2></div>
+  <div class="card" style="padding:6px 16px">
+    <div class="srow"><span class="grow">每日目标</span>
+      <select id="setGoal">${[10, 20, 30, 50, 100].map(g => `<option value="${g}" ${db.set.goal === g ? 'selected' : ''}>${g} 题</option>`).join('')}</select>
+    </div>
+    <div class="srow"><span class="grow">揭晓答案时自动朗读</span>
+      <div class="seg"><button data-autospeak="1" class="${db.set.autoSpeak ? 'on' : ''}">开</button><button data-autospeak="0" class="${!db.set.autoSpeak ? 'on' : ''}">关</button></div>
+    </div>
+    <div class="srow"><span class="grow">外观</span>
+      <div class="seg">${[['auto', '跟随系统'], ['dark', '深色'], ['light', '浅色']].map(([k, v]) =>
+        `<button data-theme="${k}" class="${th === k ? 'on' : ''}">${v}</button>`).join('')}</div>
+    </div>
+    <div class="srow"><span class="grow">当前进度</span><span class="muted">已学 ${stn.learned} · 掌握 ${stn.mastered} · 共 ${stn.total}</span></div>
+  </div>
+  <div class="card" style="padding:16px;margin-top:12px">
+    <div style="font-weight:700;font-size:15px">数据</div>
+    <div class="muted" style="margin-top:6px;line-height:1.6">进度只存在这台设备的浏览器里。换设备或清理浏览器数据前，建议先导出备份。</div>
+    <div class="row" style="margin-top:12px;gap:8px">
+      <button class="btn" style="flex:1;font-size:14px" data-act="export">导出进度</button>
+      <button class="btn" style="flex:1;font-size:14px" data-act="import">导入进度</button>
+    </div>
+    <button class="btn ghost block" style="margin-top:10px;color:var(--bad);font-size:14px" data-act="reset">清空全部进度</button>
+    <input type="file" id="fileIn" accept="application/json,.json" style="display:none">
+  </div>
+  <div class="mini" style="text-align:center;margin-top:16px;line-height:1.7">
+    素材来源：六级考前冲刺 600 词 · 六级高频同义替换 · 四六级翻译重点词汇<br>共 ${ITEMS.length} 条，离线可用
+  </div>`;
+}
+const ICON_SPEAK = '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg>';
+
+/* ---------------- render ---------------- */
+function render() {
+  const app = document.getElementById('app');
+  const v = S.view;
+  let html = '';
+  if (v === 'home') html = viewHome();
+  else if (v === 'study') html = viewStudy();
+  else if (v === 'wrong') html = viewWrong();
+  else if (v === 'lib') html = viewLib();
+  else if (v === 'settings') html = viewSettings();
+  else if (v === 'done') html = viewDone();
+  app.innerHTML = html;
+  renderTabs();
+  if (v === 'study' && S.revealed) {
+    window.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); rate(suggestKey()); }
+      else if (e.key === 'ArrowLeft') rate('unknown');
+      else if (e.key === 'ArrowRight') rate('known');
+    };
+  } else if (v === 'study') {
+    window.onkeydown = e => {
+      if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }
+    };
+  } else {
+    window.onkeydown = null;
+  }
+}
+function suggestKey() {
+  const r = S.judgeRes;
+  if (!r) return 'unknown';
+  return r.level === 'correct' ? 'known' : (r.level === 'near' ? 'fuzzy' : 'unknown');
+}
+function renderTabs() {
+  const nav = document.getElementById('tabs');
+  const cur = S.view === 'study' || S.view === 'done' ? 'home' : S.view;
+  const items = [
+    ['home', '学习', '<svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5V21"/>'],
+    ['wrong', '错词', '<svg viewBox="0 0 24 24"><path d="m4 8 6 6 10-10"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8"/></svg>'],
+    ['lib', '词库', '<svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v6h6"/></svg>'],
+    ['settings', '设置', '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>']
+  ];
+  nav.innerHTML = items.map(([k, label, svg]) => `<button data-tab="${k}" class="${cur === k ? 'on' : ''}">${svg}<span>${label}</span></button>`).join('');
+}
+
+/* ---------------- toast ---------------- */
+let toastT = 0;
+function toast(msg) {
+  let el = document.querySelector('.toast');
+  if (!el) { el = document.createElement('div'); el.className = 'toast'; document.body.appendChild(el); }
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('on'), 1800);
+}
+
+/* ---------------- events ---------------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act],[data-tab],[data-mode],[data-goal],[data-rate],[data-src],[data-theme],[data-autospeak]');
+  if (!t) return;
+  if (t.dataset.tab) {
+    S.view = t.dataset.tab;
+    if (S.view !== 'study') S.session = S.session;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (t.dataset.mode) {
+    if (t.dataset.mode === 'listen' && !('speechSynthesis' in window)) { toast('这个浏览器不支持朗读，请用「看中文拼写」'); return; }
+    db.set.mode = t.dataset.mode; save(); render(); return;
+  }
+  if (t.dataset.goal) { db.set.goal = +t.dataset.goal; save(); render(); return; }
+  if (t.dataset.rate) { rate(t.dataset.rate); return; }
+  if (t.dataset.src) { S.libFilter = t.dataset.src; render(); return; }
+  if (t.dataset.theme) { db.set.theme = t.dataset.theme; save(); applyTheme(); render(); return; }
+  if (t.dataset.autospeak) { db.set.autoSpeak = t.dataset.autospeak === '1'; save(); render(); return; }
+  const act = t.dataset.act;
+  if (act === 'start') startSession({});
+  else if (act === 'start-wrong') startSession({ onlyWrong: true, limit: 999 });
+  else if (act === 'submit') { const el = document.getElementById('answer'); S.typed = el ? el.value : S.typed; submitAnswer(); }
+  else if (act === 'skip') { S.typed = ''; S.judgeRes = { level: 'wrong', best: S.q.label }; S.revealed = true; render(); if (db.set.autoSpeak) speakWord(S.q); }
+  else if (act === 'speak') { if (S.q) speakWord(S.q); }
+  else if (act === 'speak-item') { const it = BY_ID[t.dataset.id]; if (it) speakWord(it); }
+  else if (act === 'quit') { S.view = 'home'; S.session = null; S.q = null; render(); }
+  else if (act === 'again') { startSession({}); }
+  else if (act === 'goview') { S.view = t.dataset.view; render(); }
+  else if (act === 'rm') {
+    const s = db.items[t.dataset.id];
+    if (s) { s.ng = 0; s.box = Math.max(s.box, 3); save(); }
+    render();
+  }
+  else if (act === 'export') {
+    const blob = new Blob([JSON.stringify(db)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '六级词汇进度-' + todayKey() + '.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  }
+  else if (act === 'import') { document.getElementById('fileIn').click(); }
+  else if (act === 'reset') {
+    if (confirm('确定清空全部学习进度？此操作不可撤销。')) { db = blank(); save(); applyTheme(); S.view = 'home'; render(); }
+  }
+  else if (act === 'showzh') {
+    const zh = document.getElementById('zhHint');
+    if (zh) zh.style.display = zh.style.display === 'none' ? 'block' : 'none';
+  }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'answer') S.typed = e.target.value;
+  if (e.target.id === 'libq') {
+    S.libQuery = e.target.value;
+    const pos = e.target.selectionStart;
+    render();
+    const el = document.getElementById('libq');
+    if (el) { el.focus(); el.setSelectionRange(pos, pos); }
+  }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'setGoal') { db.set.goal = +e.target.value; save(); render(); }
+  if (e.target.id === 'fileIn' && e.target.files && e.target.files[0]) {
+    const fr = new FileReader();
+    fr.onload = () => {
+      try {
+        const d = JSON.parse(fr.result);
+        if (!d.items) throw new Error('bad');
+        db = { v: 1, items: d.items, log: d.log || {}, set: Object.assign(blank().set, d.set || {}) };
+        save(); applyTheme(); toast('已导入进度'); render();
+      } catch (err) { toast('文件格式不对，导入失败'); }
+    };
+    fr.readAsText(e.target.files[0]);
+    e.target.value = '';
+  }
+});
+
+/* ---------------- theme / boot ---------------- */
+function applyTheme() {
+  const t = db.set.theme || 'auto';
+  const dark = t === 'dark' || (t === 'auto' && !matchMedia('(prefers-color-scheme: light)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.querySelector('meta[name=theme-color]').setAttribute('content', dark ? '#0d1017' : '#f6f7fb');
+}
+applyTheme();
+if (matchMedia('(prefers-color-scheme: light)').addEventListener) {
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { if (db.set.theme === 'auto') applyTheme(); });
+}
+render();
+</script>
+</body>
+</html>

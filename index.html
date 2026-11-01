@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1017">
+<meta name="description" content="四六级词汇拼写记忆：600 冲刺词 + 280 组同义替换 + 198 条翻译词组，三档间隔复习，进度存在本机。">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="词汇练习">
+<title>六级词汇 · 拼写记忆</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0d1017; --bg2:#141926; --card:#181e2c; --card2:#1f2637;
+  --line:#2a3346; --txt:#e8ecf5; --dim:#8b96ad; --dim2:#5f6a80;
+  --acc:#7c6cff; --acc2:#38bdf8; --ok:#34d399; --warn:#fbbf24; --bad:#fb7185;
+  --r:18px; --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+html[data-theme="light"]{
+  --bg:#f6f7fb; --bg2:#eef1f8; --card:#ffffff; --card2:#f4f6fc;
+  --line:#e2e7f2; --txt:#151a26; --dim:#5d6780; --dim2:#8b96ad;
+  --shadow:0 8px 24px rgba(20,30,60,.10);
+}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;overscroll-behavior-y:none;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(700px 380px at 85% -8%,rgba(124,108,255,.20),transparent 70%),
+    radial-gradient(600px 320px at 5% 0%,rgba(56,189,248,.12),transparent 70%);
+}
+#app{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:14px 16px calc(86px + env(safe-area-inset-bottom));min-height:100vh}
+nav#tabs{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  display:flex;justify-content:center;gap:6px;
+}
+nav#tabs button{
+  flex:1;max-width:130px;background:none;border:0;color:var(--dim);
+  font:inherit;font-size:11px;line-height:1.2;padding:6px 2px;border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+}
+nav#tabs button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav#tabs button.on{color:var(--acc)}
+nav#tabs button.on svg{stroke:var(--acc)}
+h1,h2,h3,p{margin:0}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.muted{color:var(--dim);font-size:13px}
+.mini{color:var(--dim2);font-size:12px}
+.pagehead{display:flex;align-items:baseline;gap:8px;margin:6px 0 14px}
+.pagehead h2{font-size:19px;letter-spacing:.3px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:var(--card2);border:1px solid var(--line);font-size:12px;color:var(--dim)}
+.btn{
+  appearance:none;border:1px solid var(--line);background:var(--card2);color:var(--txt);
+  font:inherit;font-size:15px;font-weight:600;padding:13px 16px;border-radius:14px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .06s ease,filter .15s;
+}
+.btn:active{transform:scale(.985)}
+.btn.primary{background:linear-gradient(135deg,var(--acc),#5b8cff);border-color:transparent;color:#fff;box-shadow:0 8px 20px rgba(110,100,255,.30)}
+.btn.ghost{background:transparent}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.ring{--p:0;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:conic-gradient(var(--acc) calc(var(--p)*1%),var(--card2) 0);position:relative}
+.ring::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--card)}
+.ring b{position:relative;z-index:1;font-size:15px;font-variant-numeric:tabular-nums}
+.ring b i{font-style:normal;font-size:10px;color:var(--dim)}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kpi div{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:11px 12px}
+.kpi b{display:block;font-size:19px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:11px;color:var(--dim)}
+/* study */
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;min-height:34px}
+.bar{height:6px;border-radius:99px;background:var(--card2);overflow:hidden;flex:1}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .25s}
+.qcard{padding:22px 18px 18px;text-align:center;position:relative;overflow:hidden}
+.qcard::after{content:"";position:absolute;inset:-40% -10% auto auto;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,108,255,.16),transparent 65%);pointer-events:none}
+.qpos{font-size:12px;color:var(--acc2);letter-spacing:.4px}
+.qzh{font-size:27px;font-weight:700;line-height:1.35;margin:8px 0 2px;letter-spacing:.5px}
+.qsub{font-size:13px;color:var(--dim);margin-top:6px;word-break:break-word}
+.mask{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:18px 0 6px}
+.wd{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:100%}
+.sc{width:20px;height:28px;border-radius:7px;background:var(--card2);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:15px;font-weight:700;color:var(--txt)}
+.sc.f{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.55);color:var(--acc2)}
+.mask.dense .sc{width:15px;height:26px;font-size:13px;border-radius:6px}
+.mask.dense .wd{gap:3px}
+.punct{color:var(--dim2);font-size:15px;display:grid;place-items:center;height:28px}
+.stage{display:grid;place-items:center;min-height:calc(100vh - 190px);min-height:calc(100dvh - 190px)}
+.stage>.card{width:100%}
+input[type=text]{
+  width:100%;background:var(--bg2);border:1.5px solid var(--line);color:var(--txt);
+  font:inherit;font-size:19px;letter-spacing:.5px;padding:14px 14px;border-radius:14px;outline:none;text-align:center;
+}
+input[type=text]:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(124,108,255,.18)}
+.ans{font-size:31px;font-weight:800;letter-spacing:.5px;line-height:1.25;word-break:break-word;color:var(--ok)}
+.ans.bad{color:var(--bad)}
+.ans.warn{color:var(--warn)}
+.pho{color:var(--dim);font-size:14px;margin-top:6px}
+.selfrate{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}
+.selfrate button{
+  border:1.5px solid var(--line);background:var(--card2);color:var(--txt);border-radius:14px;
+  padding:12px 6px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;position:relative;
+}
+.selfrate button small{display:block;font-weight:500;font-size:10.5px;color:var(--dim);margin-top:3px}
+.selfrate button.sug{outline:2px solid var(--acc);outline-offset:1px}
+.selfrate .k{border-color:rgba(52,211,153,.45)}
+.selfrate .k small{color:var(--ok)}
+.selfrate .f{border-color:rgba(251,191,36,.4)}
+.selfrate .f small{color:var(--warn)}
+.selfrate .u{border-color:rgba(251,113,133,.4)}
+.selfrate .u small{color:var(--bad)}
+.wrongline{font-size:14px;color:var(--dim);margin-top:10px}
+.wrongline s{color:var(--bad);text-decoration-thickness:1px}
+.speak{border:1px solid var(--line);background:var(--card2);border-radius:999px;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;color:var(--txt);flex:none}
+.speak svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.listenbig{display:grid;place-items:center;gap:10px;padding:8px 0 4px}
+.listenbig .speak{width:82px;height:82px;background:linear-gradient(135deg,var(--acc),#4f7dff)}
+.listenbig .speak svg{width:34px;height:34px;stroke:#fff}
+/* list */
+.list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px;display:flex;gap:10px;align-items:center}
+.item .w{font-weight:700;font-size:16px}
+.item .z{font-size:12.5px;color:var(--dim);margin-top:2px}
+.badge{font-size:10px;padding:2px 7px;border-radius:99px;border:1px solid var(--line);color:var(--dim);flex:none}
+.badge.w{color:var(--warn);border-color:rgba(251,191,36,.4)}
+.badge.u{color:var(--bad);border-color:rgba(251,113,133,.4)}
+.badge.k{color:var(--ok);border-color:rgba(52,211,153,.4)}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font:inherit;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--dim);cursor:pointer}
+.chip.on{background:var(--acc);border-color:transparent;color:#fff}
+.empty{text-align:center;color:var(--dim);padding:46px 10px;font-size:14px}
+.srow{display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid var(--line)}
+.srow:last-child{border-bottom:0}
+.srow select,.srow input[type=number]{background:var(--bg2);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:8px 10px;font:inherit;font-size:14px}
+.seg{display:inline-flex;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;color:var(--dim);font:inherit;font-size:13px;padding:7px 12px;border-radius:9px;cursor:pointer}
+.seg button.on{background:var(--acc);color:#fff}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  background:var(--card2);border:1px solid var(--line);color:var(--txt);padding:10px 16px;border-radius:12px;font-size:13px;
+  box-shadow:var(--shadow);z-index:40;opacity:0;transition:opacity .2s}
+.toast.on{opacity:1}
+.done-wrap{text-align:center;padding:16px 6px}
+.done-wrap .big{font-size:54px;line-height:1;margin-bottom:12px}
+.done-wrap h2{font-size:22px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav id="tabs"></nav>
+<script id="seed" type="application/json">{"words":[{"n":1,"w":"transient","p":"ˈtrænziənt","pos":"adj.","zh":"短暂的","phr":"transient population","phrZh":"流动人口","day":"一"},{"n":2,"w":"liable","p":"ˈlaɪəbl","pos":"adj.","zh":"有责任的","phr":"liable for damages","phrZh":"对损失负责","day":"一"},{"n":3,"w":"linguistic","p":"lɪŋˈɡwɪstɪk","pos":"adj.","zh":"语言的","phr":"linguistic ability","phrZh":"语言能力","day":"一"},{"n":4,"w":"sustainability","p":"səˌsteɪnəˈbɪləti","pos":"n.","zh":"可持续性","phr":"environmental sustainability","phrZh":"环境可持续性","day":"一"},{"n":5,"w":"innovation","p":"ˌɪnəˈveɪʃn","pos":"n.","zh":"创新","phr":"technological innovation","phrZh":"技术创新","day":"一"},{"n":6,"w":"motivation","p":"ˌməʊtɪˈveɪʃn","pos":"n.","zh":"动机","phr":"intrinsic motivation","phrZh":"内在动机","day":"一"},{"n":7,"w":"collaboration","p":"kəˌlæbəˈreɪʃn","pos":"n.","zh":"合作","phr":"international collaboration","phrZh":"国际合作","day":"一"},{"n":8,"w":"inequality","p":"ˌɪnɪˈkwɒləti","pos":"n.","zh":"不平等","phr":"social inequality","phrZh":"社会不平等","day":"一"},{"n":9,"w":"internalize","p":"ɪnˈtɜːnəlaɪz","pos":"v.","zh":"内化","phr":"internalize knowledge","phrZh":"内化知识","day":"一"},{"n":10,"w":"perpetuate","p":"pəˈpetʃueɪt","pos":"v.","zh":"使持续","phr":"perpetuate stereotypes","phrZh":"固化刻板印象","day":"一"},{"n":11,"w":"dominant","p":"ˈdɒmɪnənt","pos":"adj.","zh":"主导的","phr":"dominant role","phrZh":"主导作用","day":"一"},{"n":12,"w":"crucial","p":"ˈkruːʃl","pos":"adj.","zh":"关键的","phr":"crucial factor","phrZh":"关键因素","day":"一"},{"n":13,"w":"advocate","p":"ˈædvəkeɪt","pos":"v.","zh":"提倡","phr":"advocate for change","phrZh":"倡导变革","day":"一"},{"n":14,"w":"compelling","p":"kəmˈpelɪŋ","pos":"adj.","zh":"引人入胜的","phr":"compelling argument","phrZh":"令人信服的论点","day":"一"},{"n":15,"w":"fulfillment","p":"fʊlˈfɪlmənt","pos":"n.","zh":"成就感","phr":"sense of fulfillment","phrZh":"成就感","day":"一"},{"n":16,"w":"stability","p":"stəˈbɪləti","pos":"n.","zh":"稳定","phr":"political stability","phrZh":"政治稳定","day":"一"},{"n":17,"w":"priority","p":"praɪˈɒrəti","pos":"n.","zh":"优先事项","phr":"high priority","phrZh":"高度优先","day":"一"},{"n":18,"w":"access","p":"ˈækses","pos":"n.","zh":"机会","phr":"equal access","phrZh":"平等机会","day":"一"},{"n":19,"w":"reveal","p":"rɪˈviːl","pos":"v.","zh":"揭示","phr":"reveal a secret","phrZh":"揭露秘密","day":"一"},{"n":20,"w":"investigate","p":"ɪnˈvestɪɡeɪt","pos":"v.","zh":"调查","phr":"investigate thoroughly","phrZh":"彻底调查","day":"一"},{"n":21,"w":"fascinate","p":"ˈfæsɪneɪt","pos":"v.","zh":"深深吸引","phr":"be fascinated with","phrZh":"对...着迷","day":"一"},{"n":22,"w":"academic","p":"ˌækəˈdemɪk","pos":"adj.","zh":"学术的","phr":"academic achievement","phrZh":"学术成就","day":"一"},{"n":23,"w":"stagnation","p":"stæɡˈneɪʃn","pos":"n.","zh":"停滞","phr":"economic stagnation","phrZh":"经济停滞","day":"一"},{"n":24,"w":"counterintuitive","p":"ˌkaʊntərɪnˈtjuːɪtɪv","pos":"adj.","zh":"反直觉的","phr":"counterintuitive result","phrZh":"反直觉的结果","day":"一"},{"n":25,"w":"convergence","p":"kənˈvɜːdʒəns","pos":"n.","zh":"趋同","phr":"cultural convergence","phrZh":"文化趋同","day":"一"},{"n":26,"w":"paradox","p":"ˈpærədɒks","pos":"n.","zh":"悖论","phr":"logical paradox","phrZh":"逻辑悖论","day":"一"},{"n":27,"w":"simulator","p":"ˈsɪmjuleɪtə(r)","pos":"n.","zh":"模拟器","phr":"flight simulator","phrZh":"飞行模拟器","day":"一"},{"n":28,"w":"illusion","p":"ɪˈluːʒn","pos":"n.","zh":"错觉","phr":"optical illusion","phrZh":"视错觉","day":"一"},{"n":29,"w":"implement","p":"ˈɪmplɪment","pos":"v.","zh":"实施","phr":"implement a policy","phrZh":"实施政策","day":"一"},{"n":30,"w":"transformation","p":"ˌtrænsfəˈmeɪʃn","pos":"n.","zh":"转变","phr":"digital transformation","phrZh":"数字化转型","day":"一"},{"n":31,"w":"infrastructure","p":"ˈɪnfrəstrʌktʃə(r)","pos":"n.","zh":"基础设施","phr":"transportation infrastructure","phrZh":"交通基础设施","day":"一"},{"n":32,"w":"immersive","p":"ɪˈmɜːsɪv","pos":"adj.","zh":"沉浸式的","phr":"immersive experience","phrZh":"沉浸式体验","day":"一"},{"n":33,"w":"aspire","p":"əˈspaɪə(r)","pos":"v.","zh":"渴望","phr":"aspire to greatness","phrZh":"渴望伟大","day":"一"},{"n":34,"w":"deplore","p":"dɪˈplɔː(r)","pos":"v.","zh":"谴责","phr":"deplore violence","phrZh":"谴责暴力","day":"一"},{"n":35,"w":"chronic","p":"ˈkrɒnɪk","pos":"adj.","zh":"长期的","phr":"chronic disease","phrZh":"慢性病","day":"一"},{"n":36,"w":"intervene","p":"ˌɪntəˈviːn","pos":"v.","zh":"干预","phr":"intervene in a crisis","phrZh":"干预危机","day":"一"},{"n":37,"w":"paradigm","p":"ˈpærədaɪm","pos":"n.","zh":"范式","phr":"shift in paradigm","phrZh":"范式转变","day":"一"},{"n":38,"w":"ruthless","p":"ˈruːθləs","pos":"adj.","zh":"无情的","phr":"ruthless competition","phrZh":"无情竞争","day":"一"},{"n":39,"w":"vanity","p":"ˈvænəti","pos":"n.","zh":"虚荣","phr":"personal vanity","phrZh":"个人虚荣心","day":"一"},{"n":40,"w":"condemn","p":"kənˈdem","pos":"v.","zh":"谴责","phr":"condemn corruption","phrZh":"谴责腐败","day":"一"},{"n":41,"w":"slavish","p":"ˈsleɪvɪʃ","pos":"adj.","zh":"盲从的","phr":"slavish imitation","phrZh":"盲目模仿","day":"一"},{"n":42,"w":"acclaimed","p":"əˈkleɪmd","pos":"adj.","zh":"备受赞誉的","phr":"acclaimed author","phrZh":"备受赞誉的作者","day":"一"},{"n":43,"w":"assertive","p":"əˈsɜːtɪv","pos":"adj.","zh":"果断的","phr":"assertive behavior","phrZh":"果断的行为","day":"一"},{"n":44,"w":"symmetry","p":"ˈsɪmətri","pos":"n.","zh":"对称","phr":"perfect symmetry","phrZh":"完美对称","day":"一"},{"n":45,"w":"neuroscientist","p":"ˈnjʊərəʊsaɪəntɪst","pos":"n.","zh":"神经科学家","phr":"cognitive neuroscientist","phrZh":"认知神经科学家","day":"一"},{"n":46,"w":"categorically","p":"ˌkætəˈɡɒrɪkli","pos":"adv.","zh":"绝对地","phr":"categorically deny","phrZh":"断然否认","day":"一"},{"n":47,"w":"bias","p":"ˈbaɪəs","pos":"n.","zh":"偏见","phr":"implicit bias","phrZh":"隐性偏见","day":"一"},{"n":48,"w":"irresistible","p":"ˌɪrɪˈzɪstəbl","pos":"adj.","zh":"不可抵抗的","phr":"irresistible force","phrZh":"不可抗拒的力量","day":"一"},{"n":49,"w":"orchestrate","p":"ˈɔːkɪstreɪt","pos":"v.","zh":"精心策划","phr":"orchestrate a plan","phrZh":"策划一个计划","day":"一"},{"n":50,"w":"retention","p":"rɪˈtenʃn","pos":"n.","zh":"保留","phr":"employee retention","phrZh":"员工保留","day":"一"},{"n":51,"w":"overhaul","p":"ˈəʊvəhɔːl","pos":"v.","zh":"彻底改革","phr":"overhaul the system","phrZh":"彻底改革系统","day":"一"},{"n":52,"w":"bewilder","p":"bɪˈwɪldə(r)","pos":"v.","zh":"使困惑","phr":"be bewildered by","phrZh":"被...困惑","day":"一"},{"n":53,"w":"thorny","p":"ˈθɔːni","pos":"adj.","zh":"棘手的","phr":"thorny issue","phrZh":"棘手问题","day":"一"},{"n":54,"w":"tranquil","p":"ˈtræŋkwɪl","pos":"adj.","zh":"宁静的","phr":"tranquil life","phrZh":"宁静的生活","day":"一"},{"n":55,"w":"desolation","p":"ˌdesəˈleɪʃn","pos":"n.","zh":"荒凉","phr":"scene of desolation","phrZh":"荒凉的景象","day":"一"},{"n":56,"w":"intermittent","p":"ˌɪntəˈmɪtənt","pos":"adj.","zh":"间歇的","phr":"intermittent rain","phrZh":"间歇性降雨","day":"一"},{"n":57,"w":"endorse","p":"ɪnˈdɔːs","pos":"v.","zh":"认可","phr":"endorse a product","phrZh":"认可某产品","day":"一"},{"n":58,"w":"preservation","p":"ˌprezəˈveɪʃn","pos":"n.","zh":"保护","phr":"wildlife preservation","phrZh":"野生动物保护","day":"一"},{"n":59,"w":"inevitable","p":"ɪnˈevɪtəbl","pos":"adj.","zh":"不可避免的","phr":"inevitable outcome","phrZh":"不可避免的结果","day":"一"},{"n":60,"w":"renaissance","p":"rɪˈneɪsns","pos":"n.","zh":"复兴","phr":"cultural renaissance","phrZh":"文化复兴","day":"一"},{"n":61,"w":"envisage","p":"ɪnˈvɪzɪdʒ","pos":"v.","zh":"设想","phr":"envisage the future","phrZh":"设想未来","day":"二"},{"n":62,"w":"dazzling","p":"ˈdæzlɪŋ","pos":"adj.","zh":"耀眼的","phr":"dazzling performance","phrZh":"令人惊艳的表演","day":"二"},{"n":63,"w":"prevalence","p":"ˈprevələns","pos":"n.","zh":"普遍","phr":"prevalence of disease","phrZh":"疾病流行","day":"二"},{"n":64,"w":"ecosystem","p":"ˈiːkəʊsɪstəm","pos":"n.","zh":"生态系统","phr":"marine ecosystem","phrZh":"海洋生态系统","day":"二"},{"n":65,"w":"wickedness","p":"ˈwɪkɪdnəs","pos":"n.","zh":"邪恶","phr":"human wickedness","phrZh":"人性之恶","day":"二"},{"n":66,"w":"fragmentation","p":"ˌfræɡmenˈteɪʃn","pos":"n.","zh":"碎片化","phr":"habitat fragmentation","phrZh":"栖息地碎片化","day":"二"},{"n":67,"w":"migrate","p":"maɪˈɡreɪt","pos":"v.","zh":"迁徙","phr":"migrate southward","phrZh":"向南迁徙","day":"二"},{"n":68,"w":"thrive","p":"θraɪv","pos":"v.","zh":"繁荣","phr":"thrive in adversity","phrZh":"逆境中茁壮成长","day":"二"},{"n":69,"w":"ambiguity","p":"ˌæmbɪˈɡjuːəti","pos":"n.","zh":"歧义","phr":"moral ambiguity","phrZh":"道德模糊性","day":"二"},{"n":70,"w":"terrific","p":"təˈrɪfɪk","pos":"adj.","zh":"极好的","phr":"terrific success","phrZh":"巨大的成功","day":"二"},{"n":71,"w":"strand","p":"strænd","pos":"","zh":"n.(观点)方面","phr":"different strands of thought","phrZh":"不同的思想流派","day":"二"},{"n":72,"w":"purist","p":"ˈpjʊərɪst","pos":"n.","zh":"纯粹主义者","phr":"grammar purist","phrZh":"语法纯粹主义者","day":"二"},{"n":73,"w":"contentious","p":"kənˈtenʃəs","pos":"adj.","zh":"有争议的","phr":"contentious issue","phrZh":"有争议的问题","day":"二"},{"n":74,"w":"volatile","p":"ˈvɒlətaɪl","pos":"adj.","zh":"动荡的","phr":"volatile market","phrZh":"动荡的市场","day":"二"},{"n":75,"w":"instigate","p":"ˈɪnstɪɡeɪt","pos":"v.","zh":"煽动","phr":"instigate a reform","phrZh":"发起改革","day":"二"},{"n":76,"w":"fleet","p":"fliːt","pos":"adj.","zh":"短暂的","phr":"fleet moment","phrZh":"短暂的瞬间","day":"二"},{"n":77,"w":"obligation","p":"ˌɒblɪˈɡeɪʃn","pos":"n.","zh":"义务","phr":"moral obligation","phrZh":"道德义务","day":"二"},{"n":78,"w":"detrimental","p":"ˌdetrɪˈmentl","pos":"adj.","zh":"有害的","phr":"detrimental effect","phrZh":"有害影响","day":"二"},{"n":79,"w":"therapeutic","p":"ˌθerəˈpjuːtɪk","pos":"adj.","zh":"治疗的","phr":"therapeutic effect","phrZh":"治疗效果","day":"二"},{"n":80,"w":"justified","p":"ˈdʒʌstɪfaɪd","pos":"adj.","zh":"合理的","phr":"fully justified","phrZh":"完全合理的","day":"二"},{"n":81,"w":"dictate","p":"dɪkˈteɪt","pos":"v.","zh":"支配","phr":"dictate terms","phrZh":"发号施令","day":"二"},{"n":82,"w":"legitimate","p":"lɪˈdʒɪtɪmət","pos":"adj.","zh":"合法的","phr":"legitimate concern","phrZh":"合理的关切","day":"二"},{"n":83,"w":"bizarre","p":"bɪˈzɑː(r)","pos":"adj.","zh":"奇特的","phr":"bizarre behavior","phrZh":"古怪行为","day":"二"},{"n":84,"w":"embodiment","p":"ɪmˈbɒdimənt","pos":"n.","zh":"体现","phr":"perfect embodiment","phrZh":"完美体现","day":"二"},{"n":85,"w":"irrefutable","p":"ˌɪrɪˈfjuːtəbl","pos":"adj.","zh":"无可辩驳的","phr":"irrefutable evidence","phrZh":"铁证","day":"二"},{"n":86,"w":"diffusion","p":"dɪˈfjuːʒn","pos":"n.","zh":"扩散","phr":"diffusion of innovation","phrZh":"创新扩散","day":"二"},{"n":87,"w":"evade","p":"ɪˈveɪd","pos":"v.","zh":"逃避","phr":"evade responsibility","phrZh":"逃避责任","day":"二"},{"n":88,"w":"precedent","p":"ˈpresɪdənt","pos":"n.","zh":"先例","phr":"set a precedent","phrZh":"开创先例","day":"二"},{"n":89,"w":"competent","p":"ˈkɒmpɪtənt","pos":"adj.","zh":"有能力的","phr":"competent authority","phrZh":"主管当局","day":"二"},{"n":90,"w":"alleviate","p":"əˈliːvieɪt","pos":"v.","zh":"缓解","phr":"alleviate pain","phrZh":"缓解疼痛","day":"二"},{"n":91,"w":"hazard","p":"ˈhæzəd","pos":"n.","zh":"危险","phr":"potential hazard","phrZh":"潜在危险","day":"二"},{"n":92,"w":"articulate","p":"ɑːˈtɪkjuleɪt","pos":"v.","zh":"清晰地表达","phr":"articulate ideas","phrZh":"清晰地表达想法","day":"二"},{"n":93,"w":"ubiquitous","p":"juːˈbɪkwɪtəs","pos":"adj.","zh":"无处不在的","phr":"ubiquitous presence","phrZh":"无处不在","day":"二"},{"n":94,"w":"aesthetic","p":"iːsˈθetɪk","pos":"adj.","zh":"审美的","phr":"aesthetic value","phrZh":"审美价值","day":"二"},{"n":95,"w":"hypothesis","p":"haɪˈpɒθəsɪs","pos":"n.","zh":"假设","phr":"scientific hypothesis","phrZh":"科学假设","day":"二"},{"n":96,"w":"adaptation","p":"ædæpˈteɪʃ(ə)n","pos":"n.","zh":"适应","phr":"climate adaptation","phrZh":"气候适应","day":"二"},{"n":97,"w":"impose","p":"ɪmˈpəʊz","pos":"v.","zh":"强加","phr":"impose restrictions","phrZh":"施加限制","day":"二"},{"n":98,"w":"cohesion","p":"kəʊˈhiːʒn","pos":"n.","zh":"凝聚力","phr":"social cohesion","phrZh":"社会凝聚力","day":"二"},{"n":99,"w":"dilemma","p":"dɪˈlemə","pos":"n.","zh":"困境","phr":"ethical dilemma","phrZh":"道德困境","day":"二"},{"n":100,"w":"scrutiny","p":"ˈskruːtəni","pos":"n.","zh":"仔细审查","phr":"public scrutiny","phrZh":"公众监督","day":"二"},{"n":101,"w":"facilitate","p":"fəˈsɪlɪteɪt","pos":"v.","zh":"促进","phr":"facilitate communication","phrZh":"促进沟通","day":"二"},{"n":102,"w":"quota","p":"ˈkwəʊtə","pos":"n.","zh":"配额","phr":"production quota","phrZh":"生产配额","day":"二"},{"n":103,"w":"void","p":"vɔɪd","pos":"adj.","zh":"无效的","phr":"declare void","phrZh":"宣布无效","day":"二"},{"n":104,"w":"warrant","p":"ˈwɒrənt","pos":"v.","zh":"证明...正当","phr":"warrant attention","phrZh":"值得关注","day":"二"},{"n":105,"w":"weary","p":"ˈwɪəri","pos":"adj.","zh":"疲倦的","phr":"weary traveler","phrZh":"疲惫的旅行者","day":"二"},{"n":106,"w":"yield","p":"jiːld","pos":"v.","zh":"产生","phr":"yield results","phrZh":"产生结果","day":"二"},{"n":107,"w":"zeal","p":"ziːl","pos":"n.","zh":"热情","phr":"religious zeal","phrZh":"宗教热情","day":"二"},{"n":108,"w":"deficiency","p":"dɪˈfɪʃnsi","pos":"n.","zh":"缺乏","phr":"nutritional deficiency","phrZh":"营养缺乏","day":"二"},{"n":109,"w":"ponder","p":"ˈpɒndə(r)","pos":"v.","zh":"深思","phr":"ponder a question","phrZh":"思考问题","day":"二"},{"n":110,"w":"qualitative","p":"ˈkwɒlɪtətɪv","pos":"adj.","zh":"定性的","phr":"qualitative analysis","phrZh":"定性分析","day":"二"},{"n":111,"w":"reciprocal","p":"rɪˈsɪprəkl","pos":"adj.","zh":"相互的","phr":"reciprocal agreement","phrZh":"互惠协议","day":"二"},{"n":112,"w":"sentiment","p":"ˈsentɪmənt","pos":"n.","zh":"情绪","phr":"public sentiment","phrZh":"公众情绪","day":"二"},{"n":113,"w":"tangible","p":"ˈtændʒəbl","pos":"adj.","zh":"有形的","phr":"tangible asset","phrZh":"有形资产","day":"二"},{"n":114,"w":"undermine","p":"ˌʌndəˈmaɪn","pos":"v.","zh":"逐渐削弱","phr":"undermine authority","phrZh":"削弱权威","day":"二"},{"n":115,"w":"versatile","p":"ˈvɜːsətaɪl","pos":"adj.","zh":"多才多艺的","phr":"versatile player","phrZh":"多才多艺的选手","day":"二"},{"n":116,"w":"adjacent","p":"əˈdʒeɪsnt","pos":"adj.","zh":"邻近的","phr":"adjacent room","phrZh":"相邻的房间","day":"二"},{"n":117,"w":"bleak","p":"bliːk","pos":"adj.","zh":"黯淡的","phr":"bleak future","phrZh":"黯淡的未来","day":"二"},{"n":118,"w":"foster","p":"ˈfɒstə(r)","pos":"v.","zh":"培养","phr":"foster innovation","phrZh":"培养创新","day":"二"},{"n":119,"w":"grim","p":"ɡrɪm","pos":"adj.","zh":"严峻的","phr":"grim reality","phrZh":"严峻的现实","day":"二"},{"n":120,"w":"hierarchy","p":"ˈhaɪərɑːki","pos":"n.","zh":"等级制度","phr":"social hierarchy","phrZh":"社会等级","day":"二"},{"n":121,"w":"indigenous","p":"ɪnˈdɪdʒənəs","pos":"adj.","zh":"土著的","phr":"indigenous culture","phrZh":"土著文化","day":"三"},{"n":122,"w":"jeopardy","p":"ˈdʒepədi","pos":"n.","zh":"危险","phr":"in jeopardy","phrZh":"处于危险中","day":"三"},{"n":123,"w":"kinship","p":"ˈkɪnʃɪp","pos":"n.","zh":"亲属关系","phr":"feelings of kinship","phrZh":"亲属感","day":"三"},{"n":124,"w":"lapse","p":"læps","pos":"n.","zh":"失误","phr":"memory lapse","phrZh":"记忆失误","day":"三"},{"n":125,"w":"mediate","p":"ˈmiːdieɪt","pos":"v.","zh":"调解","phr":"mediate conflict","phrZh":"调解冲突","day":"三"},{"n":126,"w":"nuisance","p":"ˈnjuːsns","pos":"n.","zh":"讨厌的人或事","phr":"public nuisance","phrZh":"公害","day":"三"},{"n":127,"w":"overt","p":"ˈəʊvɜːt","pos":"adj.","zh":"公开的","phr":"overt hostility","phrZh":"公开的敌意","day":"三"},{"n":128,"w":"pertinent","p":"ˈpɜːtɪnənt","pos":"adj.","zh":"相关的","phr":"pertinent information","phrZh":"相关信息","day":"三"},{"n":129,"w":"relinquish","p":"rɪˈlɪŋkwɪʃ","pos":"v.","zh":"放弃","phr":"relinquish power","phrZh":"放弃权力","day":"三"},{"n":130,"w":"serene","p":"səˈriːn","pos":"adj.","zh":"宁静的","phr":"serene landscape","phrZh":"宁静的景色","day":"三"},{"n":131,"w":"trivial","p":"ˈtrɪviəl","pos":"adj.","zh":"琐碎的","phr":"trivial matter","phrZh":"琐事","day":"三"},{"n":132,"w":"unanimous","p":"juˈnænɪməs","pos":"adj.","zh":"全体一致的","phr":"unanimous decision","phrZh":"一致决定","day":"三"},{"n":133,"w":"vulnerable","p":"ˈvʌlnərəbl","pos":"adj.","zh":"易受伤害的","phr":"vulnerable group","phrZh":"弱势群体","day":"三"},{"n":134,"w":"abide","p":"əˈbaɪd","pos":"v.","zh":"遵守","phr":"abide by rules","phrZh":"遵守规则","day":"三"},{"n":135,"w":"comply","p":"kəmˈplaɪ","pos":"v.","zh":"遵从","phr":"comply with regulations","phrZh":"遵守规章","day":"三"},{"n":136,"w":"diligent","p":"ˈdɪlɪdʒənt","pos":"adj.","zh":"勤奋的","phr":"diligent student","phrZh":"勤奋的学生","day":"三"},{"n":137,"w":"erratic","p":"ɪˈrætɪk","pos":"adj.","zh":"不稳定的","phr":"erratic behavior","phrZh":"不稳定的行为","day":"三"},{"n":138,"w":"futile","p":"ˈfjuːtaɪl","pos":"adj.","zh":"徒劳的","phr":"futile attempt","phrZh":"徒劳的尝试","day":"三"},{"n":139,"w":"hostile","p":"ˈhɒstaɪl","pos":"adj.","zh":"敌对的","phr":"hostile environment","phrZh":"敌对环境","day":"三"},{"n":140,"w":"intricate","p":"ˈɪntrɪkət","pos":"adj.","zh":"复杂的","phr":"intricate pattern","phrZh":"复杂的图案","day":"三"},{"n":141,"w":"jeopardize","p":"ˈdʒepədaɪz","pos":"v.","zh":"危害","phr":"jeopardize safety","phrZh":"危害安全","day":"三"},{"n":142,"w":"lucrative","p":"ˈluːkrətɪv","pos":"adj.","zh":"利润丰厚的","phr":"lucrative business","phrZh":"利润丰厚的生意","day":"三"},{"n":143,"w":"mitigate","p":"ˈmɪtɪɡeɪt","pos":"v.","zh":"减轻","phr":"mitigate risk","phrZh":"减轻风险","day":"三"},{"n":144,"w":"negligible","p":"ˈneɡlɪdʒəbl","pos":"adj.","zh":"可忽略不计的","phr":"negligible amount","phrZh":"可忽略的量","day":"三"},{"n":145,"w":"rigorous","p":"ˈrɪɡərəs","pos":"adj.","zh":"严格的","phr":"rigorous training","phrZh":"严格的训练","day":"三"},{"n":146,"w":"skeptical","p":"ˈskeptɪkl","pos":"adj.","zh":"怀疑的","phr":"skeptical attitude","phrZh":"怀疑的态度","day":"三"},{"n":147,"w":"tedious","p":"ˈtiːdiəs","pos":"adj.","zh":"冗长乏味的","phr":"tedious work","phrZh":"乏味的工作","day":"三"},{"n":148,"w":"linger","p":"ˈlɪŋɡə(r)","pos":"v.","zh":"徘徊","phr":"linger on","phrZh":"持续徘徊","day":"三"},{"n":149,"w":"notorious","p":"nəʊˈtɔːriəs","pos":"adj.","zh":"臭名昭著的","phr":"notorious criminal","phrZh":"臭名昭著的罪犯","day":"三"},{"n":150,"w":"obscure","p":"əbˈskjʊə(r)","pos":"adj.","zh":"晦涩的","phr":"obscure meaning","phrZh":"晦涩的意义","day":"三"},{"n":151,"w":"persistent","p":"pəˈsɪstənt","pos":"adj.","zh":"持续的","phr":"persistent effort","phrZh":"持续的努力","day":"三"},{"n":152,"w":"reluctant","p":"rɪˈlʌktənt","pos":"adj.","zh":"不情愿的","phr":"reluctant agreement","phrZh":"勉强的同意","day":"三"},{"n":153,"w":"spontaneous","p":"spɒnˈteɪniəs","pos":"adj.","zh":"自发的","phr":"spontaneous reaction","phrZh":"自发反应","day":"三"},{"n":154,"w":"tentative","p":"ˈtentətɪv","pos":"adj.","zh":"试探性的","phr":"tentative plan","phrZh":"试探性计划","day":"三"},{"n":155,"w":"eliminate","p":"ɪˈlɪmɪneɪt","pos":"v.","zh":"消除","phr":"eliminate make-up days","phrZh":"取消补课日","day":"三"},{"n":156,"w":"wary","p":"ˈweəri","pos":"adj.","zh":"谨慎的","phr":"wary investor","phrZh":"谨慎的投资者","day":"三"},{"n":157,"w":"abrupt","p":"əˈbrʌpt","pos":"adj.","zh":"突然的","phr":"abrupt change","phrZh":"突然的变化","day":"三"},{"n":158,"w":"ambiguous","p":"æmˈbɪɡjuəs","pos":"adj.","zh":"模棱两可的","phr":"ambiguous statement","phrZh":"模棱两可的陈述","day":"三"},{"n":159,"w":"coherent","p":"kəʊˈhɪərənt","pos":"adj.","zh":"连贯的","phr":"coherent argument","phrZh":"连贯的论点","day":"三"},{"n":160,"w":"compatible","p":"kəmˈpætəbl","pos":"adj.","zh":"兼容的","phr":"compatible device","phrZh":"兼容设备","day":"三"},{"n":161,"w":"concurrent","p":"kənˈkʌrənt","pos":"adj.","zh":"并发的","phr":"concurrent events","phrZh":"并发事件","day":"三"},{"n":162,"w":"conspicuous","p":"kənˈspɪkjuəs","pos":"adj.","zh":"显眼的","phr":"conspicuous consumption","phrZh":"炫耀性消费","day":"三"},{"n":163,"w":"prosperous","p":"ˈprɒspərəs","pos":"adj.","zh":"繁荣的","phr":"prosperous economy","phrZh":"繁荣的经济","day":"三"},{"n":164,"w":"cumulative","p":"ˈkjuːmjələtɪv","pos":"adj.","zh":"累积的","phr":"cumulative effect","phrZh":"累积效应","day":"三"},{"n":165,"w":"decisive","p":"dɪˈsaɪsɪv","pos":"adj.","zh":"决定性的","phr":"decisive factor","phrZh":"决定性因素","day":"三"},{"n":166,"w":"deliberate","p":"dɪˈlɪbərət","pos":"adj.","zh":"故意的","phr":"deliberate action","phrZh":"故意行为","day":"三"},{"n":167,"w":"discrete","p":"dɪˈskriːt","pos":"adj.","zh":"离散的","phr":"discrete units","phrZh":"离散单元","day":"三"},{"n":168,"w":"elusive","p":"iˈluːsɪv","pos":"adj.","zh":"难以捉摸的","phr":"elusive concept","phrZh":"难以理解的概念","day":"三"},{"n":169,"w":"explicit","p":"ɪkˈsplɪsɪt","pos":"adj.","zh":"明确的","phr":"explicit instruction","phrZh":"明确的指示","day":"三"},{"n":170,"w":"collapse","p":"kəˈlæps","pos":"n.","zh":"倒塌","phr":"building collapse","phrZh":"建筑倒塌","day":"三"},{"n":171,"w":"formidable","p":"ˈfɔːmɪdəbl","pos":"adj.","zh":"强大的","phr":"formidable challenge","phrZh":"巨大的挑战","day":"三"},{"n":172,"w":"implicit","p":"ɪmˈplɪsɪt","pos":"adj.","zh":"含蓄的","phr":"implicit meaning","phrZh":"含蓄的意义","day":"三"},{"n":173,"w":"incompatible","p":"ˌɪnkəmˈpætəbl","pos":"adj.","zh":"不兼容的","phr":"incompatible system","phrZh":"不兼容的系统","day":"三"},{"n":174,"w":"indicative","p":"ɪnˈdɪkətɪv","pos":"adj.","zh":"指示的","phr":"indicative sign","phrZh":"指示性迹象","day":"三"},{"n":175,"w":"conflict","p":"ˈkɒnflɪkt","pos":"n.","zh":"冲突","phr":"resolve conflict","phrZh":"解决冲突","day":"三"},{"n":176,"w":"inherent","p":"ɪnˈhɪərənt","pos":"adj.","zh":"固有的","phr":"inherent risk","phrZh":"固有风险","day":"三"},{"n":177,"w":"transplant","p":"trænsˈplɑːnt","pos":"n.","zh":"移植","phr":"organ transplant","phrZh":"器官移植","day":"三"},{"n":178,"w":"mandatory","p":"ˈmændətəri","pos":"adj.","zh":"强制的","phr":"mandatory requirement","phrZh":"强制性要求","day":"三"},{"n":179,"w":"notable","p":"ˈnəʊtəbl","pos":"adj.","zh":"显著的","phr":"notable achievement","phrZh":"显著成就","day":"三"},{"n":180,"w":"causation","p":"kɔːˈzeɪʃn","pos":"n.","zh":"因果关系","phr":"establish causation","phrZh":"确立因果关系","day":"三"},{"n":181,"w":"diagnose","p":"ˈdaɪəɡnəʊz","pos":"v.","zh":"诊断","phr":"diagnose a symptom","phrZh":"诊断症状","day":"四"},{"n":182,"w":"cooperation","p":"kəʊˌɒpəˈreɪʃn","pos":"n.","zh":"合作","phr":"international cooperation","phrZh":"国际合作","day":"四"},{"n":183,"w":"plastic","p":"ˈplæstɪk","pos":"n.","zh":"塑料制品","phr":"reduce plastic use","phrZh":"减少塑料制品使用","day":"四"},{"n":184,"w":"quit","p":"kwɪt","pos":"v.","zh":"辞职","phr":"quit a job","phrZh":"辞职","day":"四"},{"n":185,"w":"selfish","p":"ˈselfɪʃ","pos":"adj.","zh":"自私的","phr":"selfish behavior","phrZh":"自私行为","day":"四"},{"n":186,"w":"internship","p":"ˈɪntɜːrnʃɪp","pos":"n.","zh":"实习","phr":"apply for an internship","phrZh":"申请实习","day":"四"},{"n":187,"w":"negotiate","p":"nɪˈɡəʊʃieɪt","pos":"v.","zh":"谈判","phr":"negotiate a deal","phrZh":"谈判交易","day":"四"},{"n":188,"w":"solar","p":"ˈsəʊlə(r)","pos":"adj.","zh":"太阳能的","phr":"solar panel","phrZh":"太阳能电池板","day":"四"},{"n":189,"w":"physician","p":"fɪˈzɪʃn","pos":"n.","zh":"内科医生","phr":"consult a physician","phrZh":"咨询内科医生","day":"四"},{"n":190,"w":"feasible","p":"ˈfiːzəbl","pos":"adj.","zh":"可行的","phr":"feasible proposal","phrZh":"可行的提案","day":"四"},{"n":191,"w":"wind","p":"wɪnd","pos":"n.","zh":"风","phr":"wind energy","phrZh":"风能","day":"四"},{"n":192,"w":"treatment","p":"ˈtriːtmənt","pos":"n.","zh":"治疗","phr":"medical treatment","phrZh":"医疗治疗","day":"四"},{"n":193,"w":"interfere","p":"ˌɪntəˈfɪə(r)","pos":"v.","zh":"干预","phr":"interfere in affairs","phrZh":"干预事务","day":"四"},{"n":194,"w":"species","p":"ˈspiːʃiːz","pos":"n.","zh":"物种","phr":"protect rare species","phrZh":"保护珍稀物种","day":"四"},{"n":195,"w":"sacrifice","p":"ˈsækrɪfaɪs","pos":"v.","zh":"牺牲","phr":"sacrifice interests","phrZh":"牺牲利益","day":"四"},{"n":196,"w":"feasibility","p":"fiːzəˈbɪləti","pos":"n.","zh":"可行性","phr":"test feasibility","phrZh":"测试可行性","day":"四"},{"n":197,"w":"habitat","p":"ˈhæbɪtæt","pos":"n.","zh":"栖息地","phr":"restore animal habitat","phrZh":"恢复动物栖息地","day":"四"},{"n":198,"w":"prescribe","p":"prɪˈskraɪb","pos":"v.","zh":"开药方","phr":"prescribe medicine","phrZh":"开药方","day":"四"},{"n":199,"w":"work","p":"wɜːk","pos":"v.","zh":"奏效","phr":"make a plan work","phrZh":"让计划奏效","day":"四"},{"n":200,"w":"insect","p":"ˈɪnsekt","pos":"n.","zh":"昆虫","phr":"study insect behavior","phrZh":"研究昆虫行为","day":"四"},{"n":201,"w":"hygienic","p":"haɪˈdʒiːnɪk","pos":"adj.","zh":"卫生的","phr":"hygienic habits","phrZh":"卫生习惯","day":"四"},{"n":202,"w":"capable","p":"ˈkeɪpəbl","pos":"adj.","zh":"有能力的","phr":"be capable of solving problems","phrZh":"有能力解决问题","day":"四"},{"n":203,"w":"trap","p":"træp","pos":"n.","zh":"陷阱","phr":"avoid a trap","phrZh":"避开陷阱","day":"四"},{"n":204,"w":"burnout","p":"ˈbɜːrnaʊt","pos":"n.","zh":"精疲力竭","phr":"prevent burnout","phrZh":"防止过度疲劳","day":"四"},{"n":205,"w":"pursue","p":"pəˈsjuː","pos":"v.","zh":"追求","phr":"pursue a dream","phrZh":"追求梦想","day":"四"},{"n":206,"w":"culture","p":"ˈkʌltʃə(r)","pos":"n.","zh":"文化","phr":"preserve local culture","phrZh":"保护本土文化","day":"四"},{"n":207,"w":"festival","p":"ˈfestɪvl","pos":"n.","zh":"节日","phr":"celebrate a festival","phrZh":"庆祝节日","day":"四"},{"n":208,"w":"costume","p":"ˈkɒstjuːm","pos":"n.","zh":"服装","phr":"traditional costume","phrZh":"传统服装","day":"四"},{"n":209,"w":"peculiar","p":"pɪˈkjuːliə(r)","pos":"adj.","zh":"独特的","phr":"peculiar custom","phrZh":"独特习俗","day":"四"},{"n":210,"w":"intellect","p":"ˈɪntəlekt","pos":"n.","zh":"智力","phr":"develop intellect","phrZh":"开发智力","day":"四"},{"n":211,"w":"Confucius","p":"kənˈfjuːʃəs","pos":"n.","zh":"孔子","phr":"study Confucius’ thoughts","phrZh":"研究孔子思想","day":"四"},{"n":212,"w":"calligraphy","p":"kəˈlɪɡrəfi","pos":"n.","zh":"书法","phr":"practice Chinese calligraphy","phrZh":"练习中国书法","day":"四"},{"n":213,"w":"artwork","p":"ˈɑːtwɜːk","pos":"n.","zh":"艺术品","phr":"appreciate artwork","phrZh":"欣赏艺术品","day":"四"},{"n":214,"w":"connotation","p":"kɒnəˈteɪʃn","pos":"n.","zh":"内涵","phr":"cultural connotation","phrZh":"文化内涵","day":"四"},{"n":215,"w":"dedication","p":"dedɪˈkeɪʃn","pos":"n.","zh":"奉献","phr":"professional dedication","phrZh":"职业奉献","day":"四"},{"n":216,"w":"orchestra","p":"ˈɔːkɪstrə","pos":"n.","zh":"管弦乐队","phr":"join an orchestra","phrZh":"加入管弦乐队","day":"四"},{"n":217,"w":"town","p":"taʊn","pos":"n.","zh":"城镇","phr":"live in a small town","phrZh":"住在小镇","day":"四"},{"n":218,"w":"suburb","p":"ˈsʌbɜːb","pos":"n.","zh":"郊区","phr":"move to the suburbs","phrZh":"搬到郊区","day":"四"},{"n":219,"w":"gap","p":"ɡæp","pos":"n.","zh":"差距","phr":"narrow the gap","phrZh":"缩小差距","day":"四"},{"n":220,"w":"identify","p":"aɪˈdentɪfaɪ","pos":"v.","zh":"识别","phr":"identify a problem","phrZh":"识别问题","day":"四"},{"n":221,"w":"secure","p":"sɪˈkjʊə(r)","pos":"adj.","zh":"安全的","phr":"secure environment","phrZh":"安全环境","day":"四"},{"n":222,"w":"insure","p":"ɪnˈʃʊə(r)","pos":"v.","zh":"给...保险","phr":"insure a house","phrZh":"给房子投保","day":"四"},{"n":223,"w":"stress","p":"stres","pos":"n.","zh":"压力","phr":"manage stress","phrZh":"管理压力","day":"四"},{"n":224,"w":"controversial","p":"ˌkɒntrəˈvɜːʃl","pos":"adj.","zh":"有争议的","phr":"controversial topic","phrZh":"有争议的话题","day":"四"},{"n":225,"w":"quirk","p":"kwɜːk","pos":"n.","zh":"奇怪的事情","phr":"a quirk of fate","phrZh":"命运的奇怪安排","day":"四"},{"n":226,"w":"conduct","p":"kənˈdʌkt","pos":"v.","zh":"进行","phr":"conduct a survey","phrZh":"进行调查","day":"四"},{"n":227,"w":"reflect","p":"rɪˈflekt","pos":"v.","zh":"反映","phr":"reflect social changes","phrZh":"反映社会变化","day":"四"},{"n":228,"w":"peer","p":"pɪə(r)","pos":"n.","zh":"同龄人","phr":"communicate with peers","phrZh":"与同龄人交流","day":"四"},{"n":229,"w":"submit","p":"səbˈmɪt","pos":"v.","zh":"递交","phr":"submit an application","phrZh":"递交申请","day":"四"},{"n":230,"w":"explore","p":"ɪkˈsplɔː(r)","pos":"v.","zh":"探索","phr":"explore new areas","phrZh":"探索新领域","day":"四"},{"n":231,"w":"object","p":"ˈɒbdʒɪkt","pos":"n.","zh":"物体","phr":"identify an object","phrZh":"识别物体","day":"四"},{"n":232,"w":"wonder","p":"ˈwʌndə(r)","pos":"v.","zh":"想知道","phr":"wonder about the future","phrZh":"想知道未来","day":"四"},{"n":233,"w":"observe","p":"əbˈzɜːv","pos":"v.","zh":"观察","phr":"observe natural phenomena","phrZh":"观察自然现象","day":"四"},{"n":234,"w":"analyse","p":"ˈænəlaɪz","pos":"v.","zh":"分析","phr":"analyse data","phrZh":"分析数据","day":"四"},{"n":235,"w":"internal","p":"ɪnˈtɜːnl","pos":"adj.","zh":"内部的","phr":"internal management","phrZh":"内部管理","day":"四"},{"n":236,"w":"define","p":"dɪˈfaɪn","pos":"v.","zh":"定义","phr":"define a term","phrZh":"定义术语","day":"四"},{"n":237,"w":"vehicle","p":"ˈviːəkl","pos":"n.","zh":"车辆","phr":"private vehicle","phrZh":"私人车辆","day":"四"},{"n":238,"w":"oblige","p":"əˈblaɪdʒ","pos":"v.","zh":"强迫","phr":"oblige sb. to comply","phrZh":"强迫某人遵守","day":"四"},{"n":239,"w":"dismiss","p":"dɪsˈmɪs","pos":"v.","zh":"不予考虑","phr":"dismiss a possibility","phrZh":"对可能性不予考虑","day":"四"},{"n":240,"w":"accommodation","p":"əˌkɒməˈdeɪʃn","pos":"n.","zh":"住宿","phr":"book accommodation","phrZh":"预订住宿","day":"四"},{"n":241,"w":"novelty","p":"ˈnɒvlti","pos":"n.","zh":"新奇","phr":"sense of novelty","phrZh":"新奇感","day":"五"},{"n":242,"w":"appropriate","p":"əˈproʊpriət","pos":"adj.","zh":"合适的","phr":"appropriate measure","phrZh":"适当措施","day":"五"},{"n":243,"w":"reconcile","p":"ˈrekənsaɪl","pos":"v.","zh":"调和","phr":"reconcile differences","phrZh":"调和分歧","day":"五"},{"n":244,"w":"simultaneous","p":"ˌsɪmlˈteɪniəs","pos":"adj.","zh":"同时的","phr":"simultaneous interpretation","phrZh":"同声传译","day":"五"},{"n":245,"w":"terminate","p":"ˈtɜːmɪneɪt","pos":"v.","zh":"终止","phr":"terminate a contract","phrZh":"终止合同","day":"五"},{"n":246,"w":"validate","p":"ˈvælɪdeɪt","pos":"v.","zh":"验证","phr":"validate a theory","phrZh":"验证理论","day":"五"},{"n":247,"w":"adherence","p":"ədˈhɪərəns","pos":"n.","zh":"坚持","phr":"strict adherence","phrZh":"严格遵守","day":"五"},{"n":248,"w":"coincidence","p":"kəʊˈɪnsɪdəns","pos":"n.","zh":"巧合","phr":"mere coincidence","phrZh":"仅仅是巧合","day":"五"},{"n":249,"w":"contemplation","p":"ˌkɒntəmˈpleɪʃn","pos":"n.","zh":"沉思","phr":"deep in contemplation","phrZh":"陷入沉思","day":"五"},{"n":250,"w":"deterioration","p":"dɪˌtɪəriəˈreɪʃn","pos":"n.","zh":"恶化","phr":"environmental deterioration","phrZh":"环境恶化","day":"五"},{"n":251,"w":"elaboration","p":"iˌlæbəˈreɪʃn","pos":"n.","zh":"详尽阐述","phr":"require elaboration","phrZh":"需要详细说明","day":"五"},{"n":252,"w":"fluctuation","p":"ˌflʌktʃuˈeɪʃn","pos":"n.","zh":"波动","phr":"price fluctuation","phrZh":"价格波动","day":"五"},{"n":253,"w":"initiative","p":"ɪˈnɪʃətɪv","pos":"n.","zh":"主动性","phr":"take the initiative","phrZh":"采取主动","day":"五"},{"n":254,"w":"lack","p":"læk","pos":"n.","zh":"缺乏","phr":"lack of experience","phrZh":"经验不足","day":"五"},{"n":255,"w":"reparable","p":"ˈrepərəb(ə)l","pos":"adj.","zh":"可修理的","phr":"reparable damage","phrZh":"可修复的损坏","day":"五"},{"n":256,"w":"distinct","p":"dɪˈstɪŋkt","pos":"adj.","zh":"独特的","phr":"distinct style","phrZh":"独特风格","day":"五"},{"n":257,"w":"quantitative","p":"ˈkwɒntɪtətɪv","pos":"adj.","zh":"定量的","phr":"quantitative analysis","phrZh":"定量分析","day":"五"},{"n":258,"w":"unique","p":"juˈniːk","pos":"adj.","zh":"独特的","phr":"unique feature","phrZh":"独特特征","day":"五"},{"n":259,"w":"clause","p":"ˈklɔːz","pos":"n.","zh":"条款","phr":"legal clause","phrZh":"法律条款","day":"五"},{"n":260,"w":"resemble","p":"rɪˈzembl","pos":"v.","zh":"相似","phr":"","phrZh":"","day":"五"},{"n":261,"w":"surveillance","p":"sɜːˈveɪləns","pos":"n.","zh":"监控","phr":"video surveillance","phrZh":"视频监控","day":"五"},{"n":262,"w":"ornament","p":"ˈɔːrnəmənt","pos":"n.","zh":"装饰品","phr":"cultural ornament","phrZh":"文化装饰","day":"五"},{"n":263,"w":"benevolent","p":"bəˈnevələnt","pos":"adj.","zh":"仁慈的","phr":"benevolent society","phrZh":"慈善团体","day":"五"},{"n":264,"w":"consensus","p":"kənˈsensəs","pos":"n.","zh":"共识","phr":"reach a consensus","phrZh":"达成共识","day":"五"},{"n":265,"w":"deprive","p":"dɪˈpraɪv","pos":"v.","zh":"剥夺","phr":"deprive of rights","phrZh":"剥夺权利","day":"五"},{"n":266,"w":"empirical","p":"ɪmˈpɪrɪkl","pos":"adj.","zh":"经验主义的","phr":"empirical evidence","phrZh":"经验证据","day":"五"},{"n":267,"w":"facility","p":"fəˈsɪləti","pos":"n.","zh":"设施","phr":"sports facility","phrZh":"体育设施","day":"五"},{"n":268,"w":"homogeneous","p":"ˌhɒməˈdʒiːniəs","pos":"adj.","zh":"同质的","phr":"homogeneous group","phrZh":"同质群体","day":"五"},{"n":269,"w":"inclination","p":"ˌɪnklɪˈneɪʃn","pos":"n.","zh":"倾向","phr":"natural inclination","phrZh":"天性","day":"五"},{"n":270,"w":"magnitude","p":"ˈmæɡnɪtjuːd","pos":"n.","zh":"重要","phr":"of great magnitude","phrZh":"非常重要的","day":"五"},{"n":271,"w":"seedling","p":"ˈsiːdlɪŋ","pos":"n.","zh":"幼苗","phr":"plant a seedling","phrZh":"种植幼苗","day":"五"},{"n":272,"w":"offset","p":"ˈɒfset","pos":"v.","zh":"抵消","phr":"offset the cost","phrZh":"抵消成本","day":"五"},{"n":273,"w":"proposition","p":"ˌprɒpəˈzɪʃn","pos":"n.","zh":"提议","phr":"business proposition","phrZh":"商业提案","day":"五"},{"n":274,"w":"subordinate","p":"səˈbɔːdɪnət","pos":"adj.","zh":"下级的","phr":"subordinate position","phrZh":"从属地位","day":"五"},{"n":275,"w":"transcend","p":"trænˈsend","pos":"v.","zh":"超越","phr":"transcend boundaries","phrZh":"超越界限","day":"五"},{"n":276,"w":"neutral","p":"ˈnjuːtrəl","pos":"adj.","zh":"中立的","phr":"remain neutral","phrZh":"保持中立","day":"五"},{"n":277,"w":"viable","p":"ˈvaɪəbl","pos":"adj.","zh":"可行的","phr":"viable option","phrZh":"可行的选择","day":"五"},{"n":278,"w":"withstand","p":"wɪðˈstænd","pos":"v.","zh":"承受","phr":"withstand pressure","phrZh":"承受压力","day":"五"},{"n":279,"w":"adjunct","p":"ˈædʒʌŋkt","pos":"n.","zh":"附属物","phr":"useful adjunct","phrZh":"有用的附属品","day":"五"},{"n":280,"w":"coerce","p":"kəʊˈɜːs","pos":"v.","zh":"强迫","phr":"coerce into","phrZh":"强迫做某事","day":"五"},{"n":281,"w":"delusion","p":"dɪˈluːʒn","pos":"n.","zh":"错觉","phr":"under a delusion","phrZh":"抱有错觉","day":"五"},{"n":282,"w":"eminent","p":"ˈemɪnənt","pos":"adj.","zh":"杰出的","phr":"eminent scientist","phrZh":"杰出科学家","day":"五"},{"n":283,"w":"fortitude","p":"ˈfɔːtɪtjuːd","pos":"n.","zh":"坚韧","phr":"moral fortitude","phrZh":"道德勇气","day":"五"},{"n":284,"w":"negligence","p":"ˈneɡlɪdʒəns","pos":"n.","zh":"疏忽","phr":"medical negligence","phrZh":"医疗疏忽","day":"五"},{"n":285,"w":"premise","p":"ˈpremɪs","pos":"n.","zh":"前提","phr":"basic premise","phrZh":"基本前提","day":"五"},{"n":286,"w":"resilient","p":"rɪˈzɪliənt","pos":"adj.","zh":"有弹性的","phr":"resilient economy","phrZh":"有弹性的经济","day":"五"},{"n":287,"w":"subside","p":"səbˈsaɪd","pos":"v.","zh":"平息","phr":"storm subsided","phrZh":"风暴平息了","day":"五"},{"n":288,"w":"tolerate","p":"ˈtɒləreɪt","pos":"v.","zh":"容忍","phr":"tolerate pain","phrZh":"忍受疼痛","day":"五"},{"n":289,"w":"universal","p":"ˌjuːnɪˈvɜːsl","pos":"adj.","zh":"普遍的","phr":"universal truth","phrZh":"普遍真理","day":"五"},{"n":290,"w":"verge","p":"vɜːdʒ","pos":"n.","zh":"边缘","phr":"on the verge of","phrZh":"濒临于","day":"五"},{"n":291,"w":"witness","p":"ˈwɪtnəs","pos":"v.","zh":"目睹","phr":"witness an accident","phrZh":"目击事故","day":"五"},{"n":292,"w":"credibility","p":"kredəˈbɪləti","pos":"n.","zh":"可信度","phr":"gain credibility","phrZh":"获得信任","day":"五"},{"n":293,"w":"deterrent","p":"dɪˈterənt","pos":"n.","zh":"威慑物","phr":"nuclear deterrent","phrZh":"核威慑","day":"五"},{"n":294,"w":"eloquent","p":"ˈeləkwənt","pos":"adj.","zh":"雄辩的","phr":"eloquent speaker","phrZh":"雄辩的演讲者","day":"五"},{"n":295,"w":"delayed","p":"dɪˈleɪd","pos":"adj.","zh":"延迟的","phr":"delayed reward","phrZh":"延迟回报","day":"五"},{"n":296,"w":"humane","p":"hjuːˈmeɪn","pos":"adj.","zh":"人道的","phr":"humane treatment","phrZh":"人道待遇","day":"五"},{"n":297,"w":"indispensable","p":"ˌɪndɪˈspensəbl","pos":"adj.","zh":"不可或缺的","phr":"indispensable tool","phrZh":"不可或缺的工具","day":"五"},{"n":298,"w":"moderate","p":"ˈmɒdərət","pos":"adj.","zh":"适度的","phr":"moderate temperature","phrZh":"适中的温度","day":"五"},{"n":299,"w":"nullify","p":"ˈnʌlɪfaɪ","pos":"v.","zh":"使无效","phr":"nullify a contract","phrZh":"使合同无效","day":"五"},{"n":300,"w":"proliferate","p":"prəˈlɪfəreɪt","pos":"v.","zh":"激增","phr":"proliferate rapidly","phrZh":"迅速扩散","day":"五"},{"n":301,"w":"affluent","p":"ˈæfluənt","pos":"adj.","zh":"富裕的","phr":"affluent society","phrZh":"富裕的社会","day":"六"},{"n":302,"w":"astute","p":"əˈstjuːt","pos":"adj.","zh":"精明的","phr":"astute investor","phrZh":"精明的投资者","day":"六"},{"n":303,"w":"bolster","p":"ˈbəʊlstə(r)","pos":"v.","zh":"支持","phr":"bolster the economy","phrZh":"提振经济","day":"六"},{"n":304,"w":"brevity","p":"ˈbrevəti","pos":"n.","zh":"简洁","phr":"brevity in writing","phrZh":"写作的简洁性","day":"六"},{"n":305,"w":"catastrophe","p":"kəˈtæstrəfi","pos":"n.","zh":"灾难","phr":"man-made catastrophe","phrZh":"人为灾难","day":"六"},{"n":306,"w":"cherish","p":"ˈtʃerɪʃ","pos":"v.","zh":"珍惜","phr":"cherish friendship","phrZh":"珍惜友谊","day":"六"},{"n":307,"w":"conceive","p":"kənˈsiːv","pos":"v.","zh":"构想","phr":"conceive a plan","phrZh":"构思计划","day":"六"},{"n":308,"w":"cordial","p":"ˈkɔːdiəl","pos":"adj.","zh":"热情的","phr":"cordial relationship","phrZh":"融洽的关系","day":"六"},{"n":309,"w":"vague","p":"veɪɡ","pos":"adj.","zh":"模糊的","phr":"vague memory","phrZh":"模糊记忆","day":"六"},{"n":310,"w":"cuisine","p":"kwɪˈziːn","pos":"n.","zh":"烹饪","phr":"Italian cuisine","phrZh":"意大利菜","day":"六"},{"n":311,"w":"deduce","p":"dɪˈdjuːs","pos":"v.","zh":"推断","phr":"deduce the truth","phrZh":"推断真相","day":"六"},{"n":312,"w":"depict","p":"dɪˈpɪkt","pos":"v.","zh":"描绘","phr":"depict characters","phrZh":"刻画人物","day":"六"},{"n":313,"w":"deviate","p":"ˈdiːvieɪt","pos":"v.","zh":"偏离","phr":"deviate from the norm","phrZh":"偏离常规","day":"六"},{"n":314,"w":"dignity","p":"ˈdɪɡnəti","pos":"n.","zh":"尊严","phr":"national dignity","phrZh":"民族尊严","day":"六"},{"n":315,"w":"endeavor","p":"ɪnˈdevə(r)","pos":"v.","zh":"努力","phr":"make an endeavor","phrZh":"努力尝试","day":"六"},{"n":316,"w":"epoch","p":"ˈiːpɒk","pos":"n.","zh":"时代","phr":"the computer epoch","phrZh":"计算机时代","day":"六"},{"n":317,"w":"evoke","p":"ɪˈvəʊk","pos":"v.","zh":"唤起","phr":"evoke a response","phrZh":"引发回应","day":"六"},{"n":318,"w":"fabulous","p":"ˈfæbjələs","pos":"adj.","zh":"极好的","phr":"fabulous achievement","phrZh":"惊人的成就","day":"六"},{"n":319,"w":"flaw","p":"flɔː","pos":"n.","zh":"缺陷","phr":"a fatal flaw","phrZh":"致命缺陷","day":"六"},{"n":320,"w":"furious","p":"ˈfjʊəriəs","pos":"adj.","zh":"狂怒的","phr":"furious argument","phrZh":"激烈的争论","day":"六"},{"n":321,"w":"galaxy","p":"ˈɡæləksi","pos":"n.","zh":"星系","phr":"a spiral galaxy","phrZh":"螺旋星系","day":"六"},{"n":322,"w":"gloomy","p":"ˈɡluːmi","pos":"adj.","zh":"沮丧的","phr":"gloomy prospect","phrZh":"黯淡的前景","day":"六"},{"n":323,"w":"gossip","p":"ˈɡɒsɪp","pos":"n.","zh":"流言","phr":"idle gossip","phrZh":"无稽之谈","day":"六"},{"n":324,"w":"hamper","p":"ˈhæmpə(r)","pos":"v.","zh":"阻碍","phr":"hamper communication","phrZh":"阻碍沟通","day":"六"},{"n":325,"w":"harmony","p":"ˈhɑːməni","pos":"n.","zh":"和谐","phr":"social harmony","phrZh":"社会和谐","day":"六"},{"n":326,"w":"hideous","p":"ˈhɪdiəs","pos":"adj.","zh":"可怕的","phr":"hideous accident","phrZh":"可怕的事故","day":"六"},{"n":327,"w":"ignite","p":"ɪɡˈnaɪt","pos":"v.","zh":"点燃","phr":"ignite the imagination","phrZh":"激发想象力","day":"六"},{"n":328,"w":"imminent","p":"ˈɪmɪnənt","pos":"adj.","zh":"即将发生的","phr":"imminent crisis","phrZh":"即将来临的危机","day":"六"},{"n":329,"w":"integrate","p":"ˈɪntɪɡreɪt","pos":"v.","zh":"整合","phr":"integrate theory with practice","phrZh":"理论联系实际","day":"六"},{"n":330,"w":"intuition","p":"ˌɪntjuˈɪʃn","pos":"n.","zh":"直觉","phr":"female intuition","phrZh":"女性直觉","day":"六"},{"n":331,"w":"jostle","p":"ˈdʒɒsl","pos":"v.","zh":"推挤","phr":"jostle for attention","phrZh":"争抢关注度","day":"六"},{"n":332,"w":"luminous","p":"ˈluːmɪnəs","pos":"adj.","zh":"发光的","phr":"luminous paint","phrZh":"夜光漆","day":"六"},{"n":333,"w":"magnify","p":"ˈmæɡnɪfaɪ","pos":"v.","zh":"放大","phr":"magnify the risk","phrZh":"夸大风险","day":"六"},{"n":334,"w":"benchmark","p":"ˈbentʃmɑːk","pos":"n.","zh":"基准","phr":"industry benchmark","phrZh":"行业基准","day":"六"},{"n":335,"w":"mediocre","p":"ˌmiːdiˈəʊkə(r)","pos":"adj.","zh":"平庸的","phr":"mediocre ability","phrZh":"平庸的能力","day":"六"},{"n":336,"w":"mimic","p":"ˈmɪmɪk","pos":"v.","zh":"模仿","phr":"mimic the teacher's accent","phrZh":"模仿老师的口音","day":"六"},{"n":337,"w":"naive","p":"naɪˈiːv","pos":"adj.","zh":"天真的","phr":"naive belief","phrZh":"天真的想法","day":"六"},{"n":338,"w":"nostalgia","p":"nɒˈstældʒə","pos":"n.","zh":"怀旧","phr":"nostalgia for the past","phrZh":"对过去的怀念","day":"六"},{"n":339,"w":"opaque","p":"əʊˈpeɪk","pos":"adj.","zh":"难懂的","phr":"opaque language","phrZh":"晦涩的语言","day":"六"},{"n":340,"w":"persevere","p":"ˌpɜːsəˈvɪə(r)","pos":"v.","zh":"坚持","phr":"persevere in study","phrZh":"坚持学习","day":"六"},{"n":341,"w":"pivotal","p":"ˈpɪvətl","pos":"adj.","zh":"关键的","phr":"pivotal role","phrZh":"关键作用","day":"六"},{"n":342,"w":"poignant","p":"ˈpɔɪnjənt","pos":"adj.","zh":"令人痛心的","phr":"poignant memory","phrZh":"刻骨铭心的记忆","day":"六"},{"n":343,"w":"pristine","p":"ˈprɪstiːn","pos":"adj.","zh":"纯净的","phr":"pristine beach","phrZh":"纯净的海滩","day":"六"},{"n":344,"w":"radiant","p":"ˈreɪdiənt","pos":"adj.","zh":"喜悦的","phr":"radiant face","phrZh":"容光焕发的脸庞","day":"六"},{"n":345,"w":"reckless","p":"ˈrekləs","pos":"adj.","zh":"鲁莽的","phr":"reckless behavior","phrZh":"鲁莽的行为","day":"六"},{"n":346,"w":"refrain","p":"rɪˈfreɪn","pos":"v.","zh":"克制","phr":"refrain from anger","phrZh":"克制愤怒","day":"六"},{"n":347,"w":"retort","p":"rɪˈtɔːt","pos":"v.","zh":"反驳","phr":"retort sharply","phrZh":"尖锐地反驳","day":"六"},{"n":348,"w":"sabotage","p":"ˈsæbətɑːʒ","pos":"v.","zh":"破坏","phr":"sabotage the negotiation","phrZh":"破坏谈判","day":"六"},{"n":349,"w":"scarce","p":"skeəs","pos":"adj.","zh":"稀缺的","phr":"scarce commodity","phrZh":"稀缺商品","day":"六"},{"n":350,"w":"solitary","p":"ˈsɒlətri","pos":"adj.","zh":"孤独的","phr":"solitary traveler","phrZh":"独行的旅行者","day":"六"},{"n":351,"w":"sporadic","p":"spəˈrædɪk","pos":"adj.","zh":"零星的","phr":"sporadic fighting","phrZh":"零星的战斗","day":"六"},{"n":352,"w":"stagnant","p":"ˈstæɡnənt","pos":"adj.","zh":"停滞的","phr":"stagnant market","phrZh":"萧条的市场","day":"六"},{"n":353,"w":"stereotype","p":"ˈsteriətaɪp","pos":"n.","zh":"刻板印象","phr":"gender stereotype","phrZh":"性别刻板印象","day":"六"},{"n":354,"w":"sturdy","p":"ˈstɜːdi","pos":"adj.","zh":"健壮的","phr":"sturdy body","phrZh":"健壮的身体","day":"六"},{"n":355,"w":"surpass","p":"səˈpɑːs","pos":"v.","zh":"超过","phr":"surpass the opponent","phrZh":"战胜对手","day":"六"},{"n":356,"w":"turbulent","p":"ˈtɜːbjələnt","pos":"adj.","zh":"动荡的","phr":"turbulent sea","phrZh":"波涛汹涌的大海","day":"六"},{"n":357,"w":"utmost","p":"ˈʌtməʊst","pos":"adj.","zh":"极度的","phr":"utmost importance","phrZh":"至关重要","day":"六"},{"n":358,"w":"vibrant","p":"ˈvaɪbrənt","pos":"adj.","zh":"充满活力的","phr":"vibrant culture","phrZh":"充满活力的文化","day":"六"},{"n":359,"w":"wither","p":"ˈwɪðə(r)","pos":"v.","zh":"枯萎","phr":"withered leaves","phrZh":"枯叶","day":"六"},{"n":360,"w":"complex","p":"ˈkəmpleks","pos":"adj.","zh":"复杂的","phr":"complex structure","phrZh":"复杂结构","day":"六"},{"n":361,"w":"privilege","p":"ˈprɪvəlɪdʒ","pos":"n.","zh":"特权","phr":"enjoy a privilege","phrZh":"享有特权","day":"七"},{"n":362,"w":"instinctive","p":"ɪnˈstɪŋktɪv","pos":"adj.","zh":"本能的","phr":"instinctive quality","phrZh":"本能特质","day":"七"},{"n":363,"w":"invalidate","p":"ɪnˈvælɪdeɪt","pos":"v.","zh":"使无效","phr":"invalidate a contract","phrZh":"使合同无效","day":"七"},{"n":364,"w":"abstract","p":"ˈæbstrækt","pos":"adj.","zh":"抽象的","phr":"abstract speech","phrZh":"抽象语言","day":"七"},{"n":365,"w":"malpractice","p":"ˌmælˈpræktɪs","pos":"n.","zh":"不当行为","phr":"medical malpractice","phrZh":"医疗不当行为","day":"七"},{"n":366,"w":"amendment","p":"əˈmendmənt","pos":"n.","zh":"修正案","phr":"propose an amendment","phrZh":"提出修正案","day":"七"},{"n":367,"w":"charter","p":"ˈtʃɑːtə","pos":"n.","zh":"宪章","phr":"sign an international charter","phrZh":"签署国际宪章","day":"七"},{"n":368,"w":"sanction","p":"ˈsæŋkʃn","pos":"n.","zh":"制裁","phr":"impose economic sanctions","phrZh":"实施经济制裁","day":"七"},{"n":369,"w":"authorize","p":"ˈɔːθəraɪz","pos":"v.","zh":"授权","phr":"authorize a manager to decide","phrZh":"授权经理做决定","day":"七"},{"n":370,"w":"legitimacy","p":"lɪˈdʒɪtəməsi","pos":"n.","zh":"合法性","phr":"prove the legitimacy of a policy","phrZh":"证明政策的合法性","day":"七"},{"n":371,"w":"linguist","p":"ˈlɪŋɡwɪst","pos":"n.","zh":"语言学家","phr":"consult a linguist","phrZh":"咨询语言学家","day":"七"},{"n":372,"w":"bilingual","p":"ˌbaɪˈlɪŋɡwəl","pos":"adj.","zh":"双语的","phr":"bilingual teaching","phrZh":"双语教学","day":"七"},{"n":373,"w":"calligrapher","p":"kəˈlɪɡrəfə","pos":"n.","zh":"书法家","phr":"invite a calligrapher","phrZh":"邀请书法家","day":"七"},{"n":374,"w":"artifact","p":"ˈɑːtɪfækt","pos":"n.","zh":"手工艺品","phr":"collect ancient artifacts","phrZh":"收藏古代手工艺品","day":"七"},{"n":375,"w":"compensated","p":"ˈkɒmpenseɪtɪd","pos":"adj.","zh":"有报酬的","phr":"well-compensated job","phrZh":"高薪工作","day":"七"},{"n":376,"w":"orchestral","p":"ɔːˈkestrəl","pos":"adj.","zh":"管弦乐的","phr":"orchestral performance","phrZh":"管弦乐演出","day":"七"},{"n":377,"w":"procrastination","p":"proʊˌkræstɪˈneɪʃ(ə)n","pos":"n.","zh":"拖延","phr":"avoid procrastination","phrZh":"避免拖延","day":"七"},{"n":378,"w":"willpower","p":"ˈwɪlpaʊər","pos":"n.","zh":"意志力","phr":"strengthen willpower","phrZh":"增强意志力","day":"七"},{"n":379,"w":"quirky","p":"ˈkwɜːki","pos":"adj.","zh":"奇怪的","phr":"a quirky habit","phrZh":"奇怪的习惯","day":"七"},{"n":380,"w":"semiconductor","p":"ˌsemikənˈdʌktə","pos":"n.","zh":"半导体","phr":"semiconductor technology","phrZh":"半导体技术","day":"七"},{"n":381,"w":"conductive","p":"kənˈdʌktɪv","pos":"adj.","zh":"传导的","phr":"conductive metal","phrZh":"传导性金属","day":"七"},{"n":382,"w":"chain","p":"tʃeɪn","pos":"n.","zh":"链","phr":"global supply chain","phrZh":"全球供应链","day":"七"},{"n":383,"w":"peerless","p":"ˈpɪələs","pos":"adj.","zh":"无与伦比的","phr":"peerless craftsmanship","phrZh":"无与伦比的工艺","day":"七"},{"n":384,"w":"objectionable","p":"əbˈdʒekʃənəbl","pos":"adj.","zh":"讨厌的","phr":"objectionable remarks","phrZh":"讨厌的言论","day":"七"},{"n":385,"w":"redefine","p":"ˌriːdɪˈfaɪn","pos":"v.","zh":"重新定义","phr":"redefine workplace culture","phrZh":"重新定义职场文化","day":"七"},{"n":386,"w":"refine","p":"rɪˈfaɪn","pos":"v.","zh":"改进","phr":"refine a product design","phrZh":"改进产品设计","day":"七"},{"n":387,"w":"diversity","p":"daɪˈvɜːrsəti","pos":"n.","zh":"多样性","phr":"cultural diversity","phrZh":"文化多样性","day":"七"},{"n":388,"w":"legislature","p":"ˈledʒɪsleɪtʃə","pos":"n.","zh":"立法机构","phr":"national legislature","phrZh":"国家立法机构","day":"七"},{"n":389,"w":"remote","p":"rɪˈmoʊt","pos":"adj.","zh":"遥远的","phr":"adopt remote work","phrZh":"采用远程办公","day":"七"},{"n":390,"w":"lawful","p":"ˈlɔːfl","pos":"adj.","zh":"合法的","phr":"lawful business activities","phrZh":"合法经营活动","day":"七"},{"n":391,"w":"mainstream","p":"ˈmeɪnstriːm","pos":"n.","zh":"主流","phr":"mainstream opinion","phrZh":"主流观点","day":"七"},{"n":392,"w":"term","p":"tɜːm","pos":"n.","zh":"条款","phr":"contract term","phrZh":"合同条款","day":"七"},{"n":393,"w":"attachment","p":"əˈtætʃmənt","pos":"n.","zh":"依恋","phr":"emotional attachment","phrZh":"情感依恋","day":"七"},{"n":394,"w":"literacy","p":"ˈlɪtərəsi","pos":"n.","zh":"读写能力","phr":"digital literacy","phrZh":"数字素养","day":"七"},{"n":395,"w":"underestimate","p":"ʌndərˈestɪmeɪt","pos":"v.","zh":"低估","phr":"underestimate risks","phrZh":"低估风险","day":"七"},{"n":396,"w":"objective","p":"əbˈdʒektɪv","pos":"adj.","zh":"客观的","phr":"objective study","phrZh":"客观研究","day":"七"},{"n":397,"w":"hard-wired","p":"hɑːdˈwaɪəd","pos":"adj.","zh":"本能的","phr":"hard-wired response","phrZh":"本能反应","day":"七"},{"n":398,"w":"exterior","p":"ɪkˈstɪəriə","pos":"adj.","zh":"外部的","phr":"exterior wall decoration","phrZh":"外墙装饰","day":"七"},{"n":399,"w":"interior","p":"ɪnˈtɪəriə","pos":"adj.","zh":"内部的","phr":"interior design style","phrZh":"室内设计风格","day":"七"},{"n":400,"w":"outer","p":"ˈaʊtə","pos":"adj.","zh":"外部的","phr":"outer space","phrZh":"外层空间","day":"七"},{"n":401,"w":"inner","p":"ˈɪnə","pos":"adj.","zh":"内部的","phr":"inner feelings","phrZh":"内心感受","day":"七"},{"n":402,"w":"charitable","p":"ˈtʃærətəb(ə)l","pos":"adj.","zh":"慈善的","phr":"charitable organization","phrZh":"慈善组织","day":"七"},{"n":403,"w":"norm","p":"nɔːm","pos":"n.","zh":"规范","phr":"social norm","phrZh":"社会规范","day":"七"},{"n":404,"w":"consistent","p":"kənˈsɪstənt","pos":"adj.","zh":"一致的","phr":"consistent result","phrZh":"一致结果","day":"七"},{"n":405,"w":"slacking","p":"ˈslækɪŋ","pos":"n.","zh":"懒散","phr":"avoid slacking at work","phrZh":"工作中避免懒散","day":"七"},{"n":406,"w":"prosperity","p":"prɒˈsperəti","pos":"n.","zh":"繁荣","phr":"economic prosperity","phrZh":"经济繁荣","day":"七"},{"n":407,"w":"restoration","p":"ˌrestəˈreɪʃn","pos":"n.","zh":"恢复","phr":"environmental restoration","phrZh":"环境恢复","day":"七"},{"n":408,"w":"venture","p":"ˈventʃə(r)","pos":"n.","zh":"风险","phr":"venture investment","phrZh":"风险投资","day":"七"},{"n":409,"w":"algorithm","p":"ˈælɡərɪðəm","pos":"n.","zh":"算法","phr":"optimize algorithm","phrZh":"优化算法","day":"七"},{"n":410,"w":"fossil","p":"ˈfɒsl","pos":"n.","zh":"化石","phr":"reduce fossil fuel","phrZh":"减少化石燃料","day":"七"},{"n":411,"w":"inflation","p":"ɪnˈfleɪʃn","pos":"n.","zh":"通货膨胀","phr":"inflation rate","phrZh":"通货膨胀率","day":"七"},{"n":412,"w":"saturated","p":"ˈsætʃəreɪtɪd","pos":"adj.","zh":"饱和的","phr":"saturated fat","phrZh":"饱和脂肪","day":"七"},{"n":413,"w":"adequate","p":"ˈædɪkwət","pos":"adj.","zh":"足够的","phr":"adequate nutrition","phrZh":"充足营养","day":"七"},{"n":414,"w":"currency","p":"ˈkʌrənsi","pos":"n.","zh":"货币","phr":"exchange foreign currency","phrZh":"兑换外币","day":"七"},{"n":415,"w":"monetary","p":"ˈmʌnɪtri","pos":"adj.","zh":"货币的","phr":"monetary stability","phrZh":"货币稳定","day":"七"},{"n":416,"w":"financial","p":"faɪˈnænʃl","pos":"adj.","zh":"金融的","phr":"financial crisis prevention","phrZh":"金融危机防范","day":"七"},{"n":417,"w":"dense","p":"dens","pos":"adj.","zh":"密集的","phr":"dense research","phrZh":"密集研究","day":"七"},{"n":418,"w":"nutrition","p":"njuˈtrɪʃn","pos":"n.","zh":"营养","phr":"balanced nutrition","phrZh":"均衡营养","day":"七"},{"n":419,"w":"vaccination","p":"ˌvæksɪˈneɪʃn","pos":"n.","zh":"接种疫苗","phr":"arrange vaccination","phrZh":"安排疫苗接种","day":"七"},{"n":420,"w":"immune","p":"ɪˈmjuːn","pos":"adj.","zh":"免疫的","phr":"be immune to the virus","phrZh":"对病毒免疫","day":"七"},{"n":421,"w":"retrospect","p":"ˈretrəspekt","pos":"n.","zh":"回顾","phr":"in retrospect","phrZh":"回顾过去","day":"八"},{"n":422,"w":"stringent","p":"ˈstrɪndʒənt","pos":"adj.","zh":"严格的","phr":"stringent rules","phrZh":"严格的规定","day":"八"},{"n":423,"w":"pervasive","p":"pəˈveɪsɪv","pos":"adj.","zh":"普遍的","phr":"pervasive trend","phrZh":"普遍的趋势","day":"八"},{"n":424,"w":"equivocal","p":"ɪˈkwɪvəkl","pos":"adj.","zh":"含糊的","phr":"equivocal answer","phrZh":"含糊的回答","day":"八"},{"n":425,"w":"investment","p":"ɪnˈvestmənt","pos":"n.","zh":"投资","phr":"foreign investment","phrZh":"外国投资","day":"八"},{"n":426,"w":"autonomy","p":"ɔːˈtɒnəmi","pos":"n.","zh":"自主权","phr":"academic autonomy","phrZh":"学术自主权","day":"八"},{"n":427,"w":"philanthropic","p":"ˌfɪlənˈθrɒpɪk","pos":"adj.","zh":"慈善的","phr":"philanthropic acts","phrZh":"慈善行为","day":"八"},{"n":428,"w":"eccentric","p":"ɪkˈsentrɪk","pos":"adj.","zh":"古怪的","phr":"eccentric habits","phrZh":"古怪的习惯","day":"八"},{"n":429,"w":"commemorate","p":"kəˈmeməreɪt","pos":"v.","zh":"纪念","phr":"commemorate heroes","phrZh":"纪念英雄","day":"八"},{"n":430,"w":"concise","p":"kənˈsaɪs","pos":"adj.","zh":"简洁的","phr":"concise expression","phrZh":"简洁的表达","day":"八"},{"n":431,"w":"consecutive","p":"kənˈsekjətɪv","pos":"adj.","zh":"连续的","phr":"consecutive years","phrZh":"连续数年","day":"八"},{"n":432,"w":"discount","p":"ˈdɪskaʊnt","pos":"n.","zh":"折扣","phr":"special discount","phrZh":"特别折扣","day":"八"},{"n":433,"w":"pose","p":"ˈpoʊzɪz","pos":"v.","zh":"构成","phr":"pose a threat","phrZh":"构成威胁","day":"八"},{"n":434,"w":"denote","p":"dɪˈnəʊt","pos":"v.","zh":"表示","phr":"denote a change","phrZh":"表示一种变化","day":"八"},{"n":435,"w":"replacement","p":"rɪˈpleɪsmənt","pos":"n.","zh":"替代","phr":"temporary replacement","phrZh":"临时替代","day":"八"},{"n":436,"w":"diminish","p":"dɪˈmɪnɪʃ","pos":"v.","zh":"减少","phr":"diminish losses","phrZh":"减少损失","day":"八"},{"n":437,"w":"discard","p":"dɪˈskɑːd","pos":"v.","zh":"丢弃","phr":"discard old ideas","phrZh":"丢弃旧观念","day":"八"},{"n":438,"w":"distinguish","p":"dɪˈstɪŋɡwɪʃ","pos":"v.","zh":"区分","phr":"distinguish right from wrong","phrZh":"区分对错","day":"八"},{"n":439,"w":"conceal","p":"kənˈsiːl","pos":"v.","zh":"掩盖","phr":"conceal emotions","phrZh":"掩饰情感","day":"八"},{"n":440,"w":"duplicate","p":"ˈdjuːplɪkeɪt","pos":"v.","zh":"复制","phr":"duplicate data","phrZh":"复制数据","day":"八"},{"n":441,"w":"elevate","p":"ˈelɪveɪt","pos":"v.","zh":"提升","phr":"elevate status","phrZh":"提升地位","day":"八"},{"n":442,"w":"embody","p":"ɪmˈbɒdi","pos":"v.","zh":"体现","phr":"embody the spirit","phrZh":"体现精神","day":"八"},{"n":443,"w":"enhance","p":"ɪnˈhɑːns","pos":"v.","zh":"增强","phr":"enhance efficiency","phrZh":"提高效率","day":"八"},{"n":444,"w":"enforce","p":"ɪnˈfɔːs","pos":"v.","zh":"执行","phr":"enforce laws","phrZh":"执行法律","day":"八"},{"n":445,"w":"ensure","p":"ɪnˈʃʊə(r)","pos":"v.","zh":"确保","phr":"ensure safety","phrZh":"确保安全","day":"八"},{"n":446,"w":"exhibit","p":"ɪɡˈzɪbɪt","pos":"v.","zh":"展示","phr":"exhibit works","phrZh":"展示作品","day":"八"},{"n":447,"w":"exploit","p":"ɪkˈsplɔɪt","pos":"v.","zh":"利用","phr":"exploit resources","phrZh":"利用资源","day":"八"},{"n":448,"w":"facilitate","p":"fəˈsɪlɪteɪt","pos":"v.","zh":"促进","phr":"facilitate communication","phrZh":"促进交流","day":"八"},{"n":449,"w":"fluctuate","p":"ˈflʌktʃueɪt","pos":"v.","zh":"波动","phr":"prices fluctuate","phrZh":"价格波动","day":"八"},{"n":450,"w":"formulate","p":"ˈfɔːmjuleɪt","pos":"v.","zh":"制定","phr":"formulate policies","phrZh":"制定政策","day":"八"},{"n":451,"w":"generate","p":"ˈdʒenəreɪt","pos":"v.","zh":"产生","phr":"generate income","phrZh":"产生收入","day":"八"},{"n":452,"w":"illustrate","p":"ˈɪləstreɪt","pos":"v.","zh":"说明","phr":"illustrate a point","phrZh":"说明观点","day":"八"},{"n":453,"w":"imitate","p":"ˈɪmɪteɪt","pos":"v.","zh":"模仿","phr":"imitate models","phrZh":"模仿榜样","day":"八"},{"n":454,"w":"disruption","p":"dɪsˈrʌpʃn","pos":"n.","zh":"中断","phr":"service disruption","phrZh":"服务中断","day":"八"},{"n":455,"w":"tablet","p":"ˈtæblət","pos":"n.","zh":"平板电脑","phr":"electronic tablet","phrZh":"电子平板","day":"八"},{"n":456,"w":"indicate","p":"ˈɪndɪkeɪt","pos":"v.","zh":"表明","phr":"indicate a trend","phrZh":"表明趋势","day":"八"},{"n":457,"w":"induce","p":"ɪnˈdjuːs","pos":"v.","zh":"引起","phr":"induce stress","phrZh":"引发压力","day":"八"},{"n":458,"w":"infer","p":"ɪnˈfɜː(r)","pos":"v.","zh":"推断","phr":"infer meaning","phrZh":"推断含义","day":"八"},{"n":459,"w":"inhibit","p":"ɪnˈhɪbɪt","pos":"v.","zh":"抑制","phr":"inhibit development","phrZh":"抑制发展","day":"八"},{"n":460,"w":"reframe","p":"riˈfreɪm","pos":"v.","zh":"重新定义","phr":"reframe activities","phrZh":"重新定义活动","day":"八"},{"n":461,"w":"justify","p":"ˈdʒʌstɪfaɪ","pos":"v.","zh":"证明...合理","phr":"justify decisions","phrZh":"证明决定合理","day":"八"},{"n":462,"w":"launch","p":"lɔːntʃ","pos":"v.","zh":"发起","phr":"launch campaigns","phrZh":"发起活动","day":"八"},{"n":463,"w":"maintain","p":"meɪnˈteɪn","pos":"v.","zh":"维持","phr":"maintain order","phrZh":"维持秩序","day":"八"},{"n":464,"w":"manipulate","p":"məˈnɪpjuleɪt","pos":"v.","zh":"操控","phr":"manipulate data","phrZh":"操控数据","day":"八"},{"n":465,"w":"maximize","p":"ˈmæksɪmaɪz","pos":"v.","zh":"最大化","phr":"maximize profits","phrZh":"利润最大化","day":"八"},{"n":466,"w":"compromise","p":"ˈkɒmprəmaɪz","pos":"n.","zh":"妥协","phr":"reach a compromise","phrZh":"达成妥协","day":"八"},{"n":467,"w":"merge","p":"mɜːdʒ","pos":"v.","zh":"合并","phr":"merge companies","phrZh":"合并公司","day":"八"},{"n":468,"w":"foresight","p":"ˈfɔːsaɪt","pos":"n.","zh":"远见","phr":"strategic foresight","phrZh":"战略远见","day":"八"},{"n":469,"w":"monitor","p":"ˈmɒnɪtə(r)","pos":"v.","zh":"监控","phr":"monitor progress","phrZh":"监控进度","day":"八"},{"n":470,"w":"motivate","p":"ˈməʊtɪveɪt","pos":"v.","zh":"激励","phr":"motivate employees","phrZh":"激励员工","day":"八"},{"n":471,"w":"neglect","p":"nɪˈɡlekt","pos":"v.","zh":"忽视","phr":"neglect study","phrZh":"忽视学习","day":"八"},{"n":472,"w":"obtain","p":"əbˈteɪn","pos":"v.","zh":"获得","phr":"obtain degrees","phrZh":"获得学位","day":"八"},{"n":473,"w":"occupy","p":"ˈɒkjupaɪ","pos":"v.","zh":"占据","phr":"occupy positions","phrZh":"占据职位","day":"八"},{"n":474,"w":"oppose","p":"əˈpəʊz","pos":"v.","zh":"反对","phr":"oppose the plan","phrZh":"反对计划","day":"八"},{"n":475,"w":"originate","p":"əˈrɪdʒɪneɪt","pos":"v.","zh":"起源","phr":"originate from China","phrZh":"起源于中国","day":"八"},{"n":476,"w":"participate","p":"pɑːˈtɪsɪpeɪt","pos":"v.","zh":"参与","phr":"participate in activities","phrZh":"参与活动","day":"八"},{"n":477,"w":"perceive","p":"pəˈsiːv","pos":"v.","zh":"感知","phr":"perceive changes","phrZh":"感知变化","day":"八"},{"n":478,"w":"perform","p":"pəˈfɔːm","pos":"v.","zh":"执行","phr":"perform tasks","phrZh":"执行任务","day":"八"},{"n":479,"w":"corruption","p":"kəˈrʌpʃn","pos":"n.","zh":"腐败","phr":"fight corruption","phrZh":"打击腐败","day":"八"},{"n":480,"w":"alliance","p":"əˈlaɪəns","pos":"n.","zh":"联盟","phr":"military alliance","phrZh":"军事联盟","day":"八"},{"n":481,"w":"verifiable","p":"ˈverɪfaɪəbl","pos":"adj.","zh":"可证实的","phr":"verifiable fact","phrZh":"可证实的事实","day":"九"},{"n":482,"w":"wrath","p":"rɒθ","pos":"n.","zh":"愤怒","phr":"face the wrath","phrZh":"面对怒火","day":"九"},{"n":483,"w":"allocation","p":"ˌæləˈkeɪʃn","pos":"n.","zh":"分配","phr":"resource allocation","phrZh":"资源分配","day":"九"},{"n":484,"w":"coincidental","p":"kəʊˌɪnsɪˈdentl","pos":"adj.","zh":"巧合的","phr":"purely coincidental","phrZh":"纯属巧合","day":"九"},{"n":485,"w":"detriment","p":"ˈdetrɪmənt","pos":"n.","zh":"损害","phr":"to the detriment of","phrZh":"对...有害","day":"九"},{"n":486,"w":"elusive","p":"iˈluːsɪv","pos":"adj.","zh":"难以捉摸的","phr":"elusive goal","phrZh":"难以实现的目标","day":"九"},{"n":487,"w":"faculty","p":"ˈfæklti","pos":"n.","zh":"能力","phr":"mental faculty","phrZh":"心智能力","day":"九"},{"n":488,"w":"humanitarian","p":"hjuːˌmænɪˈteəriən","pos":"adj.","zh":"人道主义的","phr":"humanitarian aid","phrZh":"人道主义援助","day":"九"},{"n":489,"w":"indisputable","p":"ˌɪndɪˈspjuːtəbl","pos":"adj.","zh":"无可争辩的","phr":"indisputable evidence","phrZh":"铁证","day":"九"},{"n":490,"w":"philological","p":"ˌfɪləˈlɒdʒɪkl","pos":"adj.","zh":"语文学的","phr":"philological research","phrZh":"语文学研究","day":"九"},{"n":491,"w":"modification","p":"ˌmɒdɪfɪˈkeɪʃn","pos":"n.","zh":"修改","phr":"slight modification","phrZh":"轻微修改","day":"九"},{"n":492,"w":"numerous","p":"ˈnjuːmərəs","pos":"adj.","zh":"众多的","phr":"numerous attempts","phrZh":"多次尝试","day":"九"},{"n":493,"w":"prolong","p":"prəˈlɒŋ","pos":"v.","zh":"延长","phr":"prolong life","phrZh":"延长寿命","day":"九"},{"n":494,"w":"replicate","p":"ˈreplɪkeɪt","pos":"v.","zh":"复制","phr":"replicate the experiment","phrZh":"重复实验","day":"九"},{"n":495,"w":"subsidy","p":"ˈsʌbsədi","pos":"n.","zh":"补贴","phr":"government subsidy","phrZh":"政府补贴","day":"九"},{"n":496,"w":"transition","p":"trænˈzɪʃn","pos":"n.","zh":"过渡","phr":"smooth transition","phrZh":"平稳过渡","day":"九"},{"n":497,"w":"harsh","p":"hɑːʃ","pos":"adj.","zh":"严厉的","phr":"harsh punishment","phrZh":"严厉惩罚","day":"九"},{"n":498,"w":"vivid","p":"ˈvɪvɪd","pos":"adj.","zh":"生动的","phr":"vivid description","phrZh":"生动的描述","day":"九"},{"n":499,"w":"withhold","p":"wɪðˈhəʊld","pos":"v.","zh":"隐瞒","phr":"withhold information","phrZh":"隐瞒信息","day":"九"},{"n":500,"w":"commodity","p":"kəˈmɒdəti","pos":"n.","zh":"商品","phr":"commodity price","phrZh":"商品价格","day":"九"},{"n":501,"w":"notion","p":"ˈnəʊʃn","pos":"n.","zh":"观念","phr":"reject a notion","phrZh":"拒绝某个观念","day":"九"},{"n":502,"w":"tender","p":"ˈtendə(r)","pos":"v.","zh":"提交","phr":"tender a bid","phrZh":"投标","day":"九"},{"n":503,"w":"entrepreneur","p":"ɒntrəprəˈnɜː(r)","pos":"n.","zh":"企业家","phr":"successful entrepreneur","phrZh":"成功企业家","day":"九"},{"n":504,"w":"accountable","p":"əˈkaʊntəbl","pos":"adj.","zh":"有责任的","phr":"hold sb accountable","phrZh":"要求某人负责","day":"九"},{"n":505,"w":"contradiction","p":"ˌkɒntrəˈdɪkʃn","pos":"n.","zh":"矛盾","phr":"logical contradiction","phrZh":"逻辑矛盾","day":"九"},{"n":506,"w":"solar","p":"ˈsoʊlər","pos":"adj.","zh":"太阳的","phr":"solar cycle","phrZh":"太阳周期","day":"九"},{"n":507,"w":"genuine","p":"ˈdʒenjuɪn","pos":"adj.","zh":"真诚的","phr":"genuine concern","phrZh":"真诚的关切","day":"九"},{"n":508,"w":"highlight","p":"ˈhaɪlaɪt","pos":"v.","zh":"强调","phr":"highlight the importance","phrZh":"强调重要性","day":"九"},{"n":509,"w":"incentive","p":"ɪnˈsentɪv","pos":"n.","zh":"激励","phr":"financial incentive","phrZh":"经济激励","day":"九"},{"n":510,"w":"durability","p":"dʊrəˈbɪləti","pos":"n.","zh":"耐久性","phr":"mental durability","phrZh":"心理韧性","day":"九"},{"n":511,"w":"anecdotal","p":"ænɪkˈdoʊtl","pos":"adj.","zh":"轶事的","phr":"anecdotal reports","phrZh":"轶事报告","day":"九"},{"n":512,"w":"modify","p":"ˈmɒdɪfaɪ","pos":"v.","zh":"修改","phr":"modify a plan","phrZh":"修改计划","day":"九"},{"n":513,"w":"impartial","p":"ɪmˈpɑːʃl","pos":"adj.","zh":"公正的","phr":"impartial judgment","phrZh":"公正的判断","day":"九"},{"n":514,"w":"overcome","p":"ˌəʊvəˈkʌm","pos":"v.","zh":"克服","phr":"overcome difficulties","phrZh":"克服困难","day":"九"},{"n":515,"w":"phenomenon","p":"fəˈnɒmɪnən","pos":"n.","zh":"现象","phr":"natural phenomenon","phrZh":"自然现象","day":"九"},{"n":516,"w":"quote","p":"kwəʊt","pos":"v.","zh":"引用","phr":"quote an expert","phrZh":"引用专家的话","day":"九"},{"n":517,"w":"reluctance","p":"rɪˈlʌktəns","pos":"n.","zh":"不情愿","phr":"show reluctance","phrZh":"表现出不情愿","day":"九"},{"n":518,"w":"infection","p":"ɪnˈfekʃ(ə)n","pos":"n.","zh":"感染","phr":"skin infection","phrZh":"皮肤感染","day":"九"},{"n":519,"w":"trigger","p":"ˈtrɪɡə(r)","pos":"v.","zh":"引发","phr":"trigger a reaction","phrZh":"引发反应","day":"九"},{"n":520,"w":"undergo","p":"ˌʌndəˈɡəʊ","pos":"v.","zh":"经历","phr":"undergo surgery","phrZh":"接受手术","day":"九"},{"n":521,"w":"volunteer","p":"ˌvɒlənˈtɪə(r)","pos":"n.","zh":"志愿者","phr":"community volunteer","phrZh":"社区志愿者","day":"九"},{"n":522,"w":"welfare","p":"ˈwelfeə(r)","pos":"n.","zh":"福利","phr":"social welfare","phrZh":"社会福利","day":"九"},{"n":523,"w":"expansion","p":"ɪkˈspænʃn","pos":"n.","zh":"扩张","phr":"","phrZh":"","day":"九"},{"n":524,"w":"zone","p":"zəʊn","pos":"n.","zh":"区域","phr":"economic zone","phrZh":"经济区","day":"九"},{"n":525,"w":"abundant","p":"əˈbʌndənt","pos":"adj.","zh":"丰富的","phr":"abundant resources","phrZh":"丰富资源","day":"九"},{"n":526,"w":"prejudice","p":"ˈpredʒudɪs","pos":"n.","zh":"偏见","phr":"racial prejudice","phrZh":"种族偏见","day":"九"},{"n":527,"w":"deteriorate","p":"dɪˈtɪəriəreɪt","pos":"v.","zh":"恶化","phr":"deteriorate rapidly","phrZh":"迅速恶化","day":"九"},{"n":528,"w":"distinctive","p":"dɪˈstɪŋktɪv","pos":"adj.","zh":"独特的","phr":"distinctive feature","phrZh":"独特特征","day":"九"},{"n":529,"w":"era","p":"ˈɪərə","pos":"n.","zh":"时代","phr":"new era","phrZh":"新时代","day":"九"},{"n":530,"w":"federal","p":"ˈfedərəl","pos":"adj.","zh":"联邦的","phr":"federal law","phrZh":"联邦法律","day":"九"},{"n":531,"w":"grant","p":"ɡrɑːnt","pos":"n.","zh":"拨款","phr":"research grant","phrZh":"研究经费","day":"九"},{"n":532,"w":"stern","p":"stɜːn","pos":"adj.","zh":"严厉的","phr":"stern warning","phrZh":"严厉的警告","day":"九"},{"n":533,"w":"mature","p":"məˈtʃʊr","pos":"adj.","zh":"成熟的","phr":"mature market","phrZh":"成熟市场","day":"九"},{"n":534,"w":"lease","p":"liːs","pos":"n.","zh":"租约","phr":"sign a lease","phrZh":"签署租约","day":"九"},{"n":535,"w":"strategy","p":"ˈstrætədʒi","pos":"n.","zh":"策略","phr":"marketing strategy","phrZh":"营销策略","day":"九"},{"n":536,"w":"entitlement","p":"ɪnˈtaɪtlmənt","pos":"n.","zh":"特权","phr":"social entitlement","phrZh":"社会福利特权","day":"九"},{"n":537,"w":"overseas","p":"ˌəʊvəˈsiːz","pos":"adv.","zh":"在海外","phr":"study overseas","phrZh":"海外留学","day":"九"},{"n":538,"w":"phase","p":"feɪz","pos":"n.","zh":"阶段","phr":"first phase","phrZh":"第一阶段","day":"九"},{"n":539,"w":"revenue","p":"ˈrevənjuː","pos":"n.","zh":"收入","phr":"tax revenue","phrZh":"税收收入","day":"九"},{"n":540,"w":"scheme","p":"skiːm","pos":"n.","zh":"计划","phr":"pension scheme","phrZh":"养老金计划","day":"九"},{"n":541,"w":"procedure","p":"prəˈsiːdʒə(r)","pos":"n.","zh":"步骤","phr":"application procedure","phrZh":"申请程序","day":"十"},{"n":542,"w":"impair","p":"ɪmˈpeə(r)","pos":"v.","zh":"损害","phr":"impair health","phrZh":"损害健康","day":"十"},{"n":543,"w":"assumption","p":"əˈsʌmpʃn","pos":"n.","zh":"假设","phr":"make an assumption","phrZh":"做出假设","day":"十"},{"n":544,"w":"widespread","p":"ˈwaɪdspred","pos":"adj.","zh":"广泛的","phr":"widespread use","phrZh":"广泛使用","day":"十"},{"n":545,"w":"detach","p":"dɪˈtætʃ","pos":"v.","zh":"分离","phr":"detach from","phrZh":"从...中分离","day":"十"},{"n":546,"w":"mobility","p":"məʊˈbɪləti","pos":"n.","zh":"流动","phr":"social mobility","phrZh":"社会流动","day":"十"},{"n":547,"w":"consume","p":"kənˈsjuːm","pos":"v.","zh":"消耗","phr":"consume energy","phrZh":"消耗能源","day":"十"},{"n":548,"w":"draft","p":"drɑːft","pos":"n.","zh":"草稿","phr":"first draft","phrZh":"初稿","day":"十"},{"n":549,"w":"exceed","p":"ɪkˈsiːd","pos":"v.","zh":"超过","phr":"exceed expectations","phrZh":"超出预期","day":"十"},{"n":550,"w":"frequent","p":"ˈfriːkwənt","pos":"adj.","zh":"频繁的","phr":"frequent visitor","phrZh":"常客","day":"十"},{"n":551,"w":"guarantee","p":"ˌɡærənˈtiː","pos":"v.","zh":"保证","phr":"guarantee quality","phrZh":"保证质量","day":"十"},{"n":552,"w":"hinder","p":"ˈhɪndə(r)","pos":"v.","zh":"阻碍","phr":"hinder progress","phrZh":"阻碍进步","day":"十"},{"n":553,"w":"initial","p":"ɪˈnɪʃl","pos":"adj.","zh":"最初的","phr":"initial stage","phrZh":"初始阶段","day":"十"},{"n":554,"w":"justification","p":"ˌdʒʌstɪfɪˈkeɪʃn","pos":"n.","zh":"理由","phr":"no justification","phrZh":"没有理由","day":"十"},{"n":555,"w":"likewise","p":"ˈlaɪkwaɪz","pos":"adv.","zh":"同样地","phr":"do likewise","phrZh":"同样这样做","day":"十"},{"n":556,"w":"exaggerate","p":"ɪɡˈzædʒəreɪt","pos":"v.","zh":"夸大","phr":"exaggerate the truth","phrZh":"夸大事实","day":"十"},{"n":557,"w":"variation","p":"veriˈeɪʃn","pos":"n.","zh":"变化","phr":"","phrZh":"","day":"十"},{"n":558,"w":"overlook","p":"ˌəʊvəˈlʊk","pos":"v.","zh":"忽略","phr":"overlook a mistake","phrZh":"忽略错误","day":"十"},{"n":559,"w":"portion","p":"ˈpɔːʃn","pos":"n.","zh":"部分","phr":"a large portion","phrZh":"大部分","day":"十"},{"n":560,"w":"relieve","p":"rɪˈliːv","pos":"v.","zh":"缓解","phr":"relieve pain","phrZh":"缓解疼痛","day":"十"},{"n":561,"w":"scope","p":"skəʊp","pos":"n.","zh":"范围","phr":"broaden the scope","phrZh":"扩大范围","day":"十"},{"n":562,"w":"tackle","p":"ˈtækl","pos":"v.","zh":"处理","phr":"tackle a problem","phrZh":"处理问题","day":"十"},{"n":563,"w":"ultimate","p":"ˈʌltɪmət","pos":"adj.","zh":"最终的","phr":"ultimate goal","phrZh":"最终目标","day":"十"},{"n":564,"w":"vital","p":"ˈvaɪtl","pos":"adj.","zh":"至关重要的","phr":"vital importance","phrZh":"至关重要","day":"十"},{"n":565,"w":"withdraw","p":"wɪðˈdrɔː","pos":"v.","zh":"撤回","phr":"withdraw money","phrZh":"取钱","day":"十"},{"n":566,"w":"annual","p":"ˈænjuəl","pos":"adj.","zh":"每年的","phr":"annual report","phrZh":"年度报告","day":"十"},{"n":567,"w":"bond","p":"bɒnd","pos":"n.","zh":"联系","phr":"strengthen the bond","phrZh":"加强联系","day":"十"},{"n":568,"w":"confine","p":"kənˈfaɪn","pos":"v.","zh":"限制","phr":"confine to","phrZh":"局限于","day":"十"},{"n":569,"w":"diverse","p":"daɪˈvɜːs","pos":"adj.","zh":"多样的","phr":"diverse culture","phrZh":"多元文化","day":"十"},{"n":570,"w":"prevalent","p":"ˈprevələnt","pos":"adj.","zh":"普遍的","phr":"","phrZh":"","day":"十"},{"n":571,"w":"fundamental","p":"ˌfʌndəˈmentl","pos":"adj.","zh":"基础的","phr":"fundamental principle","phrZh":"基本原则","day":"十"},{"n":572,"w":"hence","p":"hens","pos":"adv.","zh":"因此","phr":"and hence...","phrZh":"因此...","day":"十"},{"n":573,"w":"integral","p":"ˈɪntɪɡrəl","pos":"adj.","zh":"必需的","phr":"integral part","phrZh":"必需部分","day":"十"},{"n":574,"w":"manual","p":"ˈmænjuəl","pos":"adj.","zh":"手工的","phr":"manual labor","phrZh":"体力劳动","day":"十"},{"n":575,"w":"obstacle","p":"ˈɒbstəkl","pos":"n.","zh":"障碍","phr":"major obstacle","phrZh":"主要障碍","day":"十"},{"n":576,"w":"fluency","p":"ˈfluːənsi","pos":"n.","zh":"流利","phr":"achieve fluency","phrZh":"达到流利","day":"十"},{"n":577,"w":"extreme","p":"ɪkˈstriːm","pos":"adj.","zh":"激进的","phr":"extreme opinion","phrZh":"激进的观点","day":"十"},{"n":578,"w":"sole","p":"səʊl","pos":"adj.","zh":"唯一的","phr":"sole purpose","phrZh":"唯一目的","day":"十"},{"n":579,"w":"tremendous","p":"trəˈmendəs","pos":"adj.","zh":"巨大的","phr":"tremendous success","phrZh":"巨大成功","day":"十"},{"n":580,"w":"nourishment","p":"ˈnʌrɪʃmənt","pos":"n.","zh":"营养","phr":"adequate nourishment","phrZh":"充足的营养","day":"十"},{"n":581,"w":"optimum","p":"ˈɒptɪməm","pos":"adj.","zh":"最佳的","phr":"optimum result","phrZh":"最佳结果","day":"十"},{"n":582,"w":"well-being","p":"ˈwel biːɪŋ","pos":"n.","zh":"幸福感","phr":"mental well-being","phrZh":"心理健康","day":"十"},{"n":583,"w":"bulk","p":"bʌlk","pos":"n.","zh":"大部分","phr":"the bulk of","phrZh":"大部分","day":"十"},{"n":584,"w":"consult","p":"kənˈsʌlt","pos":"v.","zh":"咨询","phr":"consult an expert","phrZh":"咨询专家","day":"十"},{"n":585,"w":"dominate","p":"ˈdɒmɪneɪt","pos":"v.","zh":"主导","phr":"dominate the market","phrZh":"主导市场","day":"十"},{"n":586,"w":"exclude","p":"ɪkˈskluːd","pos":"v.","zh":"排除","phr":"exclude possibility","phrZh":"排除可能性","day":"十"},{"n":587,"w":"cultivate","p":"ˈkʌltɪveɪt","pos":"v.","zh":"培养","phr":"cultivate creativity","phrZh":"培养创造力","day":"十"},{"n":588,"w":"wander","p":"ˈwɑːndər","pos":"v.","zh":"徘徊","phr":"wander around","phrZh":"闲逛","day":"十"},{"n":589,"w":"incorporate","p":"ɪnˈkɔːpəreɪt","pos":"v.","zh":"包含","phr":"incorporate into","phrZh":"纳入","day":"十"},{"n":590,"w":"minimal","p":"ˈmɪnɪməl","pos":"adj.","zh":"最小的","phr":"minimal impact","phrZh":"最小影响","day":"十"},{"n":591,"w":"nonetheless","p":"ˌnʌnðəˈles","pos":"adv.","zh":"尽管如此","phr":"difficult, nonetheless important","phrZh":"困难但重要","day":"十"},{"n":592,"w":"overwhelming","p":"ˌəʊvəˈwelmɪŋ","pos":"adj.","zh":"压倒性的","phr":"overwhelming majority","phrZh":"绝大多数","day":"十"},{"n":593,"w":"profound","p":"prəˈfaʊnd","pos":"adj.","zh":"深刻的","phr":"profound effect","phrZh":"深远影响","day":"十"},{"n":594,"w":"renew","p":"rɪˈnjuː","pos":"v.","zh":"恢复","phr":"renew hope","phrZh":"重燃希望","day":"十"},{"n":595,"w":"subsequent","p":"ˈsʌbsɪkwənt","pos":"adj.","zh":"随后的","phr":"subsequent event","phrZh":"随后事件","day":"十"},{"n":596,"w":"nuclear","p":"ˈnuːkliər","pos":"adj.","zh":"核能的","phr":"nuclear research","phrZh":"核研究","day":"十"},{"n":597,"w":"unify","p":"ˈjuːnɪfaɪ","pos":"v.","zh":"统一","phr":"unify the country","phrZh":"统一国家","day":"十"},{"n":598,"w":"verify","p":"ˈverɪfaɪ","pos":"v.","zh":"核实","phr":"verify information","phrZh":"核实信息","day":"十"},{"n":599,"w":"whereby","p":"weəˈbaɪ","pos":"adv.","zh":"凭此","phr":"a system whereby...","phrZh":"凭此...的系统","day":"十"},{"n":600,"w":"retain","p":"rɪˈteɪn","pos":"v.","zh":"保留","phr":"retain information","phrZh":"保留信息","day":"十"}],"syn":[{"n":1,"group":"通用类","variants":["variety","diversity"],"pos":"n.","zh":"多样性"},{"n":2,"group":"通用类","variants":["include","not exclude"],"pos":"v.","zh":"包括"},{"n":3,"group":"通用类","variants":["fulfill","satisfy"],"pos":"v.","zh":"满足"},{"n":4,"group":"通用类","variants":["effect","impact","influence","consequence","implication","fallout","outcome"],"pos":"n.","zh":"影响,结果"},{"n":5,"group":"通用类","variants":["prey","game"],"pos":"n.","zh":"猎物"},{"n":6,"group":"通用类","variants":["explore","quest","probe","survey","investigate","detect"],"pos":"v.","zh":"探索,调查,发现"},{"n":7,"group":"通用类","variants":["rectify","correct","revise","amend"],"pos":"v.","zh":"改正"},{"n":8,"group":"通用类","variants":["vary","differ"],"pos":"v.","zh":"不同"},{"n":9,"group":"通用类","variants":["supplement","complement"],"pos":"n.","zh":"补充"},{"n":10,"group":"通用类","variants":["lucrative","profitable"],"pos":"adj.","zh":"赚钱的"},{"n":11,"group":"通用类","variants":["tiny","small"],"pos":"adj.","zh":"小的"},{"n":12,"group":"通用类","variants":["permanent","perpetual","eternal","everlasting"],"pos":"adj.","zh":"永恒的"},{"n":13,"group":"通用类","variants":["usually","often","frequently"],"pos":"adv.","zh":"通常"},{"n":14,"group":"通用类","variants":["instant","split-second","immediate","prompt"],"pos":"adj.","zh":"立即的"},{"n":15,"group":"通用类","variants":["account for","explain"],"pos":"v.","zh":"解释"},{"n":16,"group":"通用类","variants":["because of","as a result of","on account of","due to","owing to","thanks to"],"pos":"prep.","zh":"由于"},{"n":17,"group":"通用类","variants":["confused","perplexed","puzzled"],"pos":"adj.","zh":"困惑的"},{"n":18,"group":"通用类","variants":["indifferent","carefree","detached"],"pos":"adj.","zh":"冷漠的"},{"n":19,"group":"通用类","variants":["contemptuous","scornful","despised"],"pos":"adj.","zh":"轻视的,蔑视的"},{"n":20,"group":"通用类","variants":["indulgent","permissive"],"pos":"adj.","zh":"放纵的,纵容的"},{"n":21,"group":"通用类","variants":["sympathy","compassion"],"pos":"n.","zh":"同情"},{"n":22,"group":"通用类","variants":["suspicious","dubious","doubtful","skeptical","questionable"],"pos":"adj.","zh":"怀疑的"},{"n":23,"group":"通用类","variants":["satiric","ironic"],"pos":"adj.","zh":"讽刺的"},{"n":24,"group":"通用类","variants":["quit","resign","depart"],"pos":"v.","zh":"辞职"},{"n":25,"group":"通用类","variants":["profession","vocation","occupation","career"],"pos":"n.","zh":"职业"},{"n":26,"group":"通用类","variants":["sector","department"],"pos":"n.","zh":"部门"},{"n":27,"group":"通用类","variants":["superior","prominent","exceptional","leading","eminent","famous","well-known","distinguished","prestigious","renowned"],"pos":"adj.","zh":"著名的,杰出的,卓越的"},{"n":28,"group":"通用类","variants":["pursue","chase","seek","look for"],"pos":"v.","zh":"追求,追寻"},{"n":29,"group":"通用类","variants":["feasible","viable","practicable"],"pos":"adj.","zh":"可行的"},{"n":30,"group":"通用类","variants":["resume","CV"],"pos":"n.","zh":"简历"},{"n":31,"group":"通用类","variants":["fatigued","tired","weary","exhausted","worn out"],"pos":"adj.","zh":"疲劳的,疲惫的"},{"n":32,"group":"通用类","variants":["rage","outrage","anger","indignation","infuriation","resentment"],"pos":"n.","zh":"愤怒"},{"n":33,"group":"通用类","variants":["hostile","unfriendly"],"pos":"adj.","zh":"敌对的,不和的"},{"n":34,"group":"通用类","variants":["wickedness","evil"],"pos":"n.","zh":"邪恶"},{"n":35,"group":"通用类","variants":["absurd","ridiculous","irrational"],"pos":"adj.","zh":"荒谬的"},{"n":36,"group":"通用类","variants":["sly","cunning","tricky","foxy","slippery"],"pos":"adj.","zh":"狡猾的"},{"n":37,"group":"通用类","variants":["dim","stupid","foolish","silly"],"pos":"adj.","zh":"愚蠢的"},{"n":38,"group":"通用类","variants":["modest","unpretentious","humble"],"pos":"adj.","zh":"谦逊的"},{"n":39,"group":"通用类","variants":["dedicated","devoted"],"pos":"adj.","zh":"专注的"},{"n":40,"group":"通用类","variants":["loyalty","allegiance"],"pos":"n.","zh":"忠诚,忠心"},{"n":41,"group":"通用类","variants":["compel","force"],"pos":"v.","zh":"强迫"},{"n":42,"group":"通用类","variants":["inherit","pass down"],"pos":"v.","zh":"遗传"},{"n":43,"group":"通用类","variants":["intrinsic","inherent"],"pos":"adj.","zh":"内在的,固有的,与生俱来的"},{"n":44,"group":"通用类","variants":["prey","hunt"],"pos":"v.","zh":"猎食"},{"n":45,"group":"通用类","variants":["treatment","cure","remedy","therapy"],"pos":"n.","zh":"治疗,疗法"},{"n":46,"group":"通用类","variants":["cease","halt","terminate"],"pos":"v.","zh":"终止,停止"},{"n":47,"group":"通用类","variants":["prosper","flourish"],"pos":"v.","zh":"繁荣"},{"n":48,"group":"通用类","variants":["choose","select","opt for"],"pos":"v.","zh":"选择"},{"n":49,"group":"通用类","variants":["tend to","be inclined to"],"pos":"v.","zh":"倾向于"},{"n":50,"group":"通用类","variants":["stress","highlight","emphasize","underline"],"pos":"v.","zh":"强调"},{"n":51,"group":"通用类","variants":["complicated","complex","intricate"],"pos":"adj.","zh":"复杂的"},{"n":52,"group":"通用类","variants":["overlook","neglect"],"pos":"v.","zh":"忽视"},{"n":53,"group":"通用类","variants":["depend on","rely on","reckon on","rest on","lean on","bank on","hinge on"],"pos":"","zh":"依靠,依赖,取决于"},{"n":54,"group":"通用类","variants":["politician","statesman"],"pos":"n.","zh":"政客"},{"n":55,"group":"通用类","variants":["anxious","uneasy"],"pos":"adj.","zh":"焦虑的"},{"n":56,"group":"通用类","variants":["enraged","outraged"],"pos":"adj.","zh":"愤怒的"},{"n":57,"group":"通用类","variants":["degree","extent"],"pos":"n.","zh":"程度"},{"n":58,"group":"通用类","variants":["reject","resist","repel","boycott"],"pos":"v.","zh":"抵制,排斥,拒绝"},{"n":59,"group":"通用类","variants":["maintain","retain","keep","preserve"],"pos":"v.","zh":"维持"},{"n":60,"group":"通用类","variants":["planet","earth"],"pos":"n.","zh":"地球"},{"n":61,"group":"通用类","variants":["describe","portray"],"pos":"v.","zh":"描述"},{"n":62,"group":"通用类","variants":["establish","construct","found","erect","build","set up"],"pos":"v.","zh":"建立"},{"n":63,"group":"通用类","variants":["widen","broaden","enlarge","extend","expand","stretch"],"pos":"v.","zh":"扩大"},{"n":64,"group":"通用类","variants":["character","quality","trait"],"pos":"n.","zh":"特征"},{"n":65,"group":"通用类","variants":["incredibly","unbelievably"],"pos":"adv.","zh":"难以置信地"},{"n":66,"group":"通用类","variants":["rich","wealthy","affluent","well-off"],"pos":"adj.","zh":"富裕的"},{"n":67,"group":"通用类","variants":["bad","detrimental","undesirable"],"pos":"adj.","zh":"有害的"},{"n":68,"group":"通用类","variants":["popular","prevailing","pervasive","widespread"],"pos":"adj.","zh":"普遍的,广泛的"},{"n":69,"group":"通用类","variants":["mark","grade"],"pos":"v.","zh":"评分"},{"n":70,"group":"通用类","variants":["dramatically","drastically","sharply","hugely","enormously","steeply","substantially","considerably","significantly","markedly","strikingly","radically","remarkably","vastly","noticeably"],"pos":"adv.","zh":"急剧地"},{"n":71,"group":"通用类","variants":["clear","obvious","evident","self-evident","manifest","apparent","conspicuous"],"pos":"adj.","zh":"明显的"},{"n":72,"group":"通用类","variants":["develop","cultivate","foster","nurture"],"pos":"v.","zh":"培养"},{"n":73,"group":"通用类","variants":["eligible","qualified"],"pos":"adj.","zh":"符合条件的"},{"n":74,"group":"通用类","variants":["need","require","call for"],"pos":"v.","zh":"需要"},{"n":75,"group":"通用类","variants":["forefather","ancestor","predecessor"],"pos":"n.","zh":"祖先"},{"n":76,"group":"通用类","variants":["environment","circumstance","atmosphere","surroundings"],"pos":"n.","zh":"环境"},{"n":77,"group":"通用类","variants":["pollution","contamination"],"pos":"n.","zh":"污染"},{"n":78,"group":"通用类","variants":["sense","feel"],"pos":"v.","zh":"感觉到,意识到"},{"n":79,"group":"通用类","variants":["moral","ethical"],"pos":"adj.","zh":"道德的"},{"n":80,"group":"通用类","variants":["replace","substitute"],"pos":"v.","zh":"替换"},{"n":81,"group":"通用类","variants":["guard","safeguard","protect"],"pos":"v.","zh":"保护"},{"n":82,"group":"通用类","variants":["grant","award"],"pos":"v.","zh":"授予"},{"n":83,"group":"通用类","variants":["verbal","lingual"],"pos":"adj.","zh":"语言的"},{"n":84,"group":"通用类","variants":["rival","competitor","opponent"],"pos":"n.","zh":"对手"},{"n":85,"group":"通用类","variants":["help","contribute to","benefit"],"pos":"v.","zh":"有助于"},{"n":86,"group":"通用类","variants":["four decades","forty years"],"pos":"n.","zh":"四十年"},{"n":87,"group":"通用类","variants":["at the cost of","at the expense of"],"pos":"","zh":"以...为代价"},{"n":88,"group":"通用类","variants":["pleasant","enjoyable"],"pos":"adj.","zh":"令人愉悦的"},{"n":89,"group":"通用类","variants":["monotonous","dull","boring","tedious"],"pos":"adj.","zh":"单调的,无聊的"},{"n":90,"group":"通用类","variants":["age","era"],"pos":"n.","zh":"时代"},{"n":91,"group":"通用类","variants":["buy","purchase"],"pos":"v.","zh":"购买"},{"n":92,"group":"通用类","variants":["suggestion","proposal"],"pos":"n.","zh":"建议"},{"n":93,"group":"通用类","variants":["serious","severe"],"pos":"adj.","zh":"严重的"},{"n":94,"group":"通用类","variants":["similar","identical","alike","analogous"],"pos":"adj.","zh":"相似的"},{"n":95,"group":"通用类","variants":["rubbish","garbage","waste","litter","trash"],"pos":"n.","zh":"垃圾"},{"n":96,"group":"通用类","variants":["second-hand","used"],"pos":"adj.","zh":"二手的"},{"n":97,"group":"通用类","variants":["apologize","say sorry"],"pos":"v.","zh":"道歉"},{"n":98,"group":"通用类","variants":["restrain","curb"],"pos":"v.","zh":"管控,约束"},{"n":99,"group":"通用类","variants":["monitor","supervise"],"pos":"v.","zh":"监督"},{"n":100,"group":"通用类","variants":["artificial","synthetic","man-made","fake"],"pos":"adj.","zh":"人造的,虚假的"},{"n":101,"group":"通用类","variants":["method","way","approach","measure","initiative"],"pos":"n.","zh":"方法,措施"},{"n":102,"group":"通用类","variants":["profoundness","depth"],"pos":"n.","zh":"深度"},{"n":103,"group":"通用类","variants":["positive","advantageous"],"pos":"adj.","zh":"积极的"},{"n":104,"group":"通用类","variants":["impressive","unforgettable"],"pos":"adj.","zh":"印象深刻的"},{"n":105,"group":"通用类","variants":["tie","connect"],"pos":"v.","zh":"连接"},{"n":106,"group":"通用类","variants":["difficulty","adversity"],"pos":"n.","zh":"困境"},{"n":107,"group":"通用类","variants":["heritage","relic"],"pos":"n.","zh":"遗产"},{"n":108,"group":"通用类","variants":["scrutiny","inspection"],"pos":"n.","zh":"审视,审查"},{"n":109,"group":"通用类","variants":["a minority of","a small number of"],"pos":"","zh":"少数"},{"n":110,"group":"通用类","variants":["mention","refer to","talk about"],"pos":"v.","zh":"提及"},{"n":111,"group":"通用类","variants":["pattern","format"],"pos":"n.","zh":"模式"},{"n":112,"group":"通用类","variants":["look like","resemble"],"pos":"v.","zh":"像"},{"n":113,"group":"通用类","variants":["overcome","get over"],"pos":"v.","zh":"克服"},{"n":114,"group":"通用类","variants":["effective","useful"],"pos":"adj.","zh":"有效的"},{"n":115,"group":"通用类","variants":["appear","emerge"],"pos":"v.","zh":"出现"},{"n":116,"group":"通用类","variants":["annual","yearly"],"pos":"adj.","zh":"每年的"},{"n":117,"group":"通用类","variants":["occur","happen"],"pos":"v.","zh":"发生"},{"n":118,"group":"通用类","variants":["manufacture","produce","make"],"pos":"v.","zh":"制造"},{"n":119,"group":"通用类","variants":["ultimate","final"],"pos":"adj.","zh":"最终的"},{"n":120,"group":"通用类","variants":["supply","provision"],"pos":"n.","zh":"供应"},{"n":121,"group":"通用类","variants":["wonder","curiosity"],"pos":"n.","zh":"好奇"},{"n":122,"group":"通用类","variants":["respect","aspect","category"],"pos":"n.","zh":"方面"},{"n":123,"group":"通用类","variants":["peer into","check"],"pos":"v.","zh":"检查"},{"n":124,"group":"通用类","variants":["observation","remark","comment","review","criticism"],"pos":"n.","zh":"评论"},{"n":125,"group":"通用类","variants":["overrate","overestimate","overvalue"],"pos":"v.","zh":"高估"},{"n":126,"group":"通用类","variants":["research","study"],"pos":"n.","zh":"研究"},{"n":127,"group":"通用类","variants":["confirm","testify","verify","certify","substantiate"],"pos":"v.","zh":"证实"},{"n":128,"group":"通用类","variants":["exercise","work-out"],"pos":"n.","zh":"锻炼"},{"n":129,"group":"通用类","variants":["absorb","take in"],"pos":"v.","zh":"吸收"},{"n":130,"group":"通用类","variants":["ensure","make sure","guarantee"],"pos":"v.","zh":"确保"},{"n":131,"group":"通用类","variants":["criterion","standard","gauge","norm"],"pos":"n.","zh":"标准"},{"n":132,"group":"通用类","variants":["reproduce","duplicate"],"pos":"v.","zh":"复制"},{"n":133,"group":"通用类","variants":["ratio","rate"],"pos":"n.","zh":"比率"},{"n":134,"group":"通用类","variants":["percentage","proportion"],"pos":"n.","zh":"比例"},{"n":135,"group":"通用类","variants":["augment","enhance","increase","add"],"pos":"v.","zh":"增加"},{"n":136,"group":"通用类","variants":["significant","crucial","critical","key","vital","essential","important"],"pos":"adj.","zh":"重要的"},{"n":137,"group":"通用类","variants":["matter","count"],"pos":"v.","zh":"重要"},{"n":138,"group":"通用类","variants":["charge","accuse","prosecute"],"pos":"v.","zh":"控告"},{"n":139,"group":"通用类","variants":["account for","make up","occupy"],"pos":"v.","zh":"占据"},{"n":140,"group":"通用类","variants":["model","example"],"pos":"n.","zh":"榜样"},{"n":1,"group":"经济类","variants":["profit","margin"],"pos":"n.","zh":"利润"},{"n":2,"group":"经济类","variants":["change","shift","modify","alter","transform","adjust","adapt"],"pos":"v.","zh":"改变"},{"n":3,"group":"经济类","variants":["adequate","sufficient","enough","ample"],"pos":"adj.","zh":"充足的"},{"n":4,"group":"经济类","variants":["domestic","household"],"pos":"adj.","zh":"家庭的"},{"n":5,"group":"经济类","variants":["loan","debt"],"pos":"n.","zh":"贷款"},{"n":6,"group":"经济类","variants":["asset","property"],"pos":"n.","zh":"资产"},{"n":7,"group":"经济类","variants":["costly","expensive"],"pos":"adj.","zh":"昂贵的"},{"n":8,"group":"经济类","variants":["restore","revive","recover","rebound"],"pos":"v.","zh":"复苏"},{"n":9,"group":"经济类","variants":["setback","frustration"],"pos":"n.","zh":"挫折"},{"n":10,"group":"经济类","variants":["recession","depression"],"pos":"n.","zh":"萧条"},{"n":11,"group":"经济类","variants":["downscale","downsize"],"pos":"v.","zh":"缩小规模"},{"n":12,"group":"经济类","variants":["devaluation","depreciation"],"pos":"n.","zh":"贬值"},{"n":13,"group":"经济类","variants":["deficit","red ink"],"pos":"n.","zh":"财政赤字"},{"n":14,"group":"经济类","variants":["swing","fluctuation"],"pos":"n.","zh":"波动"},{"n":15,"group":"经济类","variants":["stable","steady"],"pos":"adj.","zh":"稳定的"},{"n":16,"group":"经济类","variants":["tactic","strategy"],"pos":"n.","zh":"策略"},{"n":17,"group":"经济类","variants":["producer","maker","manufacturer"],"pos":"n.","zh":"制造商"},{"n":18,"group":"经济类","variants":["merger","acquisition","consolidation","concentration","combination"],"pos":"n.","zh":"并购"},{"n":19,"group":"经济类","variants":["negotiation","transaction"],"pos":"n.","zh":"谈判"},{"n":20,"group":"经济类","variants":["enterprise","company","firm","corporation","plant","business","venture"],"pos":"n.","zh":"企业"},{"n":21,"group":"经济类","variants":["profound","far-reaching"],"pos":"adj.","zh":"意义深远的"},{"n":22,"group":"经济类","variants":["lack","deficiency","absence","dearth","shortage"],"pos":"n.","zh":"缺乏"},{"n":23,"group":"经济类","variants":["withstand","endure","bear"],"pos":"v.","zh":"忍受"},{"n":24,"group":"经济类","variants":["invalid","ineffective"],"pos":"adj.","zh":"无效的"},{"n":25,"group":"经济类","variants":["resort","turn to"],"pos":"v.","zh":"诉诸,求助于"},{"n":26,"group":"经济类","variants":["action","behavior","conduct"],"pos":"n.","zh":"行为"},{"n":27,"group":"经济类","variants":["completely","totally","entirely"],"pos":"adv.","zh":"完全地"},{"n":28,"group":"经济类","variants":["objective","unbiased"],"pos":"adj.","zh":"客观的"},{"n":29,"group":"经济类","variants":["be accountable for","be liable for","be responsible for","be to blame for"],"pos":"","zh":"对...负责"},{"n":30,"group":"经济类","variants":["main","dominant","primary"],"pos":"adj.","zh":"主要的"},{"n":31,"group":"经济类","variants":["disagree","oppose","object"],"pos":"v.","zh":"反对"},{"n":32,"group":"经济类","variants":["solve","address","resolve","tackle","fix"],"pos":"v.","zh":"解决"},{"n":33,"group":"经济类","variants":["fund","invest"],"pos":"v.","zh":"投资"},{"n":34,"group":"经济类","variants":["guaranteed","secured"],"pos":"adj.","zh":"有保障的"},{"n":35,"group":"经济类","variants":["luxury","extravagance"],"pos":"n.","zh":"奢侈"},{"n":36,"group":"经济类","variants":["diligent","industrious"],"pos":"adj.","zh":"勤奋的"},{"n":37,"group":"经济类","variants":["scan","browse"],"pos":"v.","zh":"浏览"},{"n":38,"group":"经济类","variants":["edition","version"],"pos":"n.","zh":"版本"},{"n":39,"group":"经济类","variants":["vulnerability","weak point"],"pos":"n.","zh":"弱点"},{"n":40,"group":"经济类","variants":["district","zone","region"],"pos":"n.","zh":"区域"},{"n":41,"group":"经济类","variants":["weep","shed","cry","sob"],"pos":"v.","zh":"哭泣"},{"n":42,"group":"经济类","variants":["obesity","fat"],"pos":"n.","zh":"肥胖"},{"n":43,"group":"经济类","variants":["mischievous","naughty"],"pos":"adj.","zh":"调皮的"},{"n":44,"group":"经济类","variants":["crazy","mad","frenzied","nuts"],"pos":"adj.","zh":"疯狂的"},{"n":45,"group":"经济类","variants":["universe","cosmos"],"pos":"n.","zh":"宇宙"},{"n":46,"group":"经济类","variants":["blend","mix"],"pos":"v.","zh":"融合"},{"n":47,"group":"经济类","variants":["paradise","heaven"],"pos":"n.","zh":"天堂"},{"n":48,"group":"经济类","variants":["prairie","meadow","lawn"],"pos":"n.","zh":"草地"},{"n":49,"group":"经济类","variants":["have","own","possess"],"pos":"v.","zh":"拥有"},{"n":50,"group":"经济类","variants":["family","home"],"pos":"n.","zh":"家"},{"n":51,"group":"经济类","variants":["error","mistake"],"pos":"n.","zh":"错误"},{"n":52,"group":"经济类","variants":["worker","employee","staff"],"pos":"n.","zh":"员工"},{"n":53,"group":"经济类","variants":["agriculture","farming"],"pos":"n.","zh":"农业"},{"n":54,"group":"经济类","variants":["folk","resident","inhabitant"],"pos":"n.","zh":"居民"},{"n":55,"group":"经济类","variants":["interfere","intervene","meddle","intrude"],"pos":"v.","zh":"干预,干涉"},{"n":56,"group":"经济类","variants":["tell","differentiate"],"pos":"v.","zh":"区别,区分"},{"n":57,"group":"经济类","variants":["reasonable","rational"],"pos":"adj.","zh":"合理的"},{"n":58,"group":"经济类","variants":["direct","guide"],"pos":"v.","zh":"引导"},{"n":59,"group":"经济类","variants":["shape","form","model"],"pos":"v.","zh":"塑造"},{"n":60,"group":"经济类","variants":["yield","produce","generate"],"pos":"v.","zh":"产生"},{"n":61,"group":"经济类","variants":["enforce","implement","carry out"],"pos":"v.","zh":"实施"},{"n":62,"group":"经济类","variants":["postpone","delay"],"pos":"v.","zh":"推迟"},{"n":63,"group":"经济类","variants":["contemplate","consider"],"pos":"v.","zh":"深思"},{"n":64,"group":"经济类","variants":["accelerate","speed up","hasten"],"pos":"v.","zh":"加速"},{"n":65,"group":"经济类","variants":["prohibit","ban","forbid"],"pos":"v.","zh":"禁止"},{"n":66,"group":"经济类","variants":["problem","issue"],"pos":"n.","zh":"问题"},{"n":67,"group":"经济类","variants":["goal","objective","target"],"pos":"n.","zh":"目标"},{"n":68,"group":"经济类","variants":["difficult","tough","challenging"],"pos":"adj.","zh":"困难的"},{"n":69,"group":"经济类","variants":["suddenly","abruptly"],"pos":"adv.","zh":"突然"},{"n":70,"group":"经济类","variants":["predict","forecast","anticipate","foresee"],"pos":"v.","zh":"预测"},{"n":71,"group":"经济类","variants":["avoid","evade"],"pos":"v.","zh":"避免"},{"n":72,"group":"经济类","variants":["complete","finish","accomplish","fulfill"],"pos":"v.","zh":"完成"},{"n":73,"group":"经济类","variants":["support","back","advocate","endorse","second"],"pos":"v.","zh":"支持"},{"n":74,"group":"经济类","variants":["use","utilize"],"pos":"v.","zh":"使用"},{"n":75,"group":"经济类","variants":["eliminate","undo","remove","erase"],"pos":"v.","zh":"清除, 消除"},{"n":76,"group":"经济类","variants":["estimate","rate","value","assess","evaluate"],"pos":"v.","zh":"评估"},{"n":77,"group":"经济类","variants":["comprehend","understand","grasp","figure out"],"pos":"v.","zh":"理解"},{"n":78,"group":"经济类","variants":["compensate","make up for"],"pos":"v.","zh":"弥补"},{"n":79,"group":"经济类","variants":["amplify","magnify"],"pos":"v.","zh":"扩大,放大"},{"n":80,"group":"经济类","variants":["acknowledge","admit"],"pos":"v.","zh":"承认"},{"n":81,"group":"经济类","variants":["importance","necessity","significance"],"pos":"n.","zh":"重要性"},{"n":82,"group":"经济类","variants":["reveal","disclose","uncover"],"pos":"v.","zh":"揭示"},{"n":83,"group":"经济类","variants":["gain","obtain","acquire","access"],"pos":"v.","zh":"获得"},{"n":84,"group":"经济类","variants":["opportunity","chance"],"pos":"n.","zh":"机会"},{"n":85,"group":"经济类","variants":["trend","tendency"],"pos":"n.","zh":"趋势"},{"n":86,"group":"经济类","variants":["speculate","guess"],"pos":"v.","zh":"推测"},{"n":87,"group":"经济类","variants":["lasting","durable","chronic","secular","long-term","longstanding"],"pos":"adj.","zh":"长期的,持久的"},{"n":88,"group":"经济类","variants":["accurate","precise"],"pos":"adj.","zh":"精确的"},{"n":89,"group":"经济类","variants":["vague","unclear","ambiguous","obscure"],"pos":"adj.","zh":"模糊的"},{"n":90,"group":"经济类","variants":["urgent","pressing"],"pos":"adj.","zh":"迫切的"},{"n":91,"group":"经济类","variants":["bias","prejudice"],"pos":"n.","zh":"偏见"},{"n":92,"group":"经济类","variants":["integrity","honesty","credibility"],"pos":"n.","zh":"正直,诚信"},{"n":93,"group":"经济类","variants":["fragment","segment","portion"],"pos":"n.","zh":"部分"},{"n":94,"group":"经济类","variants":["inevitable","unavoidable"],"pos":"adj.","zh":"不可避免的"},{"n":95,"group":"经济类","variants":["prudent","cautious"],"pos":"adj.","zh":"谨慎的"},{"n":96,"group":"经济类","variants":["on the verge of","close to"],"pos":"","zh":"接近"},{"n":97,"group":"经济类","variants":["hardly","barely","scarcely","rarely"],"pos":"adv.","zh":"几乎不,几乎没有"},{"n":98,"group":"经济类","variants":["protection","conservation"],"pos":"n.","zh":"保护"},{"n":99,"group":"经济类","variants":["tourist","visitor","traveler"],"pos":"n.","zh":"游客"},{"n":100,"group":"经济类","variants":["recruit","hire","employ"],"pos":"v.","zh":"雇佣"},{"n":101,"group":"经济类","variants":["dismiss","lay off","fire"],"pos":"v.","zh":"解雇"},{"n":102,"group":"经济类","variants":["begin","start"],"pos":"v.","zh":"开始"},{"n":103,"group":"经济类","variants":["progress","advance"],"pos":"n.","zh":"进步"},{"n":104,"group":"经济类","variants":["sometimes","occasionally"],"pos":"adv.","zh":"有时"},{"n":105,"group":"经济类","variants":["especially","particularly"],"pos":"adv.","zh":"尤其"},{"n":106,"group":"经济类","variants":["vacant","unoccupied"],"pos":"adj.","zh":"空闲的"},{"n":107,"group":"经济类","variants":["pressure","stress","strain","burden"],"pos":"n.","zh":"压力"},{"n":108,"group":"经济类","variants":["ability","capability","capacity","competence"],"pos":"n.","zh":"能力"},{"n":109,"group":"经济类","variants":["shared","collective","collaborative","integrated","joint","combined"],"pos":"adj.","zh":"共同的"},{"n":110,"group":"经济类","variants":["simulate","imitate"],"pos":"v.","zh":"模拟"},{"n":111,"group":"经济类","variants":["track","follow"],"pos":"v.","zh":"跟踪"},{"n":112,"group":"经济类","variants":["possibly","probably","likely"],"pos":"adv.","zh":"可能"},{"n":113,"group":"经济类","variants":["subject","discipline"],"pos":"n.","zh":"学科"},{"n":114,"group":"经济类","variants":["aspire","crave","yearn"],"pos":"v.","zh":"渴望,渴求"},{"n":115,"group":"经济类","variants":["abandon","quit","desert","give up"],"pos":"v.","zh":"放弃"},{"n":116,"group":"经济类","variants":["appropriate","suitable"],"pos":"adj.","zh":"合适的"},{"n":117,"group":"经济类","variants":["contemporary","modern"],"pos":"adj.","zh":"当代的"},{"n":118,"group":"经济类","variants":["poor","impoverished"],"pos":"adj.","zh":"贫困的"},{"n":119,"group":"经济类","variants":["quirky","strange","weird","odd","bizarre","queer"],"pos":"adj.","zh":"奇怪的"},{"n":120,"group":"经济类","variants":["controversial","contested","disputable","debatable","arguable","contentious"],"pos":"adj.","zh":"有争议的"},{"n":121,"group":"经济类","variants":["rigorous","strict","rigid","stern"],"pos":"adj.","zh":"严格的"},{"n":122,"group":"经济类","variants":["aim to","be intended to"],"pos":"","zh":"旨在"},{"n":123,"group":"经济类","variants":["conception","notion"],"pos":"n.","zh":"概念"},{"n":124,"group":"经济类","variants":["responsibility","obligation","duty","liability"],"pos":"n.","zh":"责任"},{"n":125,"group":"经济类","variants":["master","grasp"],"pos":"v.","zh":"掌握"},{"n":126,"group":"经济类","variants":["old","ancient"],"pos":"adj.","zh":"古老的"},{"n":127,"group":"经济类","variants":["alleviate","ease","relieve"],"pos":"v.","zh":"缓解,减轻"},{"n":128,"group":"经济类","variants":["impetus","driving force","momentum"],"pos":"n.","zh":"动力"},{"n":129,"group":"经济类","variants":["genuine","authentic","real"],"pos":"adj.","zh":"真正的"},{"n":130,"group":"经济类","variants":["gratification","satisfaction"],"pos":"n.","zh":"满足"},{"n":131,"group":"经济类","variants":["unemployment","joblessness"],"pos":"n.","zh":"失业"},{"n":132,"group":"经济类","variants":["superficial","shallow"],"pos":"adj.","zh":"肤浅的"},{"n":133,"group":"经济类","variants":["enthusiasm","zeal","passion"],"pos":"n.","zh":"热情"},{"n":134,"group":"经济类","variants":["consensus","agreement"],"pos":"n.","zh":"共识"},{"n":135,"group":"经济类","variants":["unrelated","irrelevant"],"pos":"adj.","zh":"无关的"},{"n":136,"group":"经济类","variants":["accumulate","amass","collect","gather","heap","pile"],"pos":"v.","zh":"积累"},{"n":137,"group":"经济类","variants":["valuable","invaluable","priceless"],"pos":"adj.","zh":"宝贵的"},{"n":138,"group":"经济类","variants":["engage in","take part in","participate in"],"pos":"","zh":"参与"},{"n":139,"group":"经济类","variants":["classify","sort"],"pos":"v.","zh":"归类"},{"n":140,"group":"经济类","variants":["cause","lead to","give rise to","bring about","result in"],"pos":"v.","zh":"导致"}],"phr":[{"en":"pay attention to","zh":"重视","cat":"动作"},{"en":"pay great attention to","zh":"非常重视","cat":"动作"},{"en":"make remarkable progress","zh":"取得显著进步","cat":"动作"},{"en":"improve = enhance","zh":"提升/改善","cat":"动作"},{"en":"continuously improve = constantly improve = consistently improve","zh":"不断提升","cat":"动作"},{"en":"develop","zh":"发展/研发","cat":"动作"},{"en":"vigorously develop","zh":"大力发展","cat":"动作"},{"en":"promote","zh":"推广/推进","cat":"动作"},{"en":"introduce","zh":"引入","cat":"动作"},{"en":"take","zh":"采取","cat":"动作"},{"en":"implement = carry out","zh":"实施","cat":"动作"},{"en":"participate in = engage in","zh":"参与","cat":"动作"},{"en":"advocate","zh":"提倡","cat":"动作"},{"en":"make = allow = enable = ensure","zh":"使/让","cat":"动作"},{"en":"use = utilize","zh":"使用/利用","cat":"动作"},{"en":"imply = indicate = demonstrate","zh":"暗示/表明","cat":"动作"},{"en":"express = convey","zh":"表达/传达","cat":"动作"},{"en":"represent = symbolize = embody","zh":"代表/象征/体现","cat":"动作"},{"en":"mark","zh":"标志着","cat":"动作"},{"en":"mean","zh":"意味着","cat":"动作"},{"en":"have access to","zh":"获得","cat":"动作"},{"en":"be equipped with","zh":"配有","cat":"动作"},{"en":"go back to","zh":"追溯","cat":"动作"},{"en":"account for = occupy","zh":"占据","cat":"动作"},{"en":"be based on","zh":"根据","cat":"动作"},{"en":"be characterized by","zh":"特点是","cat":"动作"},{"en":"be related to = be linked to","zh":"与...有关","cat":"动作"},{"en":"be composed of","zh":"由...组成","cat":"动作"},{"en":"be regarded as","zh":"被视为","cat":"动作"},{"en":"be known as","zh":"被称为","cat":"动作"},{"en":"be hailed as","zh":"被誉为","cat":"动作"},{"en":"be famous for = be renowned for","zh":"因...而闻名","cat":"动作"},{"en":"enjoy high prestige in","zh":"享有...的盛名","cat":"动作"},{"en":"play a significant role in","zh":"对...具有重要意义","cat":"动作"},{"en":"have a great impact on","zh":"对...具有重大影响","cat":"动作"},{"en":"hold a significant strategic position in","zh":"在...具有重要的战略地位","cat":"动作"},{"en":"make significant contributions to","zh":"对...做出巨大贡献","cat":"动作"},{"en":"gain a deeper understanding of","zh":"对...有了更加深刻的认识","cat":"动作"},{"en":"provide strong guarantees for","zh":"对...提供了有利保障","cat":"动作"},{"en":"contribute to = be conducive to","zh":"有助于","cat":"动作"},{"en":"be harmful to = be detrimental to","zh":"不利于","cat":"动作"},{"en":"a series of measures = a series of initiatives","zh":"一系列措施","cat":"政治"},{"en":"cities and countryside = urban and rural areas","zh":"城乡","cat":"政治"},{"en":"rural revitalization","zh":"乡村振兴","cat":"政治"},{"en":"international cooperation","zh":"国际合作","cat":"政治"},{"en":"policy guidance","zh":"政策引导","cat":"政治"},{"en":"reform and opening up","zh":"改革开放","cat":"政治"},{"en":"social security system","zh":"社会保障体系","cat":"政治"},{"en":"annual production","zh":"年产量","cat":"经济"},{"en":"import volume","zh":"进口量","cat":"经济"},{"en":"export volume","zh":"出口量","cat":"经济"},{"en":"financial investment","zh":"资金投入","cat":"经济"},{"en":"agricultural production","zh":"农业生产","cat":"经济"},{"en":"yield and quality of crops","zh":"农作物的产量和质量","cat":"经济"},{"en":"competitiveness of products","zh":"产品的竞争力","cat":"经济"},{"en":"domestic economic development","zh":"国内经济发展","cat":"经济"},{"en":"the rapid development of China’s economy","zh":"中国经济的快速发展","cat":"经济"},{"en":"live-streaming sales","zh":"直播带货","cat":"经济"},{"en":"street-stall economy","zh":"地摊经济","cat":"经济"},{"en":"digital technology","zh":"数字技术","cat":"科技"},{"en":"digital transformation","zh":"数字化转型","cat":"科技"},{"en":"significant scientific and technological achievement","zh":"重大科技成就","cat":"科技"},{"en":"5G network 5G","zh":"网络","cat":"科技"},{"en":"3D printing 3D","zh":"打印","cat":"科技"},{"en":"space exploration","zh":"太空探索","cat":"科技"},{"en":"lunar exploration","zh":"月球探测","cat":"科技"},{"en":"deep-sea exploration","zh":"深海探测","cat":"科技"},{"en":"space station","zh":"空间站","cat":"科技"},{"en":"scientific research and application project","zh":"科学研究与应用项目","cat":"科技"},{"en":"lander","zh":"着陆器","cat":"科技"},{"en":"astronaut","zh":"宇航员","cat":"科技"},{"en":"manned spaceflight mission","zh":"载人航天任务","cat":"科技"},{"en":"satellite navigation system","zh":"卫星导航系统","cat":"科技"},{"en":"launch vehicle","zh":"运载火箭","cat":"科技"},{"en":"orbit n.","zh":"轨道","cat":"科技"},{"en":"in an orbit","zh":"在轨道上","cat":"科技"},{"en":"Shenzhou V spacecraft","zh":"神舟五号飞船","cat":"科技"},{"en":"remote work","zh":"远程办公","cat":"科技"},{"en":"artificial intelligence","zh":"人工智能","cat":"科技"},{"en":"technological innovation","zh":"技术创新","cat":"科技"},{"en":"multimedia presentation technique","zh":"多媒体展示手段","cat":"科技"},{"en":"big data","zh":"大数据","cat":"科技"},{"en":"cloud computing","zh":"云计算","cat":"科技"},{"en":"blockchain technology","zh":"区块链技术","cat":"科技"},{"en":"industrial robot","zh":"工业机器人","cat":"科技"},{"en":"smart manufacturing transformation","zh":"智能制造转型","cat":"科技"},{"en":"gene editing","zh":"基因编辑","cat":"科技"},{"en":"cloning technology","zh":"克隆技术","cat":"科技"},{"en":"independent innovation","zh":"自主创新","cat":"科技"},{"en":"progress of human civilization","zh":"人类文明的进步","cat":"科技"},{"en":"Chinese nation","zh":"中华民族","cat":"科技"},{"en":"healthy diet","zh":"健康饮食","cat":"生活"},{"en":"sense of happiness","zh":"幸福感","cat":"生活"},{"en":"well-being","zh":"幸福感","cat":"生活"},{"en":"national fitness","zh":"全民健身","cat":"生活"},{"en":"low-carbon lifestyle","zh":"低碳生活方式","cat":"生活"},{"en":"quality of life","zh":"生活质量","cat":"生活"},{"en":"the improvement of living standards","zh":"生活水平的提高","cat":"生活"},{"en":"nature reserve","zh":"自然保护区","cat":"环保"},{"en":"ecosystem","zh":"生态系统","cat":"环保"},{"en":"ecological conservation","zh":"生态保护","cat":"环保"},{"en":"rubbish classification = waste sorting","zh":"垃圾分类","cat":"环保"},{"en":"sustainable development","zh":"可持续发展","cat":"环保"},{"en":"environmental protection = environmental conservation","zh":"环境保护","cat":"环保"},{"en":"environmental pollution = environmental contamination","zh":"环境污染","cat":"环保"},{"en":"biodiversity","zh":"生物多样性","cat":"环保"},{"en":"endangered species","zh":"濒危物种","cat":"环保"},{"en":"carbon emission","zh":"碳排放","cat":"环保"},{"en":"east","zh":"东 → eastern adj.东部的","cat":"地理"},{"en":"west","zh":"西 → western adj.西部的","cat":"地理"},{"en":"south","zh":"南 → southern adj.南部的","cat":"地理"},{"en":"north","zh":"北 → northern adj.北部的","cat":"地理"},{"en":"northeast","zh":"东北 → northeastern 东北部的","cat":"地理"},{"en":"northwest","zh":"西北 → northwestern 西北部的","cat":"地理"},{"en":"southeast","zh":"东南 → southeastern 东南部的","cat":"地理"},{"en":"southwest","zh":"西南 → southwestern 西南部的","cat":"地理"},{"en":"uniquely advantageous geographical location","zh":"得天独厚的地理位置","cat":"地理"},{"en":"tourist attraction = tourist area = scenic spot = scenic area","zh":"旅游景点","cat":"地理"},{"en":"plateau","zh":"高原","cat":"地理"},{"en":"Qinghai-Tibet Plateau","zh":"青藏高原","cat":"地理"},{"en":"basin","zh":"盆地","cat":"地理"},{"en":"Sichuan Basin","zh":"四川盆地","cat":"地理"},{"en":"plain","zh":"平原","cat":"地理"},{"en":"North China Plain","zh":"华北平原","cat":"地理"},{"en":"mountainous region","zh":"山区","cat":"地理"},{"en":"Hengduan Mountainous Region","zh":"横断山区","cat":"地理"},{"en":"canyon","zh":"峡谷","cat":"地理"},{"en":"Yarlung Zangbo Grand Canyon","zh":"雅鲁藏布大峡谷","cat":"地理"},{"en":"desert","zh":"沙漠","cat":"地理"},{"en":"Taklamakan Desert","zh":"塔克拉玛干沙漠","cat":"地理"},{"en":"volcano","zh":"火山","cat":"地理"},{"en":"dormant volcano","zh":"休眠火山","cat":"地理"},{"en":"river","zh":"河流","cat":"地理"},{"en":"Yangtze River","zh":"长江","cat":"地理"},{"en":"river basin","zh":"流域","cat":"地理"},{"en":"Yellow River Basin","zh":"黄河流域","cat":"地理"},{"en":"delta","zh":"三角洲","cat":"地理"},{"en":"Pearl River Delta","zh":"珠江三角洲","cat":"地理"},{"en":"lake","zh":"湖泊","cat":"地理"},{"en":"Dongting Lake","zh":"洞庭湖","cat":"地理"},{"en":"canal","zh":"运河","cat":"地理"},{"en":"Grand Canal (Beijing-Hangzhou)","zh":"京杭大运河","cat":"地理"},{"en":"waterfall","zh":"瀑布","cat":"地理"},{"en":"Huangguoshu Waterfall","zh":"黄果树瀑布","cat":"地理"},{"en":"coastline","zh":"海岸线","cat":"地理"},{"en":"long coastline","zh":"漫长的海岸线","cat":"地理"},{"en":"island","zh":"岛屿","cat":"地理"},{"en":"Taiwan Island","zh":"台湾岛","cat":"地理"},{"en":"annual precipitation","zh":"年降水量","cat":"地理"},{"en":"soil","zh":"土壤","cat":"地理"},{"en":"soil erosion","zh":"水土流失","cat":"地理"},{"en":"drought","zh":"干旱","cat":"地理"},{"en":"renewable energy","zh":"可再生能源","cat":"地理"},{"en":"natural resources and climate conditions","zh":"自然资源和气候条件","cat":"地理"},{"en":"disaster relief","zh":"灾害救援","cat":"地理"},{"en":"weather forecasting","zh":"天气预报","cat":"地理"},{"en":"subtropical monsoon climate","zh":"亚热带季风气候(原“热带季风气候”为笔误)","cat":"地理"},{"en":"tropical rainforest climate","zh":"热带雨林气候","cat":"地理"},{"en":"Earth’s surface","zh":"地球表面","cat":"地理"},{"en":"longitude","zh":"经度","cat":"地理"},{"en":"latitude","zh":"纬度","cat":"地理"},{"en":"north latitude","zh":"北纬","cat":"地理"},{"en":"18° north latitude","zh":"北纬18°","cat":"地理"},{"en":"courtyard","zh":"院子","cat":"地理"},{"en":"ancient people","zh":"古人","cat":"地理"},{"en":"traditional Chinese festival","zh":"中国传统节日","cat":"地理"},{"en":"Spring Festival","zh":"春节","cat":"地理"},{"en":"Dragon Boat Festival","zh":"端午节","cat":"地理"},{"en":"Mid-Autumn Festival","zh":"中秋节","cat":"地理"},{"en":"New Year picture","zh":"年画","cat":"地理"},{"en":"paper-cutting","zh":"剪纸","cat":"地理"},{"en":"red packet","zh":"红包","cat":"地理"},{"en":"folk custom","zh":"民间习俗","cat":"地理"},{"en":"local folk culture","zh":"当地的民俗文化","cat":"地理"},{"en":"lion dance","zh":"舞狮","cat":"地理"},{"en":"dragon dance","zh":"舞龙","cat":"地理"},{"en":"a complete set of ceremonies","zh":"一套完整的仪式","cat":"地理"},{"en":"world cultural heritage","zh":"世界文化遗产","cat":"地理"},{"en":"study of Chinese history","zh":"中国历史的研究","cat":"地理"},{"en":"inheritance of Chinese culture","zh":"中国文化的传承","cat":"地理"},{"en":"traditional Chinese aesthetics","zh":"中国传统审美","cat":"地理"},{"en":"traditional Chinese wedding custom","zh":"中国传统婚礼习俗","cat":"地理"},{"en":"traditional Chinese residential building","zh":"中国传统住宅建筑","cat":"地理"},{"en":"effective protection and long-term utilization","zh":"有效保护和长久使用","cat":"地理"},{"en":"unique and beautiful Chinese-style romance","zh":"独特而美好的中国式浪漫","cat":"地理"},{"en":"Xia Dynasty","zh":"夏朝","cat":"地理"},{"en":"Shang Dynasty","zh":"商朝","cat":"地理"},{"en":"Zhou Dynasty","zh":"周朝","cat":"地理"},{"en":"Spring and Autumn Period","zh":"春秋时期","cat":"地理"},{"en":"Warring States Period","zh":"战国时期","cat":"地理"},{"en":"Qin Dynasty","zh":"秦朝","cat":"地理"},{"en":"Han Dynasty","zh":"汉朝","cat":"地理"},{"en":"Western Han Dynasty","zh":"西汉","cat":"地理"},{"en":"Eastern Han Dynasty","zh":"东汉","cat":"地理"},{"en":"Three Kingdoms","zh":"三国","cat":"地理"},{"en":"Tang Dynasty","zh":"唐朝","cat":"地理"},{"en":"Song Dynasty","zh":"宋朝","cat":"地理"},{"en":"Yuan Dynasty","zh":"元朝","cat":"地理"}],"days":[{"d":"一","from":1,"to":60},{"d":"二","from":61,"to":120},{"d":"三","from":121,"to":180},{"d":"四","from":181,"to":240},{"d":"五","from":241,"to":300},{"d":"六","from":301,"to":360},{"d":"七","from":361,"to":420},{"d":"八","from":421,"to":480},{"d":"九","from":481,"to":540},{"d":"十","from":541,"to":600}],"cats":["动作","政治","经济","科技","生活","环保","地理"]}</script>
+<script>
+"use strict";
+/* ---------------- data ---------------- */
+const RAW = JSON.parse(document.getElementById('seed').textContent);
+const DAY = 86400000;
+const IV = [0, 1, 2, 4, 7, 15, 30];        // days by box index
+const KEY = 'cet6-vocab-v1';
+
+const ITEMS = [];
+RAW.words.forEach((w, i) => ITEMS.push({
+  id: 'w' + i, kind: 'w', src: '600词',
+  word: w.w, zh: w.zh, pos: w.pos, phon: w.p, phr: w.phr, phrZh: w.phrZh,
+  day: w.day, ans: [w.w], label: w.w, hint: w.w
+}));
+RAW.syn.forEach((s, i) => ITEMS.push({
+  id: 's' + i, kind: 's', src: '同义替换',
+  word: s.variants[0], alt: s.variants.slice(1), zh: s.zh, pos: s.pos,
+  phon: '', phr: s.variants.join(' = '), phrZh: s.zh, day: s.group,
+  ans: s.variants, label: s.variants[0], hint: (s.variants[1] || s.variants[0])
+}));
+RAW.phr.forEach((p, i) => {
+  const alts = p.en.split(' = ').map(x => x.trim()).filter(Boolean);
+  ITEMS.push({
+    id: 'p' + i, kind: 'p', src: '翻译词组',
+    word: alts[0], zh: p.zh.split('→')[0].trim(), zhFull: p.zh, pos: '', phon: '',
+    phr: p.en, phrZh: p.zh, day: p.cat, ans: alts, label: alts[0], hint: alts[0]
+  });
+});
+const BY_ID = {};
+ITEMS.forEach(it => { BY_ID[it.id] = it; });
+
+/* ---------------- store ---------------- */
+const blank = () => ({ v: 1, items: {}, log: {}, set: { goal: 20, autoSpeak: true, mode: 'zh', theme: 'auto' } });
+let db = load();
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return blank();
+    const d = JSON.parse(raw);
+    const b = blank();
+    return { v: 1, items: d.items || {}, log: d.log || {}, set: Object.assign(b.set, d.set || {}) };
+  } catch (e) { return blank(); }
+}
+let saveT = 0;
+function save() {
+  clearTimeout(saveT);
+  saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }, 120);
+}
+const todayKey = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+function logToday() {
+  const k = todayKey();
+  if (!db.log[k]) db.log[k] = { done: 0, ok: 0, ng: 0 };
+  return db.log[k];
+}
+const st = id => db.items[id] || null;
+const isNew = id => !db.items[id];
+const isDue = id => { const s = db.items[id]; return !!s && s.d <= Date.now(); };
+const isWrong = id => { const s = db.items[id]; return !!s && s.ng > 0 && s.box < 3; };
+const isMastered = id => { const s = db.items[id]; return !!s && s.box >= 3; };
+
+/* ---------------- helpers ---------------- */
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const norm = s => String(s || '').toLowerCase().replace(/[’‘]/g, "'").replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
+const compact = s => norm(s).replace(/[^a-z0-9]/g, '');
+function lev(a, b) {
+  if (a === b) return 0;
+  const m = a.length, n = b.length;
+  if (!m) return n; if (!n) return m;
+  let prev = new Array(n + 1), cur = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
+  for (let i = 1; i <= m; i++) {
+    cur[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+    }
+    [prev, cur] = [cur, prev];
+  }
+  return prev[n];
+}
+/* 判分：完全正确 / 小错(近似) / 错误 */
+function judge(input, answers) {
+  const inp = compact(input);
+  if (!inp) return { level: 'wrong', best: answers[0] };
+  let best = answers[0], bestD = 1e9, exact = false;
+  for (const a of answers) {
+    const ac = compact(a);
+    if (!ac) continue;
+    if (inp === ac) { exact = true; best = a; bestD = 0; break; }
+    const d = lev(inp, ac);
+    if (d < bestD) { bestD = d; best = a; }
+  }
+  if (exact) return { level: 'correct', best };
+  const limit = bestD <= 1 || (bestD === 2 && best.length > 7) ? bestD : 99;
+  if (limit <= 2) return { level: 'near', best };
+  return { level: 'wrong', best };
+}
+function maskHTML(str) {
+  const words = String(str).split(/\s+/).filter(Boolean);
+  const dense = Math.max.apply(null, words.map(w => w.length)) > 10;
+  return '<div class="mask' + (dense ? ' dense' : '') + '">' + words.map(w => {
+    const cells = [...w].map((ch, i) => {
+      if (/[A-Za-z]/.test(ch)) return '<i class="sc' + (i === 0 ? ' f' : '') + '">' + (i === 0 ? esc(ch) : '') + '</i>';
+      return '<i class="punct">' + esc(ch) + '</i>';
+    }).join('');
+    return '<span class="wd">' + cells + '</span>';
+  }).join('') + '</div>';
+}
+
+/* ---------------- speech ---------------- */
+let voice = null;
+function pickVoice() {
+  if (!('speechSynthesis' in window)) return;
+  const vs = speechSynthesis.getVoices();
+  voice = vs.find(v => /en[-_]US/i.test(v.lang) && /Google|Samantha|Natural|Zira|Aria/i.test(v.name))
+    || vs.find(v => /en[-_]US/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null;
+}
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text, rate) {
+  if (!('speechSynthesis' in window)) { toast('这个浏览器不支持朗读，可以切回「看中文拼写」'); return; }
+  if (!text) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = rate || .9; u.pitch = 1;
+    if (voice) u.voice = voice;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+const speakWord = it => speak(it.label.replace(/[()]/g, ' '), .88);
+
+/* ---------------- srs ---------------- */
+function grade(id, g) {
+  const s = db.items[id] || { box: 0, d: 0, ok: 0, ng: 0, n: 0 };
+  s.n = (s.n || 0) + 1;
+  if (g === 'known') { s.ok = (s.ok || 0) + 1; s.box = Math.min((s.box || 0) + 1, 6); s.d = Date.now() + IV[s.box] * DAY; }
+  else if (g === 'fuzzy') { s.box = Math.min(s.box || 0, 2); s.d = Date.now() + Math.round(0.5 * DAY); }
+  else { s.ng = (s.ng || 0) + 1; s.box = 0; s.d = Date.now() + 60000; }
+  db.items[id] = s;
+  const lg = logToday();
+  lg.done++;
+  if (g === 'known') lg.ok++; else if (g === 'unknown') lg.ng++;
+  save();
+}
+
+/* ---------------- session ---------------- */
+const S = { view: 'home', q: null, revealed: false, session: null, typed: '', libFilter: 'all', libQuery: '', wrongLimit: 0 };
+
+function buildQueue(limit, onlyWrong) {
+  const now = Date.now();
+  let pool = ITEMS;
+  if (onlyWrong) pool = ITEMS.filter(it => isWrong(it.id));
+  const overdue = [], fresh = [];
+  for (const it of pool) {
+    const s = db.items[it.id];
+    if (!s) fresh.push(it.id);
+    else if (s.d <= now) overdue.push({ id: it.id, d: s.d, ng: s.ng || 0 });
+  }
+  overdue.sort((a, b) => (b.ng - a.ng) || (a.d - b.d));
+  const ids = [];
+  for (const o of overdue) { if (ids.length >= limit) break; ids.push(o.id); }
+  for (const id of fresh) { if (ids.length >= limit) break; ids.push(id); }
+  return ids;
+}
+function startSession(opts) {
+  const limit = opts.limit || db.set.goal || 20;
+  const ids = buildQueue(limit, !!opts.onlyWrong);
+  if (!ids.length) { S.view = opts.onlyWrong ? 'wrong' : 'home'; toast(opts.onlyWrong ? '没有需要重刷的错词' : '今天的量已完成，明天再来'); render(); return; }
+  S.session = { ids, i: 0, ok: 0, ng: 0, rep: {}, onlyWrong: !!opts.onlyWrong, started: ids.length };
+  S.view = 'study';
+  nextQ();
+}
+function nextQ() {
+  const ss = S.session;
+  if (!ss) { S.view = 'home'; render(); return; }
+  if (ss.i >= ss.ids.length) { S.view = 'done'; S.q = null; render(); return; }
+  const id = ss.ids[ss.i];
+  const it = BY_ID[id];
+  S.q = it; S.revealed = false; S.typed = ''; S.judgeRes = null;
+  render();
+  if (db.set.mode === 'listen') speakWord(it);
+  setTimeout(() => { const el = document.getElementById('answer'); if (el && !isTouch) el.focus(); }, 60);
+}
+const isTouch = matchMedia('(hover:none)').matches;
+function submitAnswer() {
+  const ss = S.session, it = S.q;
+  if (!ss || !it || S.revealed) return;
+  const res = judge(S.typed, it.ans);
+  S.judgeRes = res;
+  S.revealed = true;
+  ss.answered = true;
+  render();
+  if (db.set.autoSpeak) speakWord(it);
+}
+function rate(g) {
+  const ss = S.session, it = S.q;
+  if (!ss || !it) return;
+  grade(it.id, g);
+  if (g === 'known') ss.ok++; else if (g === 'unknown') { ss.ng++; ss.rep[it.id] = (ss.rep[it.id] || 0) + 1; }
+  const needRepeat = g === 'unknown' && (ss.rep[it.id] || 0) < 2;
+  if (needRepeat) {
+    const at = Math.min(ss.ids.length, ss.i + 4);
+    ss.ids.splice(at, 0, it.id);
+  }
+  ss.i++;
+  nextQ();
+}
+
+/* ---------------- views ---------------- */
+function ringHTML(done, goal) {
+  const p = Math.max(0, Math.min(100, goal ? done / goal * 100 : 0));
+  return '<div class="ring" style="--p:' + p.toFixed(0) + '"><b>' + done + '<i>/' + goal + '</i></b></div>';
+}
+function statNums() {
+  let learned = 0, mastered = 0, wrong = 0, due = 0;
+  const now = Date.now();
+  for (const it of ITEMS) {
+    const s = db.items[it.id];
+    if (s) { learned++; if (s.box >= 3) mastered++; if (s.ng > 0 && s.box < 3) wrong++; if (s.d <= now) due++; }
+  }
+  return { learned, mastered, wrong, due, total: ITEMS.length };
+}
+function streak() {
+  let n = 0;
+  const d = new Date();
+  for (let i = 0; i < 400; i++) {
+    const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const lg = db.log[k];
+    if (lg && lg.done > 0) n++;
+    else if (i > 0) break;
+    d.setDate(d.getDate() - 1);
+  }
+  return n;
+}
+function viewHome() {
+  const lg = logToday(), stn = statNums(), goal = db.set.goal;
+  const pct = Math.round(stn.learned / stn.total * 100);
+  return `
+  <div class="pagehead"><h2>今日学习</h2><span class="pill">第 ${streak()} 天</span></div>
+  <div class="card" style="padding:18px">
+    <div class="row" style="gap:16px">
+      ${ringHTML(lg.done, goal)}
+      <div class="grow">
+        <div style="font-size:16px;font-weight:700">今日已练 ${lg.done} 题</div>
+        <div class="muted" style="margin-top:4px">答对 ${lg.ok} · 待复习 ${stn.due} · 错词 ${stn.wrong}</div>
+        <div class="mini" style="margin-top:8px">库中 ${stn.total} 条 · 已学 ${stn.learned}（${pct}%）· 掌握 ${stn.mastered}</div>
+      </div>
+    </div>
+    <div class="seg" id="modeSeg" style="margin-top:16px;width:100%">
+      <button data-mode="zh" class="${db.set.mode === 'zh' ? 'on' : ''}" style="flex:1">看中文拼写</button>
+      <button data-mode="listen" class="${db.set.mode === 'listen' ? 'on' : ''}" style="flex:1">听发音拼写</button>
+    </div>
+    <button class="btn primary block" style="margin-top:12px" data-act="start">开始今日练习</button>
+  </div>
+  <div class="kpi" style="margin-top:12px">
+    <div><b>${stn.mastered}</b><span>已掌握</span></div>
+    <div><b>${stn.wrong}</b><span>错词本</span></div>
+    <div><b>${stn.due}</b><span>待复习</span></div>
+  </div>
+  <div class="card" style="padding:14px 16px;margin-top:12px">
+    <div class="row"><span class="grow" style="font-size:14px">今日目标</span>
+      <span class="muted">${goal} 题</span></div>
+    <div class="chips" style="margin-top:10px;padding-bottom:0">
+      ${[10, 20, 30, 50, 100].map(g => `<button class="chip ${goal === g ? 'on' : ''}" data-goal="${g}">${g}</button>`).join('')}
+    </div>
+  </div>
+  <div class="card" style="padding:14px 16px;margin-top:12px">
+    <div style="font-size:14px;font-weight:700">怎么练</div>
+    <div class="muted" style="margin-top:6px;line-height:1.8;font-size:13px">
+      1. 看中文（或开「听发音拼写」），照着字母格敲出英文<br>
+      2. 提交后选「认识 / 模糊 / 不认识」，系统自动排下次复习<br>
+      3. 答错自动进错词本，连续掌握后自动移出
+    </div>
+  </div>`;
+}
+function viewStudy() {
+  const ss = S.session, it = S.q;
+  if (!ss || !it) return '';
+  const listen = db.set.mode === 'listen' && it.kind === 'w';
+  const prog = Math.round(ss.i / ss.ids.length * 100);
+  const kindTag = it.kind === 'w' ? '单词' : (it.kind === 's' ? '同义替换' : '词组');
+  let prompt;
+  if (listen) {
+    prompt = `<div class="listenbig">
+        <button class="speak" data-act="speak" aria-label="播放发音">${ICON_SPEAK}</button>
+        <div class="mini">听发音，拼出单词</div>
+        <button class="btn ghost" style="padding:6px 12px;font-size:13px" data-act="showzh">显示中文提示</button>
+      </div>
+      <div class="qzh" id="zhHint" style="display:none">${esc(it.zh)}</div>`;
+  } else {
+    prompt = `<div class="qzh">${esc(it.zh)}</div>
+      ${it.kind === 's' ? `<div class="qsub">基础词：<b style="color:var(--acc2)">${esc(it.label)}</b> · 写出任意一个同义词</div>` : ''}
+      ${it.kind !== 'w' && it.ans.length > 1 ? `<div class="qsub">字母格是其中一种写法，写哪个都算对</div>` : ''}`;
+  }
+  if (S.revealed) {
+    const res = S.judgeRes || { level: 'wrong', best: it.label };
+    const cls = res.level === 'correct' ? '' : (res.level === 'near' ? ' warn' : ' bad');
+    const sug = res.level === 'correct' ? 'known' : (res.level === 'near' ? 'fuzzy' : 'unknown');
+    return `
+    <div class="topbar">
+      <button class="btn ghost" style="padding:6px 10px;font-size:13px" data-act="quit">退出</button>
+      <div class="bar"><i style="width:${prog}%"></i></div>
+      <span class="mini">${ss.i + 1}/${ss.ids.length}</span>
+    </div>
+    <div class="stage">
+    <div class="card qcard">
+      <div class="qpos">${kindTag}${it.day ? ' · ' + esc(it.day) : ''}</div>
+      <div class="qzh">${esc(it.zh)}</div>
+      <div style="margin-top:16px">
+        <div class="ans${cls}">${esc(res.best)}</div>
+        ${it.phon ? `<div class="pho">/${esc(it.phon)}/</div>` : ''}
+        ${it.kind === 's' ? `<div class="qsub">同义词组：${esc(it.ans.join(' = '))}</div>` : ''}
+        ${it.kind === 'w' && it.phr ? `<div class="qsub">${esc(it.phr)}${it.phrZh ? ' · ' + esc(it.phrZh) : ''}</div>` : ''}
+        ${it.kind === 'p' && it.zhFull && it.zhFull.includes('→') ? `<div class="qsub">${esc(it.zhFull.split('→')[1].trim())}</div>` : ''}
+        ${res.level !== 'correct' && S.typed ? `<div class="wrongline">你的答案：<s>${esc(S.typed)}</s></div>` : ''}
+        ${res.level === 'near' ? `<div class="wrongline" style="color:var(--warn)">差一点点，注意拼写</div>` : ''}
+      </div>
+      <div class="row" style="justify-content:center;margin-top:14px">
+        <button class="speak" data-act="speak" aria-label="播放发音">${ICON_SPEAK}</button>
+      </div>
+      <div class="selfrate">
+        <button class="k ${sug === 'known' ? 'sug' : ''}" data-rate="known">认识<small>明天以后再见</small></button>
+        <button class="f ${sug === 'fuzzy' ? 'sug' : ''}" data-rate="fuzzy">模糊<small>半天后再练</small></button>
+        <button class="u ${sug === 'unknown' ? 'sug' : ''}" data-rate="unknown">不认识<small>稍后重来</small></button>
+      </div>
+    </div>
+    </div>
+    <div class="mini" style="text-align:center;margin-top:10px">回车选建议项 · ← → 切换档位</div>`;
+  }
+  return `
+    <div class="topbar">
+      <button class="btn ghost" style="padding:6px 10px;font-size:13px" data-act="quit">退出</button>
+      <div class="bar"><i style="width:${prog}%"></i></div>
+      <span class="mini">${ss.i + 1}/${ss.ids.length}</span>
+    </div>
+    <div class="stage">
+    <div class="card qcard">
+      <div class="qpos">${kindTag}${it.day ? ' · ' + esc(it.day) : ''}</div>
+      ${prompt}
+      ${maskHTML(it.hint)}
+      <div style="margin-top:16px">
+        <input id="answer" type="text" value="${esc(S.typed)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" placeholder="在此输入英文">
+      </div>
+      <div class="mini" style="margin-top:9px">首字母和字母数已给出 · 回车提交</div>
+      <button class="btn primary block" style="margin-top:10px" data-act="submit">提交答案</button>
+      <div class="row" style="margin-top:12px;justify-content:center;gap:10px">
+        <button class="speak" data-act="speak" aria-label="播放发音">${ICON_SPEAK}</button>
+        <button class="btn ghost" style="padding:9px 14px;font-size:13px" data-act="skip">不会，看答案</button>
+      </div>
+    </div>
+    </div>`;
+}
+function viewDone() {
+  const ss = S.session || { ok: 0, ng: 0, started: 0 };
+  const total = ss.ok + ss.ng || 0;
+  const acc = total ? Math.round(ss.ok / total * 100) : 0;
+  return `<div class="done-wrap">
+    <div class="big">🎉</div>
+    <h2>这一组完成了</h2>
+    <div class="muted">共 ${ss.started || 0} 题 · 答对 ${ss.ok} · 未掌握 ${ss.ng} · 正确率 ${acc}%</div>
+    <div class="card" style="padding:16px;margin-top:18px">
+      <button class="btn primary block" data-act="again">再来一组</button>
+      <button class="btn block" style="margin-top:10px" data-act="goview" data-view="wrong">去错词本</button>
+      <button class="btn ghost block" style="margin-top:10px" data-act="goview" data-view="home">回到首页</button>
+    </div>
+  </div>`;
+}
+function viewWrong() {
+  const ids = ITEMS.filter(it => isWrong(it.id)).map(it => it.id);
+  if (!ids.length) return `<div class="pagehead"><h2>错词本</h2></div><div class="empty">还没有错词。答错的词会自动进来，连续掌握后自动移出。</div>`;
+  const shown = S.wrongLimit ? ids.slice(0, S.wrongLimit) : ids.concat([]);
+  const list = shown.map(id => {
+    const it = BY_ID[id], s = db.items[id];
+    return `<div class="item">
+      <div class="grow" style="min-width:0">
+        <div class="w">${esc(it.label)}</div>
+        <div class="z">${esc(it.pos)} ${esc(it.zh)}${it.phr && it.kind === 'w' ? ' · ' + esc(it.phr) : ''}</div>
+      </div>
+      <span class="badge u">错${s.ng || 1}</span>
+      <button class="speak" data-act="speak-item" data-id="${id}" style="width:36px;height:36px">${ICON_SPEAK}</button>
+      <button class="btn ghost" style="padding:6px 10px;font-size:12px" data-act="rm" data-id="${id}">移出</button>
+    </div>`;
+  }).join('');
+  return `<div class="pagehead"><h2>错词本</h2><span class="pill">${ids.length} 个</span></div>
+    <button class="btn primary block" data-act="start-wrong">开始重刷错词</button>
+    <div class="list">${list}</div>`;
+}
+function viewLib() {
+  const f = S.libFilter, q = S.libQuery.trim().toLowerCase();
+  const rows = ITEMS.filter(it => {
+    if (f !== 'all' && it.src !== f) return false;
+    if (!q) return true;
+    return it.label.toLowerCase().includes(q) || (it.zh || '').includes(q) || (it.phr || '').toLowerCase().includes(q);
+  });
+  const max = 300;
+  const cut = rows.slice(0, max).map(it => {
+    const s = db.items[it.id];
+    const badge = !s ? '' : s.box >= 3 ? '<span class="badge k">已掌握</span>' : (s.ng > 0 ? '<span class="badge u">错词</span>' : '<span class="badge">复习中</span>');
+    return `<div class="item">
+      <div class="grow" style="min-width:0">
+        <div class="w">${esc(it.label)}${it.phon ? `<span class="mini" style="font-weight:400;margin-left:8px">/${esc(it.phon)}/</span>` : ''}</div>
+        <div class="z">${esc(it.pos)} ${esc(it.zh)}</div>
+      </div>
+      ${badge}
+      <button class="speak" data-act="speak-item" data-id="${it.id}" style="width:34px;height:34px">${ICON_SPEAK}</button>
+    </div>`;
+  }).join('');
+  return `<div class="pagehead"><h2>词库</h2><span class="pill">${rows.length} 条</span></div>
+    <div class="chips">
+      ${[['all', '全部'], ['600词', '600 冲刺词'], ['同义替换', '同义替换'], ['翻译词组', '翻译词组']].map(([k, v]) =>
+        `<button class="chip ${f === k ? 'on' : ''}" data-src="${k}">${v}</button>`).join('')}
+    </div>
+    <input type="text" id="libq" value="${esc(S.libQuery)}" placeholder="搜英文或中文，如 crucial / 关键" style="margin:6px 0 4px;font-size:15px;text-align:left;padding:11px 13px">
+    <div class="list">${cut || '<div class="empty">没有匹配的条目</div>'}</div>
+    ${rows.length > max ? `<div class="mini" style="text-align:center;margin-top:12px">只显示前 ${max} 条，输入关键词缩小范围</div>` : ''}`;
+}
+function viewSettings() {
+  const stn = statNums();
+  const th = db.set.theme;
+  return `<div class="pagehead"><h2>设置</h2></div>
+  <div class="card" style="padding:6px 16px">
+    <div class="srow"><span class="grow">每日目标</span>
+      <select id="setGoal">${[10, 20, 30, 50, 100].map(g => `<option value="${g}" ${db.set.goal === g ? 'selected' : ''}>${g} 题</option>`).join('')}</select>
+    </div>
+    <div class="srow"><span class="grow">揭晓答案时自动朗读</span>
+      <div class="seg"><button data-autospeak="1" class="${db.set.autoSpeak ? 'on' : ''}">开</button><button data-autospeak="0" class="${!db.set.autoSpeak ? 'on' : ''}">关</button></div>
+    </div>
+    <div class="srow"><span class="grow">外观</span>
+      <div class="seg">${[['auto', '跟随系统'], ['dark', '深色'], ['light', '浅色']].map(([k, v]) =>
+        `<button data-theme="${k}" class="${th === k ? 'on' : ''}">${v}</button>`).join('')}</div>
+    </div>
+    <div class="srow"><span class="grow">当前进度</span><span class="muted">已学 ${stn.learned} · 掌握 ${stn.mastered} · 共 ${stn.total}</span></div>
+  </div>
+  <div class="card" style="padding:16px;margin-top:12px">
+    <div style="font-weight:700;font-size:15px">数据</div>
+    <div class="muted" style="margin-top:6px;line-height:1.6">进度只存在这台设备的浏览器里。换设备或清理浏览器数据前，建议先导出备份。</div>
+    <div class="row" style="margin-top:12px;gap:8px">
+      <button class="btn" style="flex:1;font-size:14px" data-act="export">导出进度</button>
+      <button class="btn" style="flex:1;font-size:14px" data-act="import">导入进度</button>
+    </div>
+    <button class="btn ghost block" style="margin-top:10px;color:var(--bad);font-size:14px" data-act="reset">清空全部进度</button>
+    <input type="file" id="fileIn" accept="application/json,.json" style="display:none">
+  </div>
+  <div class="mini" style="text-align:center;margin-top:16px;line-height:1.7">
+    素材来源：六级考前冲刺 600 词 · 六级高频同义替换 · 四六级翻译重点词汇<br>共 ${ITEMS.length} 条，离线可用
+  </div>`;
+}
+const ICON_SPEAK = '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg>';
+
+/* ---------------- render ---------------- */
+function render() {
+  const app = document.getElementById('app');
+  const v = S.view;
+  let html = '';
+  if (v === 'home') html = viewHome();
+  else if (v === 'study') html = viewStudy();
+  else if (v === 'wrong') html = viewWrong();
+  else if (v === 'lib') html = viewLib();
+  else if (v === 'settings') html = viewSettings();
+  else if (v === 'done') html = viewDone();
+  app.innerHTML = html;
+  renderTabs();
+  if (v === 'study' && S.revealed) {
+    window.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); rate(suggestKey()); }
+      else if (e.key === 'ArrowLeft') rate('unknown');
+      else if (e.key === 'ArrowRight') rate('known');
+    };
+  } else if (v === 'study') {
+    window.onkeydown = e => {
+      if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }
+    };
+  } else {
+    window.onkeydown = null;
+  }
+}
+function suggestKey() {
+  const r = S.judgeRes;
+  if (!r) return 'unknown';
+  return r.level === 'correct' ? 'known' : (r.level === 'near' ? 'fuzzy' : 'unknown');
+}
+function renderTabs() {
+  const nav = document.getElementById('tabs');
+  const cur = S.view === 'study' || S.view === 'done' ? 'home' : S.view;
+  const items = [
+    ['home', '学习', '<svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5V21"/>'],
+    ['wrong', '错词', '<svg viewBox="0 0 24 24"><path d="m4 8 6 6 10-10"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8"/></svg>'],
+    ['lib', '词库', '<svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v6h6"/></svg>'],
+    ['settings', '设置', '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>']
+  ];
+  nav.innerHTML = items.map(([k, label, svg]) => `<button data-tab="${k}" class="${cur === k ? 'on' : ''}">${svg}<span>${label}</span></button>`).join('');
+}
+
+/* ---------------- toast ---------------- */
+let toastT = 0;
+function toast(msg) {
+  let el = document.querySelector('.toast');
+  if (!el) { el = document.createElement('div'); el.className = 'toast'; document.body.appendChild(el); }
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('on'), 1800);
+}
+
+/* ---------------- events ---------------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act],[data-tab],[data-mode],[data-goal],[data-rate],[data-src],[data-theme],[data-autospeak]');
+  if (!t) return;
+  if (t.dataset.tab) {
+    S.view = t.dataset.tab;
+    if (S.view !== 'study') S.session = S.session;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (t.dataset.mode) {
+    if (t.dataset.mode === 'listen' && !('speechSynthesis' in window)) { toast('这个浏览器不支持朗读，请用「看中文拼写」'); return; }
+    db.set.mode = t.dataset.mode; save(); render(); return;
+  }
+  if (t.dataset.goal) { db.set.goal = +t.dataset.goal; save(); render(); return; }
+  if (t.dataset.rate) { rate(t.dataset.rate); return; }
+  if (t.dataset.src) { S.libFilter = t.dataset.src; render(); return; }
+  if (t.dataset.theme) { db.set.theme = t.dataset.theme; save(); applyTheme(); render(); return; }
+  if (t.dataset.autospeak) { db.set.autoSpeak = t.dataset.autospeak === '1'; save(); render(); return; }
+  const act = t.dataset.act;
+  if (act === 'start') startSession({});
+  else if (act === 'start-wrong') startSession({ onlyWrong: true, limit: 999 });
+  else if (act === 'submit') { const el = document.getElementById('answer'); S.typed = el ? el.value : S.typed; submitAnswer(); }
+  else if (act === 'skip') { S.typed = ''; S.judgeRes = { level: 'wrong', best: S.q.label }; S.revealed = true; render(); if (db.set.autoSpeak) speakWord(S.q); }
+  else if (act === 'speak') { if (S.q) speakWord(S.q); }
+  else if (act === 'speak-item') { const it = BY_ID[t.dataset.id]; if (it) speakWord(it); }
+  else if (act === 'quit') { S.view = 'home'; S.session = null; S.q = null; render(); }
+  else if (act === 'again') { startSession({}); }
+  else if (act === 'goview') { S.view = t.dataset.view; render(); }
+  else if (act === 'rm') {
+    const s = db.items[t.dataset.id];
+    if (s) { s.ng = 0; s.box = Math.max(s.box, 3); save(); }
+    render();
+  }
+  else if (act === 'export') {
+    const blob = new Blob([JSON.stringify(db)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '六级词汇进度-' + todayKey() + '.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  }
+  else if (act === 'import') { document.getElementById('fileIn').click(); }
+  else if (act === 'reset') {
+    if (confirm('确定清空全部学习进度？此操作不可撤销。')) { db = blank(); save(); applyTheme(); S.view = 'home'; render(); }
+  }
+  else if (act === 'showzh') {
+    const zh = document.getElementById('zhHint');
+    if (zh) zh.style.display = zh.style.display === 'none' ? 'block' : 'none';
+  }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'answer') S.typed = e.target.value;
+  if (e.target.id === 'libq') {
+    S.libQuery = e.target.value;
+    const pos = e.target.selectionStart;
+    render();
+    const el = document.getElementById('libq');
+    if (el) { el.focus(); el.setSelectionRange(pos, pos); }
+  }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'setGoal') { db.set.goal = +e.target.value; save(); render(); }
+  if (e.target.id === 'fileIn' && e.target.files && e.target.files[0]) {
+    const fr = new FileReader();
+    fr.onload = () => {
+      try {
+        const d = JSON.parse(fr.result);
+        if (!d.items) throw new Error('bad');
+        db = { v: 1, items: d.items, log: d.log || {}, set: Object.assign(blank().set, d.set || {}) };
+        save(); applyTheme(); toast('已导入进度'); render();
+      } catch (err) { toast('文件格式不对，导入失败'); }
+    };
+    fr.readAsText(e.target.files[0]);
+    e.target.value = '';
+  }
+});
+
+/* ---------------- theme / boot ---------------- */
+function applyTheme() {
+  const t = db.set.theme || 'auto';
+  const dark = t === 'dark' || (t === 'auto' && !matchMedia('(prefers-color-scheme: light)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.querySelector('meta[name=theme-color]').setAttribute('content', dark ? '#0d1017' : '#f6f7fb');
+}
+applyTheme();
+if (matchMedia('(prefers-color-scheme: light)').addEventListener) {
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { if (db.set.theme === 'auto') applyTheme(); });
+}
+render();
+</script>
+</body>
+</html>

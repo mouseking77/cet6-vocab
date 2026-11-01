@@ -1,0 +1,17 @@
+{
+  "name": "六级词汇 · 拼写记忆",
+  "short_name": "词汇练习",
+  "description": "四六级词汇拼写记忆：600 冲刺词 + 280 组同义替换 + 198 条翻译词组，三档间隔复习。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1017",
+  "theme_color": "#0d1017",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
