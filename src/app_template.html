@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0d1017">
 <meta name="description" content="四六级词汇拼写记忆：600 冲刺词 + 280 组同义替换 + 198 条翻译词组，三档间隔复习，进度存在本机。">
+<meta name="app-version" content="__VERSION__">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -165,6 +166,7 @@ input[type=text]:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(124,108
 <script id="seed" type="application/json">__DATA__</script>
 <script>
 "use strict";
+const VERSION = '__VERSION__';
 /* ---------------- data ---------------- */
 const RAW = JSON.parse(document.getElementById('seed').textContent);
 const DAY = 86400000;
@@ -436,7 +438,8 @@ function viewHome() {
       2. 提交后选「认识 / 模糊 / 不认识」，系统自动排下次复习<br>
       3. 答错自动进错词本，连续掌握后自动移出
     </div>
-  </div>`;
+  </div>
+  <div class="mini" style="text-align:center;margin-top:14px">${esc(VERSION)}</div>`;
 }
 function viewStudy() {
   const ss = S.session, it = S.q;
@@ -607,7 +610,8 @@ function viewSettings() {
     <input type="file" id="fileIn" accept="application/json,.json" style="display:none">
   </div>
   <div class="mini" style="text-align:center;margin-top:16px;line-height:1.7">
-    素材来源：六级考前冲刺 600 词 · 六级高频同义替换 · 四六级翻译重点词汇<br>共 ${ITEMS.length} 条，离线可用
+    素材来源：六级考前冲刺 600 词 · 六级高频同义替换 · 四六级翻译重点词汇<br>共 ${ITEMS.length} 条，离线可用<br>
+    版本 ${esc(VERSION)}
   </div>`;
 }
 const ICON_SPEAK = '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg>';

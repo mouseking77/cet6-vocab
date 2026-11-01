@@ -47,9 +47,24 @@ https://mouseking77.github.io/cet6-vocab/
     ├── extract_texts.py  # pdfs/*.pdf → texts/*.txt
     ├── pdftext.py        # 零依赖 PDF 文本抽取（Type0 字体 + ToUnicode）
     ├── make_icons.py     # 生成图标
-    ├── test_app.js       # 逻辑自测（41 项，Node 直接跑）
+    ├── test_app.js       # 逻辑自测（42 项，Node 直接跑）
     └── texts/            # 三份 PDF 抽出的纯文本（已入库，方便复现）
 ```
+
+## 版本号
+
+`src/version.json` 里维护版本号（当前 `1.1.0`）。`python src/build.py` 会把它、构建时间和当前 commit 一起写进页面，格式：
+
+```
+v1.1.0 · 2026-11-01 17:33 · c6a590e
+```
+
+页面上有两处能看到它，用来确认线上是不是最新一版：
+
+- 首页最底部一行小字
+- `设置` 页最下方「版本 …」
+
+也可以在浏览器控制台执行 `document.querySelector('meta[name=app-version]').content`。
 
 ## 改词库 / 重新构建
 

@@ -104,6 +104,8 @@ const call = (expr) => vm.runInContext(expr, ctx);
 
 try {
   ok('items-count', call('ITEMS.length') === 1078, call('ITEMS.length'));
+  const ver = call('VERSION');
+  ok('version-injected', typeof ver === 'string' && ver.indexOf('__VERSION__') < 0 && /^v\d+\.\d+\.\d+/.test(ver), ver);
   ok('ids-unique', call('new Set(ITEMS.map(i=>i.id)).size') === call('ITEMS.length'));
   ok('all-labelled', call('ITEMS.filter(i=>!i.label||!i.zh||!i.ans.length).length') === 0);
   ok('syn-alt-answers', call('ITEMS.filter(i=>i.kind==="s").every(i=>i.ans.length>=2)'));
